@@ -1,0 +1,27 @@
+<section class="forum-container">
+    <h1 class="titulo">Foro</h1>
+    <div class="topics-grid">
+      <article *ngFor="let topic of topics" 
+              class="topic-card hover-scale"
+              [ngClass]="topic.category">
+        <div class="topic-image">
+          <img [src]="topic.image" [alt]="topic.title">
+        </div>
+        <div class="topic-content">
+          <div class="topic-category">{{topic.category}}</div>
+          <h3 class="topic-title">{{topic.title}}</h3>
+          <p class="topic-summary">{{topic.summary}}</p>
+          <div class="topic-meta">
+            <div class="author">
+              <i class="fas fa-user"></i>
+              {{topic.author}}
+            </div>
+            <div class="date">
+              <i class="fas fa-calendar"></i>
+              {{topic.date | date:'mediumDate'}}
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>

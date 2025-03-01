@@ -1,0 +1,87 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    color: #00796B;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  /* Contenedor principal */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Formulario de contacto */
+  .formulario-contacto {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #00796B;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #B2DFDB;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333333;
+    background-color: #F5F5F5;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #80CBC4;
+    outline: none;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  /* Botón de enviar */
+  .boton {
+    display: inline-block;
+    background-color: #00796B;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton:hover {
+    background-color: #80CBC4;
+  }

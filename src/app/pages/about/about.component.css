@@ -1,0 +1,227 @@
+.quienes-somos {
+    background-color: var(--tech-light);
+    padding: 4rem 1rem;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Fondo decorativo */
+  .tech-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .tech-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-green);
+    opacity: 0.1;
+    filter: blur(60px);
+  }
+  
+  .tech-circle:nth-child(1) {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    right: -100px;
+  }
+  
+  .tech-circle:nth-child(2) {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+    background: var(--gradient-dark);
+  }
+  
+  .leaf-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(var(--accent-green) 2px, transparent 2px);
+    background-size: 50px 50px;
+    opacity: 0.05;
+  }
+  
+  /* Header styles */
+  .header-section {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .main-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-4xl);
+    font-weight: bold;
+    color: var(--tech-dark);
+    margin-bottom: 1rem;
+  }
+  
+  .tech-highlight {
+    background: var(--gradient-green);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .indicator {
+    height: 0.5rem;
+    width: 8rem;
+    background: var(--gradient-green);
+    border-radius: 9999px;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+  }
+  
+  /* Section styles */
+  .content-section {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Card styles */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-hover);
+    border-color: var(--primary-green);
+  }
+  
+  /* Typography */
+  .section-title {
+    font-size: var(--text-2xl);
+    font-weight: bold;
+    color: var(--tech-dark);
+    margin-bottom: 1.5rem;
+  }
+  
+  .subsection-title {
+    font-size: var(--text-xl);
+    font-weight: bold;
+    color: var(--tech-dark);
+    margin-bottom: 1rem;
+  }
+  
+  .section-text {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--tech-gray);
+  }
+  
+  .card-text {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--tech-gray);
+  }
+  
+  /* Image styles */
+  .image-container {
+    margin-top: 2rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  
+  .feature-image {
+    width: auto;
+    height: auto;
+    transition: var(--transition-normal);
+  }
+  
+  .image-container:hover .feature-image {
+    transform: scale(1.02);
+  }
+  
+  /* Icon styles */
+  .icon-container {
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .value-icon {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Grid layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+  
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+  
+  /* Button styles */
+  .btn-primary {
+    background: var(--gradient-green);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .cta-card {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Responsive styles */
+  @media (min-width: 768px) {
+    .quienes-somos {
+      padding: 6rem 2rem;
+    }
+  
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  
+    .main-title {
+      font-size: 3.5rem;
+    }
+  }

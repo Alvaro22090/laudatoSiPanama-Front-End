@@ -1,0 +1,26 @@
+<button class="btn btn-glass login-btn" (click)="abrirModal()">
+    <i class="fas fa-user"></i>
+</button>
+  
+  <div id="login-modal" class="modal" [ngClass]="{'mostrar': mostrarModal}" (click)="cerrarModalExterno($event)">
+    <div class="modal-contenido" (click)="$event.stopPropagation()">
+        <span (click)="cerrarModal()" class="cerrar">&times;</span>
+        <h2>Iniciar sesión</h2>
+        <form class="formulario-login">
+            <div class="form-group">
+                <label for="nombre-login">Nombre:</label>
+                <input type="text" id="nombre-login" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="email-login">Correo electrónico:</label>
+                <input type="email" id="email-login" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password-login">Contraseña:</label>
+                <input type="password" id="password-login" name="password" required>
+            </div>
+            <button type="submit" class="boton">Ingresar</button>
+            <a href="registro">No tienes cuenta? Regístrate</a>
+        </form>
+    </div>
+</div>

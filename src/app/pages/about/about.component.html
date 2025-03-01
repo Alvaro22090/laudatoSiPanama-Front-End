@@ -1,0 +1,99 @@
+<div class="quienes-somos">
+    <!-- Fondo decorativo -->
+    <div class="tech-background">
+      <div class="tech-circle"></div>
+      <div class="tech-circle"></div>
+      <div class="leaf-pattern"></div>
+    </div>
+  
+    <!-- Header Section -->
+    <section class="header-section">
+      <h1 class="main-title">
+        <span class="tech-highlight">¿Quiénes</span> Somos?
+      </h1>
+      <div class="indicator"></div>
+    </section>
+  
+    <!-- Movimiento Section -->
+    <section class="content-section">
+      <div class="glass-card">
+        <h2 class="section-title">¿Qué es el movimiento Laudato Sí Panamá?</h2>
+        <p class="section-text">
+          Somos una comunidad comprometida con el cuidado del medio ambiente y la promoción
+          de una ecología integral, inspirada en la encíclica del Papa Francisco.
+          Trabajamos para construir un futuro sostenible en Panamá.
+        </p>
+        <div class="image-container">
+          <img 
+            src="logo.jpg" 
+            alt="Comunidad Laudato Si" 
+            class="feature-image"
+          >
+        </div>
+      </div>
+    </section>
+  
+    <!-- Misión y Visión -->
+    <section class="content-section">
+      <div class="grid-2">
+        <div class="glass-card hover-card">
+          <h2 class="section-title">Misión</h2>
+          <p class="section-text">
+            Anunciar el Evangelio el evangelio de la creación; para que a luz de nuestro señor Jesucristo se viva, 
+            el designio del Amor de Dios fundamentado en la persona humana, el amor, la solidaridad, la justicia, el bien común.  
+            Planificar y ejecutar programas de formación integral en base al conocimiento de lo que es una ecología integral e 
+            influir en las comunidades parroquiales para la formación de grupos Laudato Si.
+          </p>
+        </div>
+        <div class="glass-card hover-card">
+          <h2 class="section-title">Visión</h2>
+          <p class="section-text">
+            Sensibilizar a las personas, fomentar los grupos en la importancia del cuidado de la casa común, 
+            Promover una cultura ecológica, establecer acciones que promuevan el crecimiento espiritual fomentando valores 
+            de sostenibilidad en las comunidades parroquiales.
+          </p>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Actividades -->
+    <section class="content-section">
+      <h2 class="section-title text-center">Nuestras Actividades</h2>
+      <div class="grid-3">
+        <div class="glass-card hover-card" *ngFor="let activity of activities">
+          <h3 class="subsection-title">{{activity.title}}</h3>
+          <p class="card-text">{{activity.description}}</p>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Valores -->
+    <section class="content-section">
+      <h2 class="section-title text-center">Nuestros Valores</h2>
+      <div class="grid-3">
+        <div class="glass-card hover-card text-center" *ngFor="let value of values">
+          <div class="icon-container">
+            <i class="{{value.icon}}"></i>
+          </div>
+          <h3 class="subsection-title">{{value.title}}</h3>
+          <p class="card-text">{{value.description}}</p>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Únete -->
+    <section class="content-section">
+      <div class="glass-card text-center cta-card">
+        <h2 class="section-title">Únete a Nuestro Movimiento</h2>
+        <p class="section-text">
+          ¡Te invitamos a ser parte de este movimiento! Juntos podemos hacer la diferencia. 
+          Participa en nuestras actividades, únete a nuestras iniciativas y sé parte de la transformación que nuestro planeta necesita.
+        </p>
+        <button class="btn btn-primary">
+          Quiero Unirme
+          <i class="icon-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+  </div>
+  
