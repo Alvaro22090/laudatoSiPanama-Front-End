@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
-  applicationUrl: string = 'https://intelligent-flow-production.up.railway.app/usuarios';
-
+  private applicationUrl: string = 'http://localhost:8080/registros';
 
   async submitApplication(usuario: ApplicationData): Promise<void> {
 

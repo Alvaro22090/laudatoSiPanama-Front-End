@@ -10,18 +10,6 @@ import { ViewportScroller } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'laudatoSiPanama-Front-End';
-  constructor(
-    private router: Router, 
-    private viewportScroller: ViewportScroller
-  ) {}
-
-  ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.viewportScroller.scrollToPosition([0, 0]);
-      }
-    });
-  }
 }

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ApplicationData, UserServiceService } from '../../../core/services/user-service.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,7 @@ export class RegisterComponent {
 
   componentService = inject(UserServiceService);
   registro = inject(FormBuilder);
+  router = inject(Router);
 
   constructor() { 
     this.registroUsuario = this.registro.group({
@@ -98,5 +100,6 @@ export class RegisterComponent {
     this.registroUsuario.reset();
     this.selectedFile = null;
     this.imagenPreview = null;
+    this.router.navigate(['/confirmacion']);
   }
 }

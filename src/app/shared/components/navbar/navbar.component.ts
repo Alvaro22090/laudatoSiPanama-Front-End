@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginComponent } from "../../../pages/auth/login/login.component";
+import { LoginServiceService, User } from '../../../core/services/login-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,9 +10,13 @@ import { LoginComponent } from "../../../pages/auth/login/login.component";
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isScrolled = false;
   isMenuOpen = false;
+  isLoggedIn = false;
+  currentUser: User | null = null;
+  loginService = inject(LoginServiceService)
+
   constructor() {
     window.addEventListener('scroll', () => {
       this.isScrolled = window.scrollY > 20;
@@ -21,4 +26,12 @@ export class NavbarComponent {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+
+  ngOnInit(): void {
+    this.loginService.currentUser$.subscribe((user) => {
+      this.isLoggedIn = !user; // true si hay un usuario, false si es null
+      this.currentUser = user; // Almacena el usuario actual
+    });
+  }
+
 }

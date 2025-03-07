@@ -17,6 +17,10 @@
                 <i class="fas fa-envelope"></i>
                 <span>Contacto</span>
             </a>
+            <a routerLink="/informacion-usuario" *ngIf="!isLoggedIn" class="nav-link">
+                <i class="fas fa-user-circle"></i>
+                <span>Usuario</span>
+            </a>
         </div>
 
         <div class="navbar-actions">
