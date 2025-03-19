@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ApplicationData, UserServiceService } from '../../../core/services/user-service.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -15,6 +15,7 @@ export class RegisterComponent {
   selectedFile: File | null = null;
   registroUsuario: FormGroup;
   imagenPreview: string | null = null;
+  users: string[] | null = null;
 
   componentService = inject(UserServiceService);
   registro = inject(FormBuilder);
@@ -23,7 +24,7 @@ export class RegisterComponent {
   constructor() { 
     this.registroUsuario = this.registro.group({
       usuarioNombre: ['',[Validators.required, Validators.minLength(3)]],
-      usuarioId: ['',[Validators.required, Validators.minLength(3)]],
+      usuarioId: ['',[Validators.required, Validators.minLength(3)], [this.getUserValidator()]],
       usuarioEmail: ['',[Validators.required, Validators.email]],
       usuarioContraseña: ['',[Validators.required, this.passwordValidator()]],
       usuarioConfirmar: '',
@@ -60,6 +61,22 @@ export class RegisterComponent {
       }
       
       return { passwordMismatch: true };
+    };
+  }
+  
+  getUserValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> => {
+      const usuarios = control.value;
+  
+      return this.componentService.getUsers().then((nombres) => {
+        if (nombres.includes(usuarios)) {
+          return { user: true };
+        }
+        return null;
+      }).catch((error) => {
+        console.error('Error:', error);
+        return null;
+      });
     };
   }
 
@@ -100,6 +117,10 @@ export class RegisterComponent {
     this.registroUsuario.reset();
     this.selectedFile = null;
     this.imagenPreview = null;
-    this.router.navigate(['/confirmacion']);
+    this.router.navigate(['']);
   }
+
+  
+
+
 }

@@ -36,10 +36,11 @@ export class LoginComponent implements OnInit {
     }
     this.loginService.submitLogin(usuario).then(() => {
       this.mostrarModal = false;
-      this.router.navigate(['']); // Redirige después de iniciar sesión
+      this.router.navigate(['']);
     }).catch((error) => {
       alert('Error en el inicio de sesión: ' + error.message);
     });
+    this.loginUsuario.reset();
   }
 
   ngOnInit(): void {
@@ -48,9 +49,6 @@ export class LoginComponent implements OnInit {
         this.mostrarModal = false;
       }
     });
-    if (this.loginService.isLoggedIn()) {
-      this.router.navigate(['']); // Redirige a la página principal
-    }
   }
 
   cerrarSesion(): void {

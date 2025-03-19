@@ -1,0 +1,225 @@
+.registro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8rem 2rem;
+    background-color: var(--tech-light);
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .registro-card {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: var(--transition-normal);
+  }
+  
+  .registro-card:hover {
+    box-shadow: var(--box-shadow-hover);
+  }
+  
+  /* Encabezado del formulario */
+  .registro-header {
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    background: var(--gradient-dark);
+    color: var(--tech-dark);
+  }
+  
+  .registro-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--tech-dark);
+  }
+  
+  .registro-subtitle {
+    font-size: var(--text-lg);
+    color: var(--tech-gray);
+    font-weight: 400;
+  }
+  
+  /* Formulario */
+  .formulario {
+    padding: 1.5rem 2rem 2rem;
+  }
+  
+  .form-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--tech-dark);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Grupos de campos */
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--tech-gray);
+  }
+  
+  /* Contenedores de input con iconos */
+  .input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    color: var(--tech-dark);
+    background-color: white;
+    transition: var(--transition-fast);
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+  }
+  
+  .form-input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .textarea {
+    min-height: 120px;
+    padding-top: 2rem;
+    resize: vertical;
+  }
+  
+  /* Iconos */
+  .input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    color: var(--tech-gray);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  
+  /* Sección de foto */
+  .photo-section {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
+  }
+  
+  .file-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .file-input-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--accent-green);
+    color: var(--tech-dark);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  
+  .file-input-label:hover {
+    background-color: var(--secondary-green);
+    color: white;
+  }
+  
+  .file-input-label i {
+    margin-right: 0.25rem;
+  }
+  
+  .file-name {
+    font-size: var(--text-sm);
+    color: var(--tech-gray);
+    margin-top: 0.25rem;
+  }
+  
+  .preview-container {
+    margin-top: 1rem;
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .image-preview {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: var(--border-radius-sm);
+    object-fit: contain;
+  }
+  
+  /* Mensajes de error */
+  .error-message {
+    display: block;
+    color: #E74C3C;
+    font-size: var(--text-sm);
+    margin-top: 0.25rem;
+  }
+  
+  /* Acciones del formulario */
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
+  }
+  
+  .cancel-btn, .submit-btn {
+    cursor: pointer;
+    min-width: 120px;
+  }
+  
+  .submit-btn {
+    background: var(--gradient-green);
+    color: white;
+  }
+  
+  .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #a8e6cf, #a8e6cf);
+    transform: none !important;
+    box-shadow: none !important;
+  }

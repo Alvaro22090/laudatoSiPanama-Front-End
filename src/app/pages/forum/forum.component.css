@@ -10,6 +10,9 @@
     -webkit-text-fill-color: transparent;
   }
   .forum-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
     padding: 5rem 4rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -114,7 +117,7 @@
   
   @media (max-width: 768px) {
     .forum-container {
-      padding: 1rem;
+      padding: 5rem 1rem;
     }
   
     .topics-grid {

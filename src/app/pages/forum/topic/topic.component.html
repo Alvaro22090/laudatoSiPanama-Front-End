@@ -1,1 +1,79 @@
-<p>topic works!</p>
+<!-- topic.component.html -->
+<div class="topic-container" *ngIf="!isLoading && topico; else loading">
+    <!-- Tópico principal -->
+    <div class="topic-card hover-scale">
+      <div class="topic-header">
+        <img [src]="topico.topicoImagen" alt="{{ topico.topicoTitulo }}" class="topic-image">
+        <div class="topic-info">
+          <h2 class="topic-title">{{ topico.topicoTitulo }}</h2>
+          <div class="topic-meta">
+            <span class="topic-author">Por: {{ topico.topicoAutor }}</span>
+            <span class="topic-date">{{ formatFecha(topico.topicoFecha) }}</span>
+          </div> 
+        </div>
+      </div>
+      
+      <div class="topic-content">
+        <p class="topic-summary">{{ topico.topicoResumen }}</p>
+      </div>
+    </div>
+    
+    <!-- Sección de comentarios -->
+    <div class="comments-section">
+      <h3 class="comments-title">Comentarios ({{ comentarios.length }})</h3>
+      
+      <!-- Formulario para nuevo comentario -->
+      <div class="comment-form">
+        <textarea 
+          [(ngModel)]="nuevoComentario" 
+          placeholder="Escribe tu comentario..." 
+          class="comment-textarea"></textarea>
+        <button 
+          class="btn btn-primary comment-submit" 
+          [disabled]="!nuevoComentario.trim()" 
+          (click)="agregarComentario()">
+          Comentar
+        </button>
+      </div>
+      
+      <!-- Lista de comentarios -->
+      <div class="comments-list" *ngIf="comentarios.length > 0; else noComments">
+        <div *ngFor="let comentario of comentarios" class="comment-card">
+          <div class="comment-header">
+            <span class="comment-author">{{ comentario.respuestaAutor }}</span>
+            <span class="comment-message">{{ comentario.respuestaMensaje }}</span>
+            <span class="comment-date">{{ comentario.respuestaFecha }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mensaje cuando no hay comentarios -->
+      <ng-template #noComments>
+        <div class="no-comments">
+          <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+        </div>
+      </ng-template>
+    </div>
+    
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <button class="btn btn-glass">Volver a la lista</button>
+      <button class="btn btn-secondary">Reportar</button>
+    </div>
+  </div>
+  
+  <!-- Template para estado de carga -->
+  <ng-template #loading>
+    <div class="loading-container" *ngIf="isLoading; else error">
+      <div class="loading-spinner"></div>
+      <p>Cargando tópico...</p>
+    </div>
+  </ng-template>
+  
+  <!-- Template para errores -->
+  <ng-template #error>
+    <div class="error-container" *ngIf="error">
+      <p class="error-message">{{ error }}</p>
+      <button class="btn btn-primary" (click)="cargarTopico()">Reintentar</button>
+    </div>
+  </ng-template>

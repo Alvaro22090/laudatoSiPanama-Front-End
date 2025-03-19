@@ -4,14 +4,19 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: transparent;
+    background: var(--secondary-green);
     transition: var(--transition-normal);
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .navbar.scrolled {
     background: rgb(104, 207, 130);
     box-shadow: var(--box-shadow);
+}
+.navbar-elements{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
 .navbar-container {
@@ -30,9 +35,15 @@
     text-decoration: none;
 }
 
-.navbar-logo img {
-    height: 40px;
+.nav-logo img {
+    height: 50px;
     transition: var(--transition-normal);
+    border-radius: var(--border-radius);
+}
+
+.nav-logo:hover img{
+    background: var(--glass-bg);
+    transform: translateY(-2px);
 }
 
 .logo-text {
@@ -51,12 +62,13 @@
 
 .nav-link {
     display: flex;
+    cursor: pointer;
     align-items: center;
     gap: 0.5rem;
     color: var(--tech-dark);
     text-decoration: none;
-    font-size: var(--text-sm);
-    font-weight: 500;
+    font-size: var(--text-lg);
+    font-weight: 600;
     padding: 0.5rem;
     border-radius: var(--border-radius);
     transition: var(--transition-fast);
@@ -81,6 +93,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    justify-content: flex-end;
 }
 
 .login-btn {

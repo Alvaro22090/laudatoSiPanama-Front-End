@@ -1,35 +1,41 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
     <div class="navbar-container">
-        <a routerLink="/" class="navbar-logo">
-        <img src="icono.png" alt="Logo">
-        </a>
-
-        <div class="navbar-links" [class.active]="isMenuOpen">
-            <a routerLink="/description" class="nav-link">
-                <i class="fas fa-users"></i>
-                <span>Quienes Somos</span>
-            </a>
-            <a routerLink="/foro" class="nav-link">
-                <i class="fas fa-comments"></i>
-                <span>Foro</span>
-            </a>
-            <a routerLink="/contacto" class="nav-link">
-                <i class="fas fa-envelope"></i>
-                <span>Contacto</span>
-            </a>
-            <a routerLink="/informacion-usuario" *ngIf="!isLoggedIn" class="nav-link">
-                <i class="fas fa-user-circle"></i>
-                <span>Usuario</span>
+        <div class="navbar-logo">
+            <a routerLink="/" class="nav-logo">
+                <img src="icono.png" alt="Logo">
             </a>
         </div>
-
-        <div class="navbar-actions">
-            <app-login></app-login>
-            <button class="menu-btn" (click)="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+        <section class="navbar-elements">
+            <div class="navbar-actions">
+                <button routerLink="/description" class="nav-link">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Registrate</span>
+                </button>
+                <app-login></app-login>
+                <button class="menu-btn" (click)="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="navbar-links" [class.active]="isMenuOpen">
+                <a routerLink="/description" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Quienes Somos</span>
+                </a>
+                <a routerLink="/foro" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>Foro</span>
+                </a>
+                <a routerLink="/contacto" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contacto</span>
+                </a>
+                <a routerLink="/usuario" *ngIf="!isLoggedIn" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Usuario</span>
+                </a>
+            </div>
+        </section>
     </div>
 </nav>

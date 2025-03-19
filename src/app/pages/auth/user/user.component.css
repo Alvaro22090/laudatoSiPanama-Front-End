@@ -1,0 +1,117 @@
+.user-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 6rem 2rem;
+  }
+  
+  .user-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    padding: 2rem;
+  }
+  
+  .user-card:hover {
+    box-shadow: var(--box-shadow-hover);
+  }
+  
+  .user-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 1.5rem;
+    background: var(--gradient-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .default-avatar {
+    color: white;
+    font-size: var(--text-2xl);
+    font-weight: bold;
+    font-family: var(--font-primary);
+  }
+  
+  .user-name {
+    flex: 1;
+  }
+  
+  .user-name h2 {
+    font-family: var(--font-primary);
+    font-size: var(--text-2xl);
+    margin: 0 0 0.5rem 0;
+    color: var(--tech-dark);
+  }
+  
+  .user-id {
+    font-size: var(--text-sm);
+    color: var(--tech-gray);
+    opacity: 0.8;
+  }
+  
+  .user-info {
+    margin-bottom: 2rem;
+  }
+  
+  .info-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .info-group label {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--tech-gray);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .info-group p {
+    font-size: var(--text-base);
+    margin: 0;
+    padding: 0.75rem;
+    background-color: var(--tech-light);
+    border-radius: var(--border-radius);
+    transition: var(--transition-fast);
+  }
+  
+  .user-actions {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .user-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .user-avatar {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+    
+    .user-card {
+      padding: 1.5rem;
+    }
+  }

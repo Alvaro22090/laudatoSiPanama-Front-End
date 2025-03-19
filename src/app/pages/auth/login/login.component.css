@@ -1,6 +1,15 @@
 
 .login-btn {
   cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--tech-dark);
+  text-decoration: none;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition-fast);
 }
 
 .modal {

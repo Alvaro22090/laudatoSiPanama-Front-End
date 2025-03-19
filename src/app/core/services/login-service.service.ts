@@ -22,8 +22,6 @@ export class LoginServiceService {
   }
 
   async submitLogin(usuario: LoginData): Promise<void> {
-    
-    console.log(JSON.stringify(usuario));
     const response = await fetch(this.loginUrl, {
       headers: {
         'Content-Type': 'application/json'
@@ -35,7 +33,6 @@ export class LoginServiceService {
       throw new Error('Error al enviar la solicitud');
     }
     const result = await response.json();
-    console.log('Resultado de la aplicación: ', JSON.stringify(result));
     const user: User = {
       role: result.role,
       user: result.user,

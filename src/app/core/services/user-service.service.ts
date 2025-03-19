@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable } from '@angular/core';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
+
   private applicationUrl: string = 'http://localhost:8080/registros';
 
   async submitApplication(usuario: ApplicationData): Promise<void> {
@@ -12,7 +13,6 @@ export class UserServiceService {
     const formData = new FormData();
     const usuarioData = {...usuario};
     const imagenPerfil = usuarioData.usuarioPerfil;
-    console.log(imagenPerfil);
     delete usuarioData.usuarioPerfil;
     formData.append('usuarioData', new Blob([JSON.stringify(usuarioData)], {type: 'application/json'}));
     if (imagenPerfil) {
@@ -27,8 +27,33 @@ export class UserServiceService {
       throw new Error('Error al enviar la solicitud');
     }
     const result = await response.json();
-    console.log('Aplicación enviada con éxito: ', result);
+    console.log('Aplicación enviada con éxito');
   }
+
+  async getUsers(): Promise<string[]> {
+    const data = await fetch(`${this.applicationUrl}/users`, {
+      method: 'GET',
+    });
+    return (await data.json()) ?? [];
+  }
+
+  private userUrl: string = 'http://localhost:8080/usuarios'
+
+  async getUserById(usuarioId: string, token: string): Promise<ApplicationData> {
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json', 
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const data = await fetch(`${this.userUrl}/${usuarioId}`, {
+      method: 'GET',
+      headers: headers
+    });
+    return (await data.json()) ?? {};
+  }
+
   constructor() { }
 }
 
@@ -39,5 +64,6 @@ export interface ApplicationData {
   usuarioContraseña: string;
   usuarioNacimiento: Date | null;
   usuarioGenero: string;
-  usuarioPerfil?: File | null;
+  usuarioPerfil?: File | null ;
 }
+

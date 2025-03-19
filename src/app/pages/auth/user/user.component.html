@@ -1,1 +1,42 @@
-<p>user works!</p>
+<div class="user-profile-container">
+    <div class="user-card hover-scale">
+      <div class="user-header">
+        <div class="user-avatar">
+          <img *ngIf="usuarioInformacion.usuarioPerfil" [src]="usuarioInformacion.usuarioPerfil" alt="Foto de perfil">
+          <div *ngIf="!usuarioInformacion.usuarioPerfil" class="default-avatar">
+            {{ getInitials() }}
+          </div>
+        </div>
+        <div class="user-name">
+          <h2>{{ usuarioInformacion.usuarioNombre }}</h2>
+          <span class="user-id">ID: {{ usuarioInformacion.usuarioId }}</span>
+        </div>
+      </div>
+      
+      <div class="user-info">
+        <div class="info-group">
+          <label>Email</label>
+          <p>{{ usuarioInformacion.usuarioEmail }}</p>
+        </div>
+        
+        <div class="info-group">
+          <label>Fecha de nacimiento</label>
+          <p>{{ usuarioInformacion.usuarioNacimiento | date:'dd/MM/yyyy' }}</p>
+        </div>
+        
+        <div class="info-group">
+          <label>Género</label>
+          <p>{{ usuarioInformacion.usuarioGenero }}</p>
+        </div>
+      </div>
+      
+      <div class="user-actions">
+        <a routerLink="/editar-usuario" class="btn btn-primary">
+          <i class="fa fa-edit"></i> Editar perfil
+        </a>
+        <a routerLink="/eliminar" class="btn btn-secondary">
+          <i class="fa fa-edit"></i> Eliminar perfil
+        </a>
+      </div>
+    </div>
+  </div>

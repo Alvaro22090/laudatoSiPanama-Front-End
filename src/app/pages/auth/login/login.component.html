@@ -1,12 +1,12 @@
-<button class="btn btn-glass login-btn" (click)="abrirModal()">
+<button class="btn login-btn" (click)="abrirModal()">
     <i class="fas fa-user"></i>
+    <span>Iniciar Sesion</span>
 </button>
   
 <div id="login-modal" class="modal" [ngClass]="{'mostrar': mostrarModal}" (click)="cerrarModalExterno($event)">
     <div class="modal-contenido" (click)="$event.stopPropagation()">
       <span (click)="cerrarModal()" class="cerrar">&times;</span>
   
-      <!-- Contenido de inicio de sesión -->
       <div *ngIf="!loginService.isLoggedIn(); else loggedInContent">
         <h2>Iniciar sesión</h2>
         <form class="formulario-login" [formGroup]="loginUsuario" (submit)="submitLogin()">
@@ -23,10 +23,9 @@
         </form>
       </div>
   
-      <!-- Contenido después de iniciar sesión -->
       <ng-template #loggedInContent>
         <h2>Bienvenido, {{ loginService.getCurrentUser()?.user }}</h2>
-        <button class="boton" (click)="router.navigate([''])">Información de Usuario</button>
+        <button class="boton" routerLink="/usuario">Información de Usuario</button>
         <button class="boton cerrar-sesion" (click)="cerrarSesion()">Cerrar Sesión</button>
       </ng-template>
     </div>

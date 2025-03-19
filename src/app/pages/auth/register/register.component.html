@@ -41,6 +41,9 @@
               @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].hasError('minlength')){
                 <span class="error-message">El nombre de usuario debe tener al menos 3 caracteres</span>
               }
+              @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].hasError('user')){
+                <span class="error-message">El nombre de usuario ya existe</span>
+              }
             </div>
             
             <div class="form-row">
@@ -90,6 +93,7 @@
               @if(registroUsuario.controls['usuarioEmail'].touched && registroUsuario.controls['usuarioEmail'].hasError('email')){
                 <span class="error-message">El email de usuario no es válido</span>
               }
+              
             </div>
   
             <div class="form-group">
@@ -156,7 +160,7 @@
         </div>
         
         <div class="form-actions">
-          <button type="button" class="btn btn-glass cancel-btn">Cancelar</button>
+          <button type="button" class="btn btn-glass cancel-btn" routerLink="">Cancelar</button>
           <button type="submit" class="btn btn-primary submit-btn" [disabled]="!registroUsuario.valid">
             <span>Registrarse</span>
             <i class="fas fa-arrow-right"></i>

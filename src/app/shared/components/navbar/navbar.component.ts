@@ -13,13 +13,14 @@ import { LoginServiceService, User } from '../../../core/services/login-service.
 export class NavbarComponent implements OnInit {
   isScrolled = false;
   isMenuOpen = false;
-  isLoggedIn = false;
+  isLoggedIn: boolean = false;
   currentUser: User | null = null;
   loginService = inject(LoginServiceService)
 
   constructor() {
     window.addEventListener('scroll', () => {
       this.isScrolled = window.scrollY > 20;
+      this.isMenuOpen = false;
     });
   }
 
@@ -29,9 +30,9 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginService.currentUser$.subscribe((user) => {
-      this.isLoggedIn = !user; // true si hay un usuario, false si es null
-      this.currentUser = user; // Almacena el usuario actual
+      this.isLoggedIn = !user;
     });
+    
   }
 
 }

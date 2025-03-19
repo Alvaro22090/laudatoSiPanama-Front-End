@@ -4,6 +4,9 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { ForumComponent } from './pages/forum/forum.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { UserComponent } from './pages/auth/user/user.component';
+import { CreateTopicComponent } from './pages/auth/create-topic/create-topic.component';
+import { TopicComponent } from './pages/forum/topic/topic.component';
 
 export const routes: Routes = [
     {
@@ -30,5 +33,20 @@ export const routes: Routes = [
         path: 'registro',
         component: RegisterComponent,
         title: 'Register'
+    },
+    {
+        path: 'usuario',
+        component: UserComponent,
+        title: 'Register'
+    },
+    {
+        path: 'registro-topico',
+        component: CreateTopicComponent,
+        title: 'Registro-topico'
+    },
+    {
+        path: 'topico',
+        component: TopicComponent,
+        title: 'Topico'
     }
 ];

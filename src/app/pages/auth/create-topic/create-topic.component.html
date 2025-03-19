@@ -1,1 +1,69 @@
-<p>create-topic works!</p>
+<div class="registro-container">
+    <div class="registro-card">
+      <div class="registro-header">
+        <h2 class="registro-title">Registro de Tópico</h2>
+        <p class="registro-subtitle">Complete el formulario para crear un nuevo tema</p>
+      </div>
+      
+      <form class="formulario" [formGroup]="registroTopico" (submit)="submitTopico()">
+        <div class="form-section">
+          <h3 class="section-title">Información del Tópico</h3>
+          
+          <div class="form-group">
+            <label for="topico-titulo" class="form-label">Título</label>
+            <div class="input-container">
+              <input id="topico-titulo" type="text" class="form-input" formControlName="topicoTitulo" placeholder="Ingrese el título del tópico"/>
+              <div class="input-icon">
+                <i class="fas fa-heading"></i>
+              </div>
+            </div>
+            @if(registroTopico.controls['topicoTitulo'].touched && registroTopico.controls['topicoTitulo'].hasError('required')){
+              <span class="error-message">El título es requerido</span>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label for="topico-resumen" class="form-label">Resumen</label>
+            <div class="input-container">
+              <textarea id="topico-resumen" class="form-input textarea" formControlName="topicoResumen" placeholder="Escriba un breve resumen del tema" rows="4"></textarea>
+              <div class="input-icon">
+                <i class="fas fa-align-left"></i>
+              </div>
+            </div>
+            @if(registroTopico.controls['topicoResumen'].touched && registroTopico.controls['topicoResumen'].hasError('required')){
+              <span class="error-message">El resumen es requerido</span>
+            }
+          </div>
+        </div>
+        
+        <div class="form-section photo-section">
+          <div class="form-group file-group">
+            <label for="topico-imagen" class="form-label">Imagen del Tópico</label>
+            <div class="file-input-container">
+              <input id="topico-imagen" type="file" class="form-file-input" formControlName="topicoImagen" (change)="onFileSelected($event)" accept="image/*"/>
+              <label for="topico-imagen" class="file-input-label">
+                <i class="fas fa-upload"></i>
+                Seleccionar imagen
+              </label>
+              <span class="file-name">No hay archivo seleccionado</span>
+            </div>
+            @if(registroTopico.controls['topicoImagen'].touched && registroTopico.controls['topicoImagen'].hasError('required')){
+              <span class="error-message">La imagen es requerida</span>
+            }
+          </div>
+          
+          <div class="preview-container" *ngIf="imagenPreview">
+            <img [src]="imagenPreview" alt="Vista previa" class="image-preview"/>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-glass cancel-btn" routerLink="">Cancelar</button>
+          <button type="submit" class="btn btn-primary submit-btn" [disabled]="!registroTopico.valid">
+            <span>Publicar Tópico</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

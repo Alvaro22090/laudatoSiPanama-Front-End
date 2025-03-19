@@ -7,6 +7,7 @@
     --tech-dark: #1A1E23;
     --gradient-green: linear-gradient(135deg, #2ECC71, #27AE60);
     --gradient-dark: linear-gradient(135deg, #a7beda, #aac2c9);
+    --gradient-red: linear-gradient(to right, #e74c3c, #c0392b);
 
     --glass-bg: rgba(23, 75, 187, 0.1);
     --glass-border: rgba(26, 28, 161, 0.2);
@@ -63,6 +64,7 @@ body {
 }
 
 .btn-primary {
+    
     background: var(--gradient-green);
     color: white;
     box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
@@ -72,6 +74,17 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
 }
+
+.btn-secondary {
+    background: var(--gradient-red);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+  }
+  
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+  }
 
 .btn-glass {
     background: var(--glass-bg);
