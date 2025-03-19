@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--secondary-green);
+    background: #ecf1ed;
     transition: var(--transition-normal);
     padding: 0.5rem 0;
 }
@@ -36,7 +36,7 @@
 }
 
 .nav-logo img {
-    height: 50px;
+    height: 90px;
     transition: var(--transition-normal);
     border-radius: var(--border-radius);
 }
