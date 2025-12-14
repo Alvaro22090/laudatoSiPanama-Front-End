@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ForumService {
-  private applicationUrl: string = 'http://localhost:8080/topicos';
+  private apiUrl: string = environment.apiUrl;
+  private applicationUrl: string = `${this.apiUrl}/topicos`;
 
   async getTopicos(): Promise<Topicos[]> {
     const data = await fetch(this.applicationUrl, {

@@ -1,12 +1,14 @@
 import {Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
-
-  private applicationUrl: string = 'http://localhost:8080/registros';
+  private apiUrl: string = environment.apiUrl;
+  private applicationUrl: string = `${this.apiUrl}/registros`;
+  private userUrl: string = `${this.apiUrl}/usuarios`
 
   async submitApplication(usuario: ApplicationData): Promise<void> {
 
@@ -36,8 +38,6 @@ export class UserServiceService {
     });
     return (await data.json()) ?? [];
   }
-
-  private userUrl: string = 'http://localhost:8080/usuarios'
 
   async getUserById(usuarioId: string, token: string): Promise<ApplicationData> {
     const headers: HeadersInit = {
