@@ -1,42 +1,83 @@
-<div class="user-profile-container">
-    <div class="user-card hover-scale">
-      <div class="user-header">
-        <div class="user-avatar">
-          <img *ngIf="usuarioInformacion.usuarioPerfil" [src]="usuarioInformacion.usuarioPerfil" alt="Foto de perfil">
-          <div *ngIf="!usuarioInformacion.usuarioPerfil" class="default-avatar">
-            {{ getInitials() }}
+<div class="profile-layout">
+  <div class="profile-container">
+    <div class="profile-card">
+      
+      <!-- 1. Header Cover (Gradiente) -->
+      <div class="profile-cover"></div>
+      
+      <div class="profile-content">
+        <!-- 2. Avatar y Acciones -->
+        <div class="profile-header-row">
+          <div class="avatar-wrapper">
+            <div class="avatar-circle">
+              <!-- Si hay imagen, la mostramos -->
+              <img *ngIf="usuarioInformacion.usuarioPerfil" [src]="usuarioInformacion.usuarioPerfil" alt="Avatar" class="avatar-img">
+              <!-- Si no, iniciales -->
+              <div *ngIf="!usuarioInformacion.usuarioPerfil" class="avatar-initials">
+                {{ getInitials() }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="profile-actions">
+            <a routerLink="/editar-usuario" class="btn-action">
+              <i class="fas fa-pen"></i> Editar
+            </a>
+            <a routerLink="/eliminar" class="btn-action btn-danger">
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </a>
           </div>
         </div>
-        <div class="user-name">
-          <h2>{{ usuarioInformacion.usuarioNombre }}</h2>
-          <span class="user-id">ID: {{ usuarioInformacion.usuarioId }}</span>
+
+        <!-- 3. Información Principal -->
+        <div class="user-identity">
+          <h1 class="user-fullname">{{ usuarioInformacion.usuarioNombre }}</h1>
+          <p class="user-username">ID: {{ usuarioInformacion.usuarioId }}</p>
         </div>
-      </div>
-      
-      <div class="user-info">
-        <div class="info-group">
-          <label>Email</label>
-          <p>{{ usuarioInformacion.usuarioEmail }}</p>
+
+        <!-- 4. Grilla de Detalles -->
+        <div class="details-grid">
+          
+          <!-- Tarjeta Info Personal -->
+          <div class="details-card">
+            <h3 class="details-title">Información Personal</h3>
+            <ul class="details-list">
+              <li>
+                <i class="fas fa-envelope icon"></i>
+                <div class="data">
+                  <span class="label">Correo</span>
+                  <span class="value">{{ usuarioInformacion.usuarioEmail }}</span>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-birthday-cake icon"></i>
+                <div class="data">
+                  <span class="label">Nacimiento</span>
+                  <span class="value">{{ usuarioInformacion.usuarioNacimiento | date:'longDate' }}</span>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-venus-mars icon"></i>
+                <div class="data">
+                  <span class="label">Género</span>
+                  <span class="value">{{ usuarioInformacion.usuarioGenero || 'No especificado' }}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tarjeta Actividad (Placeholder como el ejemplo) -->
+          <div class="details-card activity-card">
+            <h3 class="details-title">Mis Actividades</h3>
+            <div class="empty-state">
+              <i class="fas fa-leaf empty-icon"></i>
+              <p>Aún no te has inscrito a ningún evento.</p>
+              <a routerLink="/foro" class="link-explore">Explorar Tablón</a>
+            </div>
+          </div>
+          
         </div>
-        
-        <div class="info-group">
-          <label>Fecha de nacimiento</label>
-          <p>{{ usuarioInformacion.usuarioNacimiento | date:'dd/MM/yyyy' }}</p>
-        </div>
-        
-        <div class="info-group">
-          <label>Género</label>
-          <p>{{ usuarioInformacion.usuarioGenero }}</p>
-        </div>
-      </div>
-      
-      <div class="user-actions">
-        <a routerLink="/editar-usuario" class="btn btn-primary">
-          <i class="fa fa-edit"></i> Editar perfil
-        </a>
-        <a routerLink="/eliminar" class="btn btn-secondary">
-          <i class="fa fa-edit"></i> Eliminar perfil
-        </a>
       </div>
     </div>
   </div>
+</div>

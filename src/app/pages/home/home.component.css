@@ -1,269 +1,389 @@
+/* Definimos tus colores originales localmente para usarlos consistentemente */
+:host {
+  --original-blue: #0076b4;
+  --original-green: #00b05f;
+  --original-green-dark: #00796b;
+}
+
+/* --- HERO SECTION --- */
 .hero {
-    height: 100vh;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    background-color: white;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  text-align: center;
+  background-image: url(/home.jpg);
+  background-size: 100% 100%; /* Tu ajuste original */
+  background-position: bottom;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Bloque Azul (Presentación) */
+.hero-presentation {
+  display: flex;
+  margin-left: 2vw;
+  background-color: var(--original-blue); /* Tu Azul Original */
+  color: white;
+  height: 15vh;
+  width: 40%;
+  min-width: 486.4px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-end;
+  border-radius: 2em 132px 0 0; /* Tus curvas originales */
+  line-height: 1;
+}
+
+.hero-presentation p {
+  text-align: left;
+  font-family: var(--font-secondary); /* Inter (Más limpio que Poppins) */
+  font-weight: 300;
+  font-size: 1.8em;
+}
+
+.hero-presentation em {
+  text-align: left;
+  font-size: 2.6em;
+  font-family: var(--font-primary); /* Merriweather (Toque elegante) */
+  font-weight: 700;
+  font-style: italic;
+}
+
+.hero-bottom {
+  width: 100%;
+  align-items: flex-end;
+  display: flex;
+}
+
+/* Bloque Blanco (Botones) */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.95); /* Blanco sólido/translúcido */
+  backdrop-filter: blur(5px);
+  border-radius: 0 6em 0 0; /* Tu curva original */
+  height: 40vh;
+  width: 60%;
+}
+
+.hero-buttons .container {
+  display: flex;
+  flex-direction: column;
+  min-width: 45vw;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.hero-subtitle {
+  text-align: left;
+  font-size: 1.8em;
+  font-family: var(--font-secondary);
+  font-weight: 300;
+  color: var(--tech-dark); /* Gris oscuro en lugar de negro puro */
+  line-height: 1.5;
+}
+
+.hero-subtitle em {
+  text-align: left;
+  font-size: 1em;
+  font-family: var(--font-primary); /* Merriweather */
+  font-weight: 700;
+  color: var(--original-blue); /* Destacado en tu Azul */
+  font-style: italic;
+}
+
+.hero-register {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* Botones Principales (Verdes) */
+.hero-button {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 20vw;
+  height: 10vh;
+  border-radius: 1em;
+  background-color: var(--original-green); /* Tu Verde Original */
+  text-decoration: none;
+  font-family: var(--font-secondary);
+  font-weight: 300;
+  font-size: 1.5em;
+  color: white;
+  transition: var(--transition-normal);
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 176, 95, 0.3); /* Sombra suave verde */
+}
+
+.hero-button:hover {
+  background-color: var(--original-green-dark); /* Verde más oscuro al hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 176, 95, 0.4);
+}
+
+.hero-button img {
+  width: 35px;
+  height: 35px;
+}
+
+.hero-button em {
+  font-family: var(--font-primary); /* Merriweather */
+  font-weight: 700;
+  font-size: 1em;
+  font-style: italic;
+}
+
+/* Bloque Scroll (Azul) */
+.hero-scroll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  background-color: var(--original-blue); /* Tu Azul Original */
+  align-items: flex-end;
+  height: 25vh;
+  border-radius: 15em/6em 0 0 0; /* Tu curva compleja original */
+  gap: 2em;
+}
+
+.hero-scroll img,
+p {
+  align-self: center;
+}
+
+.hero-scroll img {
+  width: 35px;
+  height: 35px;
+  animation: scroll 2s infinite ease-in-out;
+}
+
+.hero-scroll p {
+  text-align: left;
+  line-height: 1.1;
+  color: white;
+  font-family: var(--font-secondary);
+  font-weight: 300;
+  font-size: 1.6em;
+}
+
+.hero-scroll em {
+  color: white;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+@keyframes scroll {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+
+/* --- SECCIONES DE CONTENIDO (Estilo Limpio) --- */
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-header h2 {
+  font-family: var(--font-primary); /* Merriweather */
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--tech-dark);
+}
+
+.section-header h2 em {
+  font-weight: 900;
+  font-style: italic;
+  color: var(--original-blue); /* Acento en Azul */
+}
+
+.section-header p {
+  font-family: var(--font-secondary);
+  font-size: 1.2rem;
+  color: var(--tech-gray);
+  margin-top: 0.5rem;
+}
+
+/* --- SECCIÓN DE IMPACTO --- */
+.impact-section {
+  background: var(--tech-light);
+  padding: 6rem 2rem;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topic-card {
+  background: white;
+  border-radius: 1.5em; /* Curvas consistentes con el hero */
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.topic-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  border-bottom: 4px solid var(--original-green); /* Detalle verde al hover */
+}
+
+.topic-icon {
+  width: 70px;
+  height: 70px;
+  background: var(--original-green); /* Verde Original */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  font-size: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 176, 95, 0.2);
+}
+
+.topic-card h3 {
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--tech-dark);
+}
+
+.topic-card p {
+  font-family: var(--font-secondary);
+  color: var(--tech-gray);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.topic-link {
+  color: var(--original-green); /* Verde Original */
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: gap 0.3s ease;
+}
+
+.topic-link:hover {
+  gap: 0.8rem;
+  color: var(--original-green-dark);
+}
+
+/* --- SECCIÓN CALL TO ACTION (Fondo Azul Original) --- */
+.cta-section {
+  background: var(--original-blue); /* Tu Azul Original */
+  padding: 6rem 2rem;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.cta-content h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.cta-content h2 em {
+  font-weight: 900;
+  font-style: italic;
+  /* El verde original resalta muy bien sobre el azul original */
+  color: #fff; 
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.cta-content p {
+  font-family: var(--font-secondary);
+  font-size: 1.2rem;
+  opacity: 0.95;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background-color: var(--original-green); /* Botón Verde sobre fondo Azul */
+  color: white;
+  border: none;
+  border-radius: 1em;
+  font-family: var(--font-secondary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  background-color: var(--original-green-dark);
+}
+
+/* --- RESPONSIVIDAD (Tu lógica original conservada) --- */
+@media (max-width: 1000px) {
+  .hero-presentation {
+    width: 80%;
+    min-width: unset;
   }
-  
-  .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-dark);
-    opacity: 0.8;
-  }
-  
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
-    padding: 2rem;
-  }
-  
-  .glitch {
-    font-size: var(--text-4xl);
-    font-family: var(--font-primary);
-    font-weight: 700;
-    color: var(--secondary-green);
-    text-transform: uppercase;
-    position: relative;
-    text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
-    animation: glitch 1s infinite;
-  }
-  
-  .hero-subtitle {
-    font-size: var(--text-xl);
-    color: var(--tech-dark);
-    margin: 1.5rem 0 2rem;
-    opacity: 0.9;
-  }
-  
-  .hero-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-  
-  .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
+  .hero-bottom {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+  }
+  .hero-buttons {
+    height: 30vh;
+    width: 100%;
+    border-radius: 4em 4em 0 0;
+  }
+  .hero-scroll {
+    height: 20vh;
+    width: 100%;
+    border-radius: 0;
+  }
+  .hero-button {
+    width: 40vw;
+  }
+  .hero-buttons .container {
+    width: 90%;
+    min-width: unset;
+  }
+  .hero-subtitle {
+    text-align: center;
+    font-size: 1.5em;
+  }
+  .hero-register {
     gap: 1rem;
-    color: var(--tech-dark);
-    opacity: 0.7;
   }
-  
-  .mouse {
-    width: 30px;
-    height: 50px;
-    border: 2px solid currentColor;
-    border-radius: 15px;
-    position: relative;
-  }
-  
-  .mouse::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 8px;
-    background: currentColor;
-    border-radius: 2px;
-    animation: scroll 1.5s infinite;
-  }
-  
-  .topics {
-    padding: 6rem 2rem;
-    background: var(--tech-light);
-  }
-  
-  .section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-  }
-  
-  .section-header h2 {
-    font-size: var(--text-3xl);
-    color: var(--tech-dark);
-    margin-bottom: 1rem;
-  }
-  
-  .section-header p {
-    color: var(--tech-dark);
-    opacity: 0.7;
-  }
-  
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .topic-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--border-radius-lg);
-    padding: 2rem;
-    transition: var(--transition-normal);
-  }
-  
-  .topic-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.05);
-  }
-  
-  .topic-icon {
-    width: 60px;
-    height: 60px;
-    background: var(--gradient-green);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .topic-icon i {
-    font-size: var(--text-2xl);
-    color: black;
-  }
-  
-  .topic-card h3 {
-    font-size: var(--text-xl);
-    color: var(--tech-dark);
-    margin-bottom: 1rem;
-  }
-  
-  .topic-card p {
-    color: var(--tech-dark);
-    opacity: 0.7;
-    margin-bottom: 1.5rem;
-  }
-  
-  .topic-link {
-    color: var(--primary-green);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-    transition: var(--transition-normal);
-  }
-  
-  .topic-link:hover {
-    gap: 0.75rem;
-  }
-  
+  .impact-section,
   .cta-section {
-    padding: 6rem 2rem;
-    background: var(--gradient-green);
-    position: relative;
-    overflow: hidden;
+    padding: 4rem 1.5rem;
   }
-  
-  .cta-content {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    color: white;
-  }
-  
-  .cta-content h2 {
-    font-size: var(--text-3xl);
-    margin-bottom: 1rem;
-  }
-  
-  .cta-content p {
-    margin-bottom: 2rem;
-    opacity: 0.9;
-  }
-  
-  .cta-content .btn {
-    background: black;
-    color: var(--tech-light);
-  }
-  
-  @keyframes glitch {
-    0% {
-      text-shadow: 0.05em 0 0 rgba(34, 139, 34, 0.75), /* Verde forestal */
-                   -0.05em -0.025em 0 rgba(173, 216, 230, 0.75), /* Celeste claro */
-                   -0.025em 0.05em 0 rgba(139, 69, 19, 0.75); /* Chocolate */
-    }
-    14% {
-      text-shadow: 0.05em 0 0 rgba(34, 139, 34, 0.75),
-                   -0.05em -0.025em 0 rgba(173, 216, 230, 0.75),
-                   -0.025em 0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-    15% {
-      text-shadow: -0.05em -0.025em 0 rgba(34, 139, 34, 0.75),
-                   0.025em 0.025em 0 rgba(173, 216, 230, 0.75),
-                   -0.05em -0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-    49% {
-      text-shadow: -0.05em -0.025em 0 rgba(34, 139, 34, 0.75),
-                   0.025em 0.025em 0 rgba(173, 216, 230, 0.75),
-                   -0.05em -0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-    50% {
-      text-shadow: 0.025em 0.05em 0 rgba(34, 139, 34, 0.75),
-                   0.05em 0 0 rgba(173, 216, 230, 0.75),
-                   0 -0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-    99% {
-      text-shadow: 0.025em 0.05em 0 rgba(34, 139, 34, 0.75),
-                   0.05em 0 0 rgba(173, 216, 230, 0.75),
-                   0 -0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-    100% {
-      text-shadow: -0.025em 0 0 rgba(34, 139, 34, 0.75),
-                   -0.025em -0.025em 0 rgba(173, 216, 230, 0.75),
-                   -0.025em -0.05em 0 rgba(139, 69, 19, 0.75);
-    }
-  }
-  
-  @keyframes scroll {
-    0% {
-      transform: translate(-50%, 0);
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, 20px);
-      opacity: 0;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .hero-buttons {
-      flex-direction: column;
-    }
-  
-    .topics-grid {
-      grid-template-columns: 1fr;
-    }
-  
-    .glitch {
-      font-size: var(--text-3xl);
-    }
-  
-    .hero-subtitle {
-      font-size: var(--text-lg);
-    }
-  }
+}

@@ -1,29 +1,91 @@
-<section class="forum-container">
-    <h1 class="titulo">Foro</h1>
-    <a routerLink="/registro-topico" class="btn btn-primary" *ngIf="!isLoggedIn">
-      <i class="fa fa-edit"></i> Registrar Tópico
-    </a>
-    <div class="topics-grid">
-      <article *ngFor="let topic of topics" 
-              class="topic-card hover-scale">
-        <div class="topic-image">
-          <img [src]="topic.topicoImagen" [alt]="topic.topicoTitulo">
+<div class="forum-page-wrapper">
+  <div class="forum-container">
+
+    <!-- HEADER (Solo visible en modo lista) -->
+    @if (!selectedTopic()) {
+      <div class="forum-header">
+        <div class="header-content">
+          <h1 class="page-title">Tablón de Anuncios</h1>
+          <p class="page-subtitle">Eventos, noticias y actividades de nuestra comunidad.</p>
         </div>
-        <div class="topic-content">
-          <div class="topic-category">{{categoria}}</div>
-          <h3 class="topic-title">{{topic.topicoTitulo}}</h3>
-          <p class="topic-summary">{{topic.topicoResumen}}</p>
-          <div class="topic-meta">
-            <div class="author">
-              <i class="fas fa-user"></i>
-              {{topic.topicoAutor}}
+        
+        <!-- Botón Publicar -->
+        @if (isLoggedIn()) {
+          <a routerLink="/registro-topico" class="btn-create">
+            <i class="fas fa-plus"></i> Publicar Anuncio
+          </a>
+        }
+      </div>
+
+      <!-- BARRA DE HERRAMIENTAS (Filtro) -->
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            placeholder="Buscar temas..." 
+            [value]="filtro()" 
+            (input)="onFiltroChange($event)">
+        </div>
+      </div>
+
+      <!-- GRID DE TÓPICOS -->
+      <div class="topics-grid animate-fade-in">
+        @for (topic of topicosPaginados(); track topic.topicoId) {
+          <!-- Al hacer click, llamamos a selectTopic() en lugar de routerLink -->
+          <article class="topic-card" (click)="selectTopic(topic)">
+            
+            <div class="card-image-wrap">
+              <!-- Categoría Flotante -->
+              <span class="category-tag">{{ topic.topicoCategoria || 'Anuncio' }}</span>
+              <img [src]="topic.topicoImagen" [alt]="topic.topicoTitulo">
             </div>
-            <div class="date">
-              <i class="fas fa-calendar"></i>
-              {{topic.topicoFecha}}
+
+            <div class="card-body">
+              <div class="card-meta">
+                <span><i class="far fa-calendar"></i> {{ formatDate(topic.topicoFecha) }}</span>
+                <span><i class="far fa-user"></i> {{ topic.topicoAutor }}</span>
+              </div>
+              
+              <h3 class="card-title">{{ topic.topicoTitulo }}</h3>
+              <p class="card-excerpt">{{ topic.topicoResumen }}</p>
+              
+              <div class="card-footer">
+                <span class="link-detail">
+                  Ver detalles <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
             </div>
+
+          </article>
+        } @empty {
+          <div class="empty-state">
+            <p>No se encontraron resultados.</p>
           </div>
+        }
+      </div>
+
+      <!-- PAGINACIÓN -->
+      @if (numeroTotalDePaginas() > 1) {
+        <div class="pagination">
+          <button (click)="cambiarPagina(paginaActual() - 1)" [disabled]="paginaActual() === 1">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="page-info">{{ paginaActual() }} de {{ numeroTotalDePaginas() }}</span>
+          <button (click)="cambiarPagina(paginaActual() + 1)" [disabled]="paginaActual() === numeroTotalDePaginas()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
-      </article>
-    </div>
-  </section>
+      }
+
+    } @else {
+      <!-- VISTA DE DETALLE (Se muestra cuando hay un tópico seleccionado) -->
+      <!-- Pasamos el tópico y escuchamos el evento de cierre -->
+      <app-topic 
+        [topicData]="selectedTopic()" 
+        (closeDetail)="clearSelection()">
+      </app-topic>
+    }
+
+  </div>
+</div>

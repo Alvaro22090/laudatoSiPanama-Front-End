@@ -1,8 +1,23 @@
-<button class="btn login-btn" (click)="abrirModal()">
-    <i class="fas fa-user"></i>
-    <span>Iniciar Sesion</span>
-</button>
-  
+<div class="navbar-actions" *ngIf="!loginService.isLoggedIn(); else notLoggedIn">
+  <!-- Botón INICIAR SESIÓN con Icono -->
+  <button class="button-navbar" (click)="abrirModal()">
+    <i class="fas fa-sign-in-alt"></i> <!-- Icono de Ingreso -->
+    <span>Ingresar</span> <!-- Texto (recomendado acortarlo a "Ingresar") -->
+  </button>
+
+  <button routerLink="/registro" class="button-register">
+    Registrate
+  </button>
+</div>
+
+<ng-template #notLoggedIn>
+  <!-- Botón USUARIO LOGUEADO con Icono -->
+  <button class="button-register" (click)="abrirModal()">
+    <i class="fas fa-user-circle"> </i>  <!-- Icono de Usuario -->
+    {{ loginService.getCurrentUser()?.user }}
+  </button>
+</ng-template>
+
 <div id="login-modal" class="modal" [ngClass]="{'mostrar': mostrarModal}" (click)="cerrarModalExterno($event)">
     <div class="modal-contenido" (click)="$event.stopPropagation()">
       <span (click)="cerrarModal()" class="cerrar">&times;</span>

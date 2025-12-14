@@ -1,41 +1,61 @@
 <nav class="navbar" [class.scrolled]="isScrolled">
-    <div class="navbar-container">
-        <div class="navbar-logo">
-            <a routerLink="/" class="nav-logo">
-                <img src="logo.png" alt="Logo">
-            </a>
+    <div class="nav-container">
+        
+        <!-- LOGO -->
+        <a routerLink="/" class="nav-logo" (click)="isMenuOpen = false">
+            <div class="logo-icon-bg">
+                <img src="icono.png" alt="Descripción breve del ícono" class="icono-png">
+            </div>
+            <span class="logo-text">LaudatoSi<span class="text-earth">Panamá</span></span>
+        </a>
+
+        <!-- MENÚ ESCRITORIO -->
+        <div class="nav-desktop">
+            <div class="nav-links">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+                <a routerLink="/description" routerLinkActive="active">Quiénes Somos</a>
+                <a routerLink="/foro" routerLinkActive="active">Foro</a>
+                <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
+            </div>
+
+            <!-- AQUÍ ESTÁ TU COMPONENTE DE LOGIN INTEGRADO -->
+            <!-- Le ponemos la clase nav-auth para posicionarlo y #loginRef para controlarlo -->
+            <div class="nav-auth">
+                <app-login #loginRef></app-login>
+            </div>
         </div>
-        <section class="navbar-elements">
-            <div class="navbar-actions">
-                <button routerLink="/description" class="nav-link">
-                    <i class="fas fa-user-edit"></i>
-                    <span>Registrate</span>
-                </button>
-                <app-login></app-login>
-                <button class="menu-btn" (click)="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-            <div class="navbar-links" [class.active]="isMenuOpen">
-                <a routerLink="/description" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    <span>Quienes Somos</span>
-                </a>
-                <a routerLink="/foro" class="nav-link">
-                    <i class="fas fa-comments"></i>
-                    <span>Foro</span>
-                </a>
-                <a routerLink="/contacto" class="nav-link">
-                    <i class="fas fa-envelope"></i>
-                    <span>Contacto</span>
-                </a>
-                <a routerLink="/usuario" *ngIf="!isLoggedIn" class="nav-link">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Usuario</span>
-                </a>
-            </div>
-        </section>
+
+        <!-- BOTÓN HAMBURGUESA (MÓVIL) -->
+        <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+            <span class="line-hamburguer"></span>
+            <span class="line-hamburguer"></span>
+            <span class="line-hamburguer"></span>
+        </button>
     </div>
+
+    <!-- MENÚ MÓVIL -->
+    @if (isMenuOpen) {
+        <div class="mobile-menu">
+            <a routerLink="/" (click)="toggleMenu()">Inicio</a>
+            <a routerLink="/description" (click)="toggleMenu()">Quiénes Somos</a>
+            <a routerLink="/foro" (click)="toggleMenu()">Foro</a>
+            <a routerLink="/contacto" (click)="toggleMenu()">Contacto</a>
+            
+            <div class="mobile-divider"></div>
+
+            <!-- Lógica Móvil conectada a tu Login Component -->
+            @if (loginRef.loginService.isLoggedIn()) {
+                 <a routerLink="/usuario" (click)="toggleMenu()" class="highlight">
+                    <i class="fas fa-user"></i> Mi Cuenta
+                 </a>
+                 <button (click)="loginRef.cerrarSesion(); toggleMenu()" class="mobile-logout">
+                    Cerrar Sesión
+                 </button>
+            } @else {
+                <!-- Al hacer click, llamamos a abrirModal() de tu componente hijo -->
+                <button (click)="loginRef.abrirModal(); toggleMenu()" class="highlight">Ingresar</button>
+                <a routerLink="/registro" (click)="toggleMenu()" class="highlight">Registrarse</a>
+            }
+        </div>
+    }
 </nav>

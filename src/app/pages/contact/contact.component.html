@@ -1,35 +1,97 @@
-<div class="container">
-  <h1>Contacto</h1>
-  <p>¿Tienes alguna pregunta, comentario o sugerencia sobre Laudato Si Panamá? ¡Nos encantaría escucharte!</p>
+<div class="contact-layout">
+  
+  <div class="contact-header">
+    <h1 class="header-title">Contáctanos</h1>
+    <p class="header-subtitle">¿Tienes dudas o propuestas? Queremos escucharte.</p>
+  </div>
 
-  <form class="formulario-contacto">
-    <!-- Campo de nombre -->
-    <div class="form-group">
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required>
+  <div class="contact-card-wrapper">
+    
+    <!-- COLUMNA IZQUIERDA: Información (Estilo React: Fondo Azul/Verde) -->
+    <div class="contact-info-panel">
+      <div class="info-content">
+        <h2 class="info-title">Información de Contacto</h2>
+        <p class="info-desc">
+          Completa el formulario y nuestro equipo se pondrá en contacto contigo lo antes posible.
+        </p>
+
+        <ul class="info-list">
+          <li>
+            <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="info-text">
+              <h3>Oficina Central</h3>
+              <p>Arzobispado de Panamá,<br>Ciudad de Panamá</p>
+            </div>
+          </li>
+          <li>
+            <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+            <div class="info-text">
+              <h3>Email</h3>
+              <p>contacto&#64;laudatosipanama.org</p>
+            </div>
+          </li>
+          <li>
+            <div class="icon-circle"><i class="fas fa-phone"></i></div>
+            <div class="info-text">
+              <h3>Teléfono</h3>
+              <p>+507 123-4567</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="social-links">
+        <a href="#" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" target="_blank" class="social-btn"><i class="fab fa-twitter"></i></a>
+      </div>
     </div>
 
-    <!-- Campo de correo electrónico -->
-    <div class="form-group">
-      <label for="email">Correo electrónico:</label>
-      <input type="email" id="email" name="email" required>
+    <!-- COLUMNA DERECHA: Formulario (Estilo React: Blanco Limpio) -->
+    <div class="contact-form-panel">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="main-form">
+        
+        <div class="form-grid-row">
+          <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <input type="text" id="name" formControlName="name" placeholder="Tu nombre">
+            @if (contactForm.get('name')?.invalid && contactForm.get('name')?.touched) {
+              <span class="error-msg">Requerido.</span>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Asunto</label>
+            <input type="text" id="subject" formControlName="subject" placeholder="Motivo del contacto">
+            @if (contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched) {
+              <span class="error-msg">Requerido.</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" formControlName="email" placeholder="correo@ejemplo.com">
+          @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
+            <span class="error-msg">Introduce un correo válido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="message">Mensaje</label>
+          <textarea id="message" rows="4" formControlName="message" placeholder="¿En qué podemos ayudarte?"></textarea>
+          @if (contactForm.get('message')?.invalid && contactForm.get('message')?.touched) {
+            <span class="error-msg">Mínimo 10 caracteres.</span>
+          }
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="contactForm.invalid">
+          <span>Enviar Mensaje</span>
+          <i class="fas fa-paper-plane"></i>
+        </button>
+
+      </form>
     </div>
 
-    <!-- Campo de asunto -->
-    <div class="form-group">
-      <label for="asunto">Asunto:</label>
-      <input type="text" id="asunto" name="asunto" required>
-    </div>
-
-    <!-- Campo de mensaje -->
-    <div class="form-group">
-      <label for="mensaje">Mensaje:</label>
-      <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
-    </div>
-
-    <!-- Botón de enviar -->
-    <div class="form-group">
-      <button type="submit" class="boton">Enviar mensaje</button>
-    </div>
-  </form>
+  </div>
 </div>

@@ -1,117 +1,233 @@
-.user-profile-container {
-    display: flex;
-    justify-content: center;
+:host {
+  --c-primary: var(--primary-green);
+  --c-accent: var(--color-earth);
+  --c-bg: #f9fafb; /* Stone 50 */
+  --c-text-main: var(--tech-dark);
+  --c-text-sec: var(--tech-gray);
+  --c-border: #e5e7eb;
+}
+
+.profile-layout {
+  min-height: 100vh;
+  background-color: var(--c-bg);
+  padding: 8rem 1rem 4rem; /* Top padding para Navbar */
+}
+
+.profile-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+/* --- TARJETA PRINCIPAL --- */
+.profile-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--c-border);
+  overflow: hidden;
+}
+
+/* Cover (Gradiente Eco) */
+.profile-cover {
+  height: 200px;
+  background: linear-gradient(135deg, var(--c-accent), #00a86b); /* Azul -> Verde */
+}
+
+.profile-content {
+  padding: 0 2rem 2rem;
+  position: relative;
+}
+
+/* --- HEADER DEL PERFIL (Avatar + Botones) --- */
+.profile-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.avatar-wrapper {
+  margin-top: -60px; /* Sube el avatar sobre el cover */
+  position: relative;
+}
+
+.avatar-circle {
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  background: white;
+  padding: 4px; /* Borde blanco */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background-color: var(--c-primary);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: var(--font-primary);
+}
+
+.profile-actions {
+  padding-top: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-action {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--c-border);
+  border-radius: 0.5rem;
+  background: white;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.btn-danger:hover {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+}
+
+/* --- IDENTIDAD --- */
+.user-identity {
+  margin-top: 0.5rem;
+}
+
+.user-fullname {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--c-text-main);
+  margin-bottom: 0.2rem;
+}
+
+.user-username {
+  color: var(--c-text-sec);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* --- GRILLA DE DETALLES --- */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.details-card {
+  background-color: #f9fafb;
+  border: 1px solid var(--c-border);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+}
+
+.details-title {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--c-text-main);
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: 0.8rem;
+}
+
+/* Lista de datos */
+.details-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.details-list li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.details-list .icon {
+  font-size: 1.2rem;
+  color: #9ca3af;
+  width: 24px;
+  text-align: center;
+}
+
+.details-list .data {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-list .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.details-list .value {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Estado Vacío */
+.empty-state {
+  text-align: center;
+  padding: 1rem 0;
+  color: var(--c-text-sec);
+}
+
+.empty-icon {
+  font-size: 2rem;
+  color: #d1d5db;
+  margin-bottom: 0.8rem;
+}
+
+.link-explore {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--c-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.link-explore:hover { text-decoration: underline; }
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr 1fr; /* Dos columnas en desktop */
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-header-row {
+    flex-direction: column;
     align-items: center;
-    min-height: 80vh;
-    padding: 6rem 2rem;
   }
-  
-  .user-card {
-    background: white;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--box-shadow);
-    width: 100%;
-    max-width: 500px;
-    overflow: hidden;
-    padding: 2rem;
+  .avatar-wrapper {
+    margin-top: -65px;
+    margin-bottom: 1rem;
   }
-  
-  .user-card:hover {
-    box-shadow: var(--box-shadow-hover);
-  }
-  
-  .user-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .user-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 1.5rem;
-    background: var(--gradient-green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  
-  .default-avatar {
-    color: white;
-    font-size: var(--text-2xl);
-    font-weight: bold;
-    font-family: var(--font-primary);
-  }
-  
-  .user-name {
-    flex: 1;
-  }
-  
-  .user-name h2 {
-    font-family: var(--font-primary);
-    font-size: var(--text-2xl);
-    margin: 0 0 0.5rem 0;
-    color: var(--tech-dark);
-  }
-  
-  .user-id {
-    font-size: var(--text-sm);
-    color: var(--tech-gray);
-    opacity: 0.8;
-  }
-  
-  .user-info {
-    margin-bottom: 2rem;
-  }
-  
-  .info-group {
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
-  
-  .info-group label {
-    display: block;
-    font-size: var(--text-sm);
-    color: var(--tech-gray);
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .info-group p {
-    font-size: var(--text-base);
-    margin: 0;
-    padding: 0.75rem;
-    background-color: var(--tech-light);
-    border-radius: var(--border-radius);
-    transition: var(--transition-fast);
-  }
-  
-  .user-actions {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 576px) {
-    .user-header {
-      flex-direction: column;
-      text-align: center;
-    }
-    
-    .user-avatar {
-      margin-right: 0;
-      margin-bottom: 1rem;
-    }
-    
-    .user-card {
-      padding: 1.5rem;
-    }
-  }
+  .user-identity { text-align: center; }
+  .profile-actions { width: 100%; justify-content: center; }
+}

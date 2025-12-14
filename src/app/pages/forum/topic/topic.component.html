@@ -1,79 +1,94 @@
-<!-- topic.component.html -->
-<div class="topic-container" *ngIf="!isLoading && topico; else loading">
-    <!-- Tópico principal -->
-    <div class="topic-card hover-scale">
-      <div class="topic-header">
-        <img [src]="topico.topicoImagen" alt="{{ topico.topicoTitulo }}" class="topic-image">
-        <div class="topic-info">
-          <h2 class="topic-title">{{ topico.topicoTitulo }}</h2>
-          <div class="topic-meta">
-            <span class="topic-author">Por: {{ topico.topicoAutor }}</span>
-            <span class="topic-date">{{ formatFecha(topico.topicoFecha) }}</span>
-          </div> 
-        </div>
-      </div>
-      
-      <div class="topic-content">
-        <p class="topic-summary">{{ topico.topicoResumen }}</p>
-      </div>
-    </div>
+@if (topicSignal(); as topic) {
+  <div class="detail-container animate-fade-in-up">
     
-    <!-- Sección de comentarios -->
-    <div class="comments-section">
-      <h3 class="comments-title">Comentarios ({{ comentarios.length }})</h3>
+    <!-- HERO IMAGE AREA -->
+    <div class="hero-wrapper">
+      <!-- Fallback por si no hay imagen -->
+      <img [src]="topic.topicoImagen || 'assets/placeholder-topic.jpg'" [alt]="topic.topicoTitulo" class="hero-image">
       
-      <!-- Formulario para nuevo comentario -->
-      <div class="comment-form">
-        <textarea 
-          [(ngModel)]="nuevoComentario" 
-          placeholder="Escribe tu comentario..." 
-          class="comment-textarea"></textarea>
-        <button 
-          class="btn btn-primary comment-submit" 
-          [disabled]="!nuevoComentario.trim()" 
-          (click)="agregarComentario()">
-          Comentar
-        </button>
-      </div>
+      <button (click)="onClose()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Volver al tablón
+      </button>
       
-      <!-- Lista de comentarios -->
-      <div class="comments-list" *ngIf="comentarios.length > 0; else noComments">
-        <div *ngFor="let comentario of comentarios" class="comment-card">
-          <div class="comment-header">
-            <span class="comment-author">{{ comentario.respuestaAutor }}</span>
-            <span class="comment-message">{{ comentario.respuestaMensaje }}</span>
-            <span class="comment-date">{{ comentario.respuestaFecha }}</span>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <!-- CONTENIDO FLOTANTE -->
+    <div class="content-card-wrapper">
+      <div class="content-card">
+        
+        <!-- Header del Artículo -->
+        <div class="article-header">
+          <div class="meta-badges">
+            <div class="badge-group">
+              <span class="category-badge">{{ topic.topicoCategoria || 'Anuncio' }}</span>
+              <!-- NUEVO: Badge si es evento -->
+              @if (isEvent()) {
+                <span class="event-badge"><i class="fas fa-calendar-star"></i> Evento</span>
+              }
+            </div>
+            
+            <div class="date-group">
+              <span class="date-badge">
+                <i class="far fa-clock"></i> {{ formatFecha(topic.topicoFecha) }}
+              </span>
+              <!-- NUEVO: Tiempo de lectura -->
+              <span class="reading-time">
+                &bull; {{ readingTime() }}
+              </span>
+            </div>
+          </div>
+
+          <h1 class="article-title">{{ topic.topicoTitulo }}</h1>
+
+          <div class="author-row">
+            <div class="author-avatar">
+              <!-- Usar inicial si no hay avatar real -->
+              {{ topic.topicoAutor.charAt(0).toUpperCase() }}
+            </div>
+            <div class="author-info">
+              <span class="author-name">Por {{ topic.topicoAutor }}</span>
+              <span class="author-role">Miembro de la comunidad</span>
+            </div>
+          </div>
+
+          <!-- NUEVO: Tarjeta destacada si tiene fecha de evento -->
+          @if (topic.topicoFechaEvento) {
+            <div class="event-highlight-card">
+              <div class="event-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="event-info">
+                <span class="event-label">Fecha del Evento</span>
+                <strong class="event-datetime">{{ formatEventDate(topic.topicoFechaEvento) }}</strong>
+                <span class="event-cta">¡No olvides agendarlo!</span>
+              </div>
+            </div>
+          }
+
+        </div>
+
+        <hr class="divider">
+
+        <div class="article-body prose" [innerHTML]="safeContent()"></div>
+
+        <!-- Footer del Artículo -->
+        <div class="article-footer">
+          <div class="footer-left">
+            <p class="footer-note">ID Ref: #{{ topic.topicoId }} — Comentarios desactivados.</p>
+          </div>
+          
+          <div class="footer-actions">
+            <!-- NUEVO: Botón compartir -->
+            <button class="btn-secondary" (click)="shareTopic()" title="Copiar enlace">
+              <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="btn-contact">Contactar Organizador</button>
           </div>
         </div>
+
       </div>
-      
-      <!-- Mensaje cuando no hay comentarios -->
-      <ng-template #noComments>
-        <div class="no-comments">
-          <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
-        </div>
-      </ng-template>
     </div>
-    
-    <!-- Botones de acción -->
-    <div class="action-buttons">
-      <button class="btn btn-glass">Volver a la lista</button>
-      <button class="btn btn-secondary">Reportar</button>
-    </div>
+
   </div>
-  
-  <!-- Template para estado de carga -->
-  <ng-template #loading>
-    <div class="loading-container" *ngIf="isLoading; else error">
-      <div class="loading-spinner"></div>
-      <p>Cargando tópico...</p>
-    </div>
-  </ng-template>
-  
-  <!-- Template para errores -->
-  <ng-template #error>
-    <div class="error-container" *ngIf="error">
-      <p class="error-message">{{ error }}</p>
-      <button class="btn btn-primary" (click)="cargarTopico()">Reintentar</button>
-    </div>
-  </ng-template>
+}

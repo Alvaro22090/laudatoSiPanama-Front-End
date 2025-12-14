@@ -1,74 +1,79 @@
 <section class="hero">
-    <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="glitch" data-text="Laudato Si">Bienvenido a Laudato Si Panamá</h1>
-      <p class="hero-subtitle">Deseas saber mas sobre nuestra labor tanto de forma internacional como local.</p>
-      <div class="hero-buttons">
-        <a routerLink="/description" class="btn btn-primary">
-          <i class="fas fa-leaf"></i>
-          <span>Descubre más</span>
-        </a>
-        <a routerLink="/foro" class="btn btn-glass">
-          <i class="fas fa-comments"></i>
-          <span>Únete al diálogo</span>
-        </a>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <div class="mouse"></div>
-      <p>Scroll para explorar</p>
-    </div>
-  </section>
-  
-  <section class="topics">
-    <div class="section-header">
-      <h2>Áreas de Impacto</h2>
-      <p>Explora nuestras iniciativas principales</p>
-    </div>
-  
-    <div class="topics-grid">
-      <div class="topic-card">
-        <div class="topic-icon">
-          <i class="fas fa-seedling"></i>
+      <!-- BLOQUE AZUL -->
+      <div class="hero-presentation">
+        <div>
+          <p>Bienvenido a</p>
+          <em>Laudato Si' Panamá</em>
         </div>
-        <h3>Sostenibilidad</h3>
-        <p>Soluciones tecnológicas para un futuro sostenible</p>
-        <a routerLink="/foro/sostenibilidad" class="topic-link">
-          Explorar <i class="fas fa-arrow-right"></i>
-        </a>
       </div>
-  
-      <div class="topic-card">
-        <div class="topic-icon">
-          <i class="fas fa-users-cog"></i>
+
+      <div class="hero-bottom">
+        <!-- BLOQUE BLANCO -->
+        <div class="hero-buttons">
+          <div class="container">
+            <p class="hero-subtitle">¿Deseas saber más sobre nuestra labor <br>tanto de forma <em>internacional como local?</em></p>
+            <div class="hero-register">
+              <a routerLink="/description" class="hero-button">
+                <img src="hoja.svg" alt="Hoja">
+                <span>Descubre <em>más</em></span>
+              </a>
+              <a routerLink="/foro" class="hero-button">
+                <img src="foro.svg" alt="Foro">
+                <span>Únete al <em>diálogo</em></span>
+              </a>
+            </div>
+          </div>
         </div>
-        <h3>Comunidad</h3>
-        <p>Conectando personas para el cambio global</p>
-        <a routerLink="/foro/comunidad" class="topic-link">
-          Explorar <i class="fas fa-arrow-right"></i>
-        </a>
-      </div>
-  
-      <div class="topic-card">
-        <div class="topic-icon">
-          <i class="fas fa-lightbulb"></i>
+        
+        <!-- BLOQUE SCROLL AZUL -->
+        <div class="hero-scroll">
+          <img src="scroll.svg" alt="Scroll">
+          <p>Scroll <br><em>para explorar</em></p>
         </div>
-        <h3>Innovación</h3>
-        <p>Ideas revolucionarias para el cuidado ambiental</p>
-        <a routerLink="/foro/innovacion" class="topic-link">
-          Explorar <i class="fas fa-arrow-right"></i>
-        </a>
       </div>
     </div>
-  </section>
+</section>
   
-  <section class="cta-section">
-    <div class="cta-content">
-      <h2>¿Listo para ser parte del cambio?</h2>
-      <p>Únete a nuestra comunidad global de innovadores y defensores del medio ambiente</p>
-      <a routerLink="/contacto" class="btn btn-primary">
-        <i class="fas fa-rocket"></i>
-        <span>Comienza ahora</span>
-      </a>
+<!-- SECCIÓN DE IMPACTO (Iconos Verdes) -->
+<section class="impact-section">
+  <div class="section-header">
+    <h2>Nuestras Áreas de <em>Impacto</em></h2>
+    <p>Explora las iniciativas que definen nuestra misión.</p>
+  </div>
+
+  <div class="topics-grid">
+    <div class="topic-card">
+      <div class="topic-icon"><i class="fas fa-leaf"></i></div>
+      <h3>Sostenibilidad</h3>
+      <p>Fomentamos un estilo de vida que respeta los ritmos de la naturaleza y el bien común.</p>
+      <a routerLink="/about" class="topic-link">Saber más <i class="fas fa-arrow-right"></i></a>
     </div>
-  </section>
+
+    <div class="topic-card">
+      <div class="topic-icon"><i class="fas fa-users"></i></div>
+      <h3>Comunidad</h3>
+      <p>Construimos lazos de fraternidad para actuar juntos en el cuidado de nuestra casa común.</p>
+      <a routerLink="/about" class="topic-link">Saber más <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-icon"><i class="fas fa-praying-hands"></i></div>
+      <h3>Espiritualidad</h3>
+      <p>Promovemos una conversión ecológica que nace de un encuentro profundo con Dios Creador.</p>
+      <a routerLink="/about" class="topic-link">Saber más <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN CTA (Fondo Azul, Botón Verde) -->
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>¿Listo para ser <em>parte del cambio</em>?</h2>
+    <p>Únete a nuestra comunidad y ayúdanos a cuidar nuestra Casa Común.</p>
+    <a routerLink="/contacto" class="cta-button">
+      <span>Comienza ahora</span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</section>

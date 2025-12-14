@@ -1,38 +1,28 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { LoginComponent } from "../../../pages/auth/login/login.component";
-import { LoginServiceService, User } from '../../../core/services/login-service.service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+// Importamos tu componente LoginComponent (asegúrate de que sea Standalone o esté en el módulo)
+import { LoginComponent } from "../../../pages/auth/login/login.component"; 
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterLink, LoginComponent],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive, LoginComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   isScrolled = false;
   isMenuOpen = false;
-  isLoggedIn: boolean = false;
-  currentUser: User | null = null;
-  loginService = inject(LoginServiceService)
 
   constructor() {
+    // Lógica visual del Navbar (Scroll)
     window.addEventListener('scroll', () => {
       this.isScrolled = window.scrollY > 20;
-      this.isMenuOpen = false;
     });
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
-
-  ngOnInit(): void {
-    this.loginService.currentUser$.subscribe((user) => {
-      this.isLoggedIn = !user;
-    });
-    
-  }
-
 }

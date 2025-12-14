@@ -1,171 +1,164 @@
-<div class="registro-container">
-    <div class="registro-card">
-      <div class="registro-header">
-        <h2 class="registro-title">Registro de Usuario</h2>
-        <p class="registro-subtitle">Complete el formulario para crear su cuenta</p>
-      </div>
+<div class="register-layout">
+  <!-- COLUMNA IZQUIERDA: Branding (Solo visible en desktop) -->
+  <div class="register-brand">
+    <div class="brand-content">
+      <h2 class="brand-title">Únete al Movimiento</h2>
+      <p class="brand-quote">
+        "Hace falta volver a sentir que nos necesitamos unos a otros, que tenemos una responsabilidad por los demás y por el mundo."
+      </p>
+      <p class="brand-cite">- Laudato Si', 229</p>
+    </div>
+    <!-- Overlay decorativo -->
+    <div class="brand-overlay"></div>
+  </div>
+
+  <!-- COLUMNA DERECHA: Formulario -->
+  <div class="register-form-container">
+    <div class="form-wrapper">
       
-      <form class="formulario" [formGroup]="registroUsuario" (submit)="submitUsuario()">
-        <div class="form-grid">
-          <!-- Información personal -->
-          <div class="form-section">
-            <h3 class="section-title">Información Personal</h3>
+      <header class="form-header">
+        <h1>Crear Cuenta</h1>
+        <p>Completa tus datos para formar parte de la comunidad.</p>
+      </header>
+
+      <form [formGroup]="registroUsuario" (ngSubmit)="submitUsuario()" class="main-form">
+        
+        <!-- SECCIÓN: DATOS PERSONALES -->
+        <div class="form-section">
+          <label class="section-label">Información Personal</label>
+          
+          <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <div class="input-with-icon">
+              <i class="fas fa-user icon"></i>
+              <input id="name" type="text" formControlName="usuarioNombre" placeholder="Juan Pérez">
+            </div>
+            @if(registroUsuario.controls['usuarioNombre'].touched && registroUsuario.controls['usuarioNombre'].invalid){
+              <span class="error-msg">Por favor, introduce tu nombre completo.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="username">Nombre de Usuario</label>
+            <div class="input-with-icon">
+              <i class="fas fa-at icon"></i>
+              <input id="username" type="text" formControlName="usuarioId" placeholder="juanperez">
+            </div>
+            @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].invalid){
+               @if(registroUsuario.controls['usuarioId'].hasError('required')) { <span class="error-msg">Requerido.</span> }
+               @else if(registroUsuario.controls['usuarioId'].hasError('user')) { <span class="error-msg">Usuario en uso.</span> }
+               @else { <span class="error-msg">Mínimo 3 caracteres.</span> }
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nacimiento">Fecha de Nacimiento</label>
+              <div class="input-with-icon">
+                <i class="fas fa-calendar-alt icon"></i>
+                <input id="nacimiento" type="date" formControlName="usuarioNacimiento">
+              </div>
+            </div>
             
             <div class="form-group">
-              <label for="usuario-nombre" class="form-label">Nombre Completo</label>
-              <div class="input-container">
-                <input id="usuario-nombre" type="text" class="form-input" formControlName="usuarioNombre" placeholder="Ingrese su nombre completo"/>
-                <div class="input-icon">
-                  <i class="fas fa-user"></i>
-                </div>
-              </div>
-              @if(registroUsuario.controls['usuarioNombre'].touched && registroUsuario.controls['usuarioNombre'].hasError('required')){
-                <span class="error-message">El nombre es requerido</span>
-              }
-              @if(registroUsuario.controls['usuarioNombre'].touched && registroUsuario.controls['usuarioNombre'].hasError('minlength')){
-                <span class="error-message">El nombre debe tener al menos 3 caracteres</span>
-              }
-            </div>
-  
-            <div class="form-group">
-              <label for="usuario-Id" class="form-label">Nombre de Usuario</label>
-              <div class="input-container">
-                <input id="usuario-Id" type="text" class="form-input" formControlName="usuarioId" placeholder="Elija un nombre de usuario"/>
-                <div class="input-icon">
-                  <i class="fas fa-user-circle"></i>
-                </div>
-              </div>
-              @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].hasError('required')){
-                <span class="error-message">El nombre de usuario es requerido</span>
-              }
-              @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].hasError('minlength')){
-                <span class="error-message">El nombre de usuario debe tener al menos 3 caracteres</span>
-              }
-              @if(registroUsuario.controls['usuarioId'].touched && registroUsuario.controls['usuarioId'].hasError('user')){
-                <span class="error-message">El nombre de usuario ya existe</span>
-              }
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label for="usuario-nacimiento" class="form-label">Fecha de Nacimiento</label>
-                <div class="input-container">
-                  <input id="usuario-nacimiento" type="date" class="form-input" formControlName="usuarioNacimiento"/>
-                  <div class="input-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="form-group">
-                <label for="usuario-genero" class="form-label">Género</label>
-                <div class="select-container">
-                  <select id="usuario-genero" class="form-select" formControlName="usuarioGenero">
-                    <option value="" disabled selected>Seleccione una opción</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
-                    <option value="otro">Otro</option>
-                    <option value="no_especificar">Prefiero no especificar</option>
-                  </select>
-                  <div class="select-icon">
-                    <i class="fas fa-chevron-down"></i>
-                  </div>
-                </div>
+              <label for="genero">Género</label>
+              <div class="select-wrapper">
+                <i class="fas fa-venus-mars icon"></i>
+                <select id="genero" formControlName="usuarioGenero">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="femenino">Femenino</option>
+                  <option value="otro">Otro</option>
+                  <option value="no_especificar">Prefiero no especificar</option>
+                </select>
+                <i class="fas fa-chevron-down arrow"></i>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- SECCIÓN: SEGURIDAD -->
+        <div class="form-section">
+          <label class="section-label">Seguridad</label>
           
-          <!-- Información de cuenta -->
-          <div class="form-section">
-            <h3 class="section-title">Información de Cuenta</h3>
-            
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <div class="input-with-icon">
+              <i class="fas fa-envelope icon"></i>
+              <input id="email" type="email" formControlName="usuarioEmail" placeholder="juan@ejemplo.com">
+            </div>
+            @if(registroUsuario.controls['usuarioEmail'].touched && registroUsuario.controls['usuarioEmail'].invalid){
+              <span class="error-msg">Introduce un correo válido.</span>
+            }
+          </div>
+
+          <div class="form-row">
             <div class="form-group">
-              <label for="usuario-email" class="form-label">Correo Electrónico</label>
-              <div class="input-container">
-                <input id="usuario-email" type="email" class="form-input" formControlName="usuarioEmail" placeholder="ejemplo@correo.com"/>
-                <div class="input-icon">
-                  <i class="fas fa-envelope"></i>
-                </div>
+              <label for="password">Contraseña</label>
+              <div class="input-with-icon">
+                <i class="fas fa-lock icon"></i>
+                <input id="password" type="password" formControlName="usuarioContraseña" placeholder="••••••••">
               </div>
-              @if(registroUsuario.controls['usuarioEmail'].touched && registroUsuario.controls['usuarioEmail'].hasError('required')){
-                <span class="error-message">El email de usuario es requerido</span>
+              @if(registroUsuario.controls['usuarioContraseña'].touched && registroUsuario.controls['usuarioContraseña'].invalid){
+                <span class="error-msg">Mín. 8 chars, letras y números.</span>
               }
-              @if(registroUsuario.controls['usuarioEmail'].touched && registroUsuario.controls['usuarioEmail'].hasError('email')){
-                <span class="error-message">El email de usuario no es válido</span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirmar</label>
+              <div class="input-with-icon">
+                <i class="fas fa-lock icon"></i>
+                <input id="confirmPassword" type="password" formControlName="usuarioConfirmar" placeholder="••••••••">
+              </div>
+              @if(registroUsuario.hasError('passwordMismatch') && registroUsuario.get('usuarioConfirmar')?.touched){
+                <span class="error-msg">No coinciden.</span>
               }
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN: EXTRAS (Foto y Términos) -->
+        <div class="form-section extra-section">
+          <div class="form-group file-upload-group">
+            <label class="file-label-text">Foto de Perfil (Opcional)</label>
+            <div class="file-upload-row">
+              <label for="file-upload" class="btn-file">
+                <i class="fas fa-camera"></i> Subir Foto
+              </label>
+              <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input-hidden">
               
-            </div>
-  
-            <div class="form-group">
-              <label for="usuario-contraseña" class="form-label">Contraseña</label>
-              <div class="input-container">
-                <input id="usuario-contraseña" type="password" class="form-input" formControlName="usuarioContraseña" placeholder="Mínimo 8 caracteres"/>
-                <div class="input-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-              </div>
-              @if(registroUsuario.controls['usuarioContraseña'].touched && registroUsuario.controls['usuarioContraseña'].hasError('required')){
-                <span class="error-message">La contraseña es requerida</span>
-              }
-              @if(registroUsuario.controls['usuarioContraseña'].touched && registroUsuario.controls['usuarioContraseña'].hasError('passwordStrength')){
-                <span class="error-message">La contraseña debe tener al menos 8 caracteres y números</span>
-              }
-            </div>
-  
-            <div class="form-group">
-              <label for="usuario-confirmar" class="form-label">Confirmar Contraseña</label>
-              <div class="input-container">
-                <input id="usuario-confirmar" type="password" class="form-input" formControlName="usuarioConfirmar" placeholder="Confirme su contraseña"/>
-                <div class="input-icon">
-                  <i class="fas fa-lock"></i>
-                </div>
-              </div>
-              @if(registroUsuario.controls['usuarioConfirmar'].touched && registroUsuario.hasError('passwordMismatch')){
-                <span class="error-message">Las contraseñas no coinciden</span>
+              @if (imagenPreview) {
+                <img [src]="imagenPreview" class="avatar-preview">
+              } @else {
+                <span class="file-status">Sin archivo</span>
               }
             </div>
           </div>
-        </div>
-        
-        <div class="form-section photo-section">
-          <div class="form-group file-group">
-            <label for="usuario-perfil" class="form-label">Foto de Perfil (opcional)</label>
-            <div class="file-input-container">
-              <input id="usuario-perfil" type="file" class="form-file-input" formControlName="usuarioPerfil" (change)="onFileSelected($event)" accept="image/*"/>
-              <label for="usuario-perfil" class="file-input-label">
-                <i class="fas fa-upload"></i>
-                Seleccionar imagen
-              </label>
-              <span class="file-name">No hay archivo seleccionado</span>
-            </div>
-          </div>
-          
-          <div class="preview-container" *ngIf="imagenPreview">
-            <img [src]="imagenPreview" alt="Vista previa" class="image-preview"/>
-          </div>
-        </div>
-        
-        <div class="form-section terms-section">
-          <div class="form-group checkbox-group">
-            <div class="checkbox-container">
-              <input id="terminos" type="checkbox" class="form-checkbox" formControlName="aceptaTerminos"/>
-              <label for="terminos" class="checkbox-label">
-                Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la <a href="#" class="terms-link">política de privacidad</a>
-              </label>
-            </div>
-            @if(registroUsuario.controls['aceptaTerminos'].touched && registroUsuario.controls['aceptaTerminos'].hasError('required')){
-              <span class="error-message">Debes aceptar los términos y condiciones</span>
+
+          <div class="form-group terms-group">
+            <label class="checkbox-container">
+              <input type="checkbox" formControlName="aceptaTerminos">
+              <span class="checkmark"></span>
+              <span class="terms-text">
+                Acepto los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a>.
+              </span>
+            </label>
+            @if(registroUsuario.controls['aceptaTerminos'].touched && registroUsuario.controls['aceptaTerminos'].invalid){
+              <span class="error-msg">Debes aceptar para continuar.</span>
             }
           </div>
         </div>
-        
+
         <div class="form-actions">
-          <button type="button" class="btn btn-glass cancel-btn" routerLink="">Cancelar</button>
-          <button type="submit" class="btn btn-primary submit-btn" [disabled]="!registroUsuario.valid">
-            <span>Registrarse</span>
-            <i class="fas fa-arrow-right"></i>
+          <button type="submit" class="btn-submit" [disabled]="registroUsuario.invalid">
+            Registrarse
           </button>
+          <p class="login-hint">
+            ¿Ya tienes cuenta? <a routerLink="/">Inicia sesión</a>
+          </p>
         </div>
+
       </form>
     </div>
   </div>
+</div>

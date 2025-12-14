@@ -1,99 +1,76 @@
-:root{
-    --primary-green: #2ECC71; 
-    --secondary-green: #27AE60;
-    --accent-green: #A8E6CF; 
-    --tech-light: #ECF0F1;
-    --tech-gray: #2D3436;
-    --tech-dark: #1A1E23;
-    --gradient-green: linear-gradient(135deg, #2ECC71, #27AE60);
-    --gradient-dark: linear-gradient(135deg, #a7beda, #aac2c9);
-    --gradient-red: linear-gradient(to right, #e74c3c, #c0392b);
+:root {
+    /* --- PALETA DE COLORES (Identidad Home) --- */
+    
+    /* Tu Verde Principal (Botones, Iconos, 'Eco') */
+    --primary-green: #00b05f;      
+    
+    /* Verde Oscuro / Teal (Para efectos Hover) */
+    --secondary-green: #00796b;    
+    
+    /* Tu Azul Principal (Fondos Hero, 'Laudato', Títulos destacados) */
+    /* Usamos este azul donde antes usábamos el color tierra */
+    --color-earth: #0076b4;        
+    
+    /* Fondo muy suave (Azul grisáceo muy claro, mejor que el beige anterior) */
+    --tech-light: #f4f7f9;         
+    
+    /* Textos */
+    --tech-gray: #4b5563;          /* Gris neutro para textos largos */
+    --tech-dark: #1e293b;          /* Azul muy oscuro (casi negro) para títulos */
+    
+    /* Colores de Fondo Suaves (para avatares o fondos de iconos) */
+    --accent-green: #e0f2f1;       /* Verde menta muy suave */
+    
+    /* --- TIPOGRAFÍA (Mantenemos la elegancia) --- */
+    --font-primary: 'Merriweather', serif; /* Títulos */
+    --font-secondary: 'Inter', sans-serif; /* Textos / UI */
 
-    --glass-bg: rgba(23, 75, 187, 0.1);
-    --glass-border: rgba(26, 28, 161, 0.2);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* --- EFECTOS VISUALES --- */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 4px 6px -1px rgba(0, 118, 180, 0.1); /* Sombra con tinte azulado */
 
-    --font-primary: 'Space Grotesk', sans-serif;
-    --font-secondary: 'Inter', sans-serif;
-
-    --text-sm: 0.875rem;
-    --text-base: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.25rem;
-    --text-2xl: 1.5rem;
-    --text-3xl: 2rem;
-    --text-4xl: 2.5rem;
-
-    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --border-radius-sm: 0.375rem;
+    /* Utilidades */
     --border-radius: 0.5rem;
-    --border-radius-lg: 1rem;
-    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    --box-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+    --border-radius-full: 9999px;
+    --transition-normal: all 0.3s ease;
+    
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: var(--tech-light);
-    color: var(--tech-dark);
     font-family: var(--font-secondary);
-    line-height: 1.6;
+    background-color: var(--tech-light);
+    color: var(--tech-gray);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
-.hover-scale {
-    transition: var(--transition-normal);
+/* Títulos globales */
+h1, h2, h3, h4, h5 {
+    font-family: var(--font-primary);
+    color: var(--tech-dark);
 }
 
-.hover-scale:hover {
-    transform: scale(1.02);
+/* Scrollbar personalizada (Opcional, pero se ve genial con tus colores) */
+::-webkit-scrollbar {
+    width: 10px;
 }
-
-.btn {
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    transition: var(--transition-normal);
-    font-weight: 500;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
-
-.btn-primary {
-    
-    background: var(--gradient-green);
-    color: white;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+::-webkit-scrollbar-thumb {
+    background: var(--color-earth); /* Tu azul */
+    border-radius: 5px;
 }
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
-}
-
-.btn-secondary {
-    background: var(--gradient-red);
-    color: white;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
-  }
-  
-  .btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
-  }
-
-.btn-glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--glass-border);
-    color: black;
-}
-
-.btn-glass:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-green); /* Tu verde */
 }

@@ -1,69 +1,174 @@
-<div class="registro-container">
-    <div class="registro-card">
-      <div class="registro-header">
-        <h2 class="registro-title">Registro de Tópico</h2>
-        <p class="registro-subtitle">Complete el formulario para crear un nuevo tema</p>
-      </div>
+@if (userId) {
+<div class="create-layout">
+  <div class="create-container">
+    
+    <div class="page-header">
+      <h1 class="page-title">Crear Nuevo Tópico</h1>
+      <p class="page-subtitle">Comparte un evento, anuncio o noticia con la comunidad.</p>
+    </div>
+
+    <!-- MAIN FORM -->
+    <form [formGroup]="registroTopico" (submit)="submitTopico()" class="create-card">
       
-      <form class="formulario" [formGroup]="registroTopico" (submit)="submitTopico()">
-        <div class="form-section">
-          <h3 class="section-title">Información del Tópico</h3>
-          
-          <div class="form-group">
-            <label for="topico-titulo" class="form-label">Título</label>
-            <div class="input-container">
-              <input id="topico-titulo" type="text" class="form-input" formControlName="topicoTitulo" placeholder="Ingrese el título del tópico"/>
-              <div class="input-icon">
-                <i class="fas fa-heading"></i>
-              </div>
-            </div>
-            @if(registroTopico.controls['topicoTitulo'].touched && registroTopico.controls['topicoTitulo'].hasError('required')){
-              <span class="error-message">El título es requerido</span>
-            }
+      <!-- 1. TÍTULO -->
+      <div class="form-group">
+        <label class="input-label">Título de la publicación</label>
+        <div class="input-wrapper">
+          <i class="fas fa-heading input-icon"></i>
+          <input type="text" formControlName="topicoTitulo" class="form-input" placeholder="Ej: Jornada de Reforestación">
+        </div>
+        @if(registroTopico.controls['topicoTitulo'].touched && registroTopico.controls['topicoTitulo'].invalid){
+          <span class="error-msg">El título es requerido</span>
+        }
+      </div>
+
+      <!-- 2. GRID: CATEGORÍA Y FECHA EVENTO -->
+      <div class="form-grid-row">
+        <div class="form-group">
+          <label class="input-label">Categoría</label>
+          <div class="select-wrapper">
+            <select formControlName="topicoCategoria" class="form-select">
+              <option value="Anuncio">Anuncio</option>
+              <option value="Evento">Evento</option>
+              <option value="Noticia">Noticia</option>
+              <option value="Educación">Educación</option>
+            </select>
           </div>
-          
-          <div class="form-group">
-            <label for="topico-resumen" class="form-label">Resumen</label>
-            <div class="input-container">
-              <textarea id="topico-resumen" class="form-input textarea" formControlName="topicoResumen" placeholder="Escriba un breve resumen del tema" rows="4"></textarea>
-              <div class="input-icon">
-                <i class="fas fa-align-left"></i>
-              </div>
-            </div>
-            @if(registroTopico.controls['topicoResumen'].touched && registroTopico.controls['topicoResumen'].hasError('required')){
-              <span class="error-message">El resumen es requerido</span>
-            }
+        </div>
+
+        <div class="form-group">
+          <label class="input-label">Fecha del Evento (Opcional)</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar-day input-icon"></i>
+            <input type="date" formControlName="topicoFechaEvento" class="form-input">
           </div>
+        </div>
+      </div>
+
+      <!-- 3. IMAGEN DE PORTADA -->
+      <div class="form-group">
+        <label class="input-label">Imagen de Portada</label>
+        <div class="file-upload-box" (click)="fileInput.click()">
+          <div class="upload-content">
+            @if (mainImagePreview) {
+              <div class="preview-wrapper">
+                <img [src]="mainImagePreview" class="cover-preview">
+                <span class="change-hint"><i class="fas fa-sync"></i> Cambiar imagen</span>
+              </div>
+            } @else {
+              <i class="fas fa-cloud-upload-alt upload-icon"></i>
+              <div class="upload-text">
+                <span class="link-text">Click para subir</span> o arrastra aquí
+              </div>
+              <p class="upload-hint">Formatos: PNG, JPG, GIF</p>
+            }
+            <input #fileInput type="file" (change)="onMainFileSelected($event)" accept="image/*" class="hidden-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CONTENIDO (EDITOR VISUAL / WYSIWYG) -->
+      <div class="form-group">
+        <label class="input-label">Contenido del Artículo</label>
+        
+        <!-- Toolbar con acciones reales -->
+        <div class="editor-toolbar">
+          <button type="button" (click)="formatDoc('bold')" title="Negrita" class="tool-btn"><i class="fas fa-bold"></i></button>
+          <button type="button" (click)="formatDoc('italic')" title="Cursiva" class="tool-btn"><i class="fas fa-italic"></i></button>
+          <div class="tool-separator"></div>
+          <button type="button" (click)="formatDoc('formatBlock', 'h3')" title="Subtítulo" class="tool-btn"><i class="fas fa-heading"></i></button>
+          <button type="button" (click)="formatDoc('formatBlock', 'p')" title="Párrafo" class="tool-btn"><i class="fas fa-paragraph"></i></button>
+          <div class="tool-separator"></div>
+          <button type="button" (click)="formatDoc('insertUnorderedList')" title="Lista con viñetas" class="tool-btn"><i class="fas fa-list-ul"></i></button>
+          <button type="button" (click)="formatDoc('insertOrderedList')" title="Lista numerada" class="tool-btn"><i class="fas fa-list-ol"></i></button>
+        </div>
+
+        <!-- Área Editable (No muestra etiquetas HTML) -->
+        <div 
+          id="richEditor"
+          class="rich-editor" 
+          contenteditable="true" 
+          (input)="onContentChange($event)"
+          placeholder="Escribe aquí los detalles... Puedes usar la barra para dar formato.">
         </div>
         
-        <div class="form-section photo-section">
-          <div class="form-group file-group">
-            <label for="topico-imagen" class="form-label">Imagen del Tópico</label>
-            <div class="file-input-container">
-              <input id="topico-imagen" type="file" class="form-file-input" formControlName="topicoImagen" (change)="onFileSelected($event)" accept="image/*"/>
-              <label for="topico-imagen" class="file-input-label">
-                <i class="fas fa-upload"></i>
-                Seleccionar imagen
-              </label>
-              <span class="file-name">No hay archivo seleccionado</span>
-            </div>
-            @if(registroTopico.controls['topicoImagen'].touched && registroTopico.controls['topicoImagen'].hasError('required')){
-              <span class="error-message">La imagen es requerida</span>
-            }
-          </div>
-          
-          <div class="preview-container" *ngIf="imagenPreview">
-            <img [src]="imagenPreview" alt="Vista previa" class="image-preview"/>
-          </div>
-        </div>
+        @if(registroTopico.controls['topicoContenido'].touched && registroTopico.controls['topicoContenido'].invalid){
+          <span class="error-msg">El contenido es requerido</span>
+        }
+      </div>
+
+      <hr class="divider">
+
+      <div class="form-actions">
+        <button type="button" routerLink="/foro" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="registroTopico.invalid" class="btn-submit">
+          Publicar Tópico
+        </button>
+      </div>
+
+    </form>
+    
+    <!-- VISTA PREVIA (Con manejo de doble fecha) -->
+    <div class="preview-card">
+      <div class="preview-header">
+        <h3>Vista Previa en Vivo</h3>
+      </div>
+      <div class="preview-body">
         
-        <div class="form-actions">
-          <button type="button" class="btn btn-glass cancel-btn" routerLink="">Cancelar</button>
-          <button type="submit" class="btn btn-primary submit-btn" [disabled]="!registroTopico.valid">
-            <span>Publicar Tópico</span>
-            <i class="fas fa-arrow-right"></i>
-          </button>
+        <!-- HEADER VISTA PREVIA -->
+        <div class="preview-top-meta">
+          <!-- Categoría -->
+          <span class="badge-category">{{ registroTopico.get('topicoCategoria')?.value || 'Categoría' }}</span>
+          
+          <!-- FECHA DEL EVENTO (Destacada si existe) -->
+          @if (registroTopico.get('topicoFechaEvento')?.value) {
+            <div class="event-date-badge">
+              <i class="far fa-calendar-check"></i>
+              <span>Evento: {{ registroTopico.get('topicoFechaEvento')?.value | date:'longDate' }}</span>
+            </div>
+          }
         </div>
-      </form>
+
+        <!-- TÍTULO -->
+        <h1 class="preview-h1">
+          {{ registroTopico.get('topicoTitulo')?.value || 'Título del Tópico' }}
+        </h1>
+
+        <!-- META AUTOR Y FECHA PUBLICACIÓN -->
+        <div class="author-meta-row">
+          <div class="author-info">
+            <i class="fas fa-user-circle avatar-icon"></i>
+            <span>Por {{ userId }}</span>
+          </div>
+          <div class="pub-date">
+            <i class="far fa-clock"></i> Publicado: {{ creationDate | date:'mediumDate' }}
+          </div>
+        </div>
+
+        <!-- IMAGEN -->
+        @if (mainImagePreview) {
+          <img [src]="mainImagePreview" class="preview-main-img">
+        }
+
+        <hr class="preview-hr">
+
+        <!-- CONTENIDO RENDERIZADO -->
+        <div class="article-content" [innerHTML]="registroTopico.get('topicoContenido')?.value"></div>
+        
+        @if (!registroTopico.get('topicoContenido')?.value) {
+          <p class="placeholder-text">El contenido del artículo aparecerá aquí tal cual lo escribas arriba...</p>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>
+} @else {
+  <div class="login-required">
+    <div class="msg-box">
+      <h2>Acceso Restringido</h2>
+      <p>Debes iniciar sesión para publicar en el foro.</p>
+      <button (click)="loginService.logout(); router.navigate(['/'])" class="btn-submit">Ir al Inicio</button>
     </div>
   </div>
+}

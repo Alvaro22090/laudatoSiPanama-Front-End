@@ -1,70 +1,26 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-about',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
-  activeSection: string = 'movimiento';
-
-  activities: Activity[] = [
-    {
-      title: "Circulos Laudato Si",
-      description: "Encuentros comunitarios para la reflexión y acción ambiental"
-    },
-    {
-      title: "Conversión ecológica",
-      description: "Profundizando en nuestra relación con Dios y el cuidado de la creación"
-    },
-    {
-      title: "Semillas de cambio",
-      description: "Promoviendo una cultura ecológica entre jóvenes y niños"
-    },
-    {
-      title: "Juntos por el bien común",
-      description: "Acciones comunitarias y retiros ecológicos para el cuidado de la creación"
-    }
+  
+  pilares = [
+    { icon: 'fas fa-book-open', title: 'Formación', description: 'Capacitación constante sobre la ecología integral y la doctrina social de la iglesia.' },
+    { icon: 'fas fa-leaf', title: 'Acción Sostenible', description: 'Iniciativas prácticas para reducir nuestra huella de carbono y restaurar ecosistemas.' },
+    { icon: 'fas fa-praying-hands', title: 'Espiritualidad', description: 'Conexión profunda con el Creador a través de la contemplación de la naturaleza.' }
   ];
 
-  values: Value[] = [
-    {
-      icon: "fas fa-seedling",
-      title: "Ecología integral",
-      description: "Enfoque que une el cuidado ambiental, la justicia social y el bienestar humano en un equilibrio integral."
-    },
-    {
-      icon: "fas fa-balance-scale",
-      title: "Justicia social y ambiental",
-      description: "Garantizar equidad en el acceso a recursos y proteger el medio ambiente para todos."
-    },
-    {
-      icon: "fas fa-hands-helping",
-      title: "Solidaridad con los más vulnerables",
-      description: "Apoyar activamente a quienes sufren por la degradación ambiental y la exclusión."
-    },
-    {
-      icon: "fas fa-recycle",
-      title: "Conversión ecológica",
-      description: "Transformación hacia un estilo de vida sostenible y respetuoso con la creación."
-    },
-    {
-      icon: "fas fa-users",
-      title: "Colaboración y comunidad",
-      description: "Trabajar juntos para enfrentar desafíos ambientales y sociales con cooperación y diálogo."
-    }
+  valores = [
+    { icon: 'fas fa-heart', title: 'Amor', description: 'El motor que impulsa el cuidado por cada criatura de Dios.' },
+    { icon: 'fas fa-balance-scale', title: 'Justicia', description: 'Buscamos la equidad para las comunidades más vulnerables al cambio climático.' },
+    { icon: 'fas fa-users', title: 'Solidaridad', description: 'Caminamos juntos, sin dejar a nadie atrás en esta misión ecológica.' },
+    { icon: 'fas fa-dove', title: 'Paz', description: 'Construimos armonía entre la humanidad y el medio ambiente.' }
   ];
-}
 
-interface Activity {
-  title: string;
-  description: string;
-}
-
-interface Value {
-  icon: string;
-  title: string;
-  description: string;
 }

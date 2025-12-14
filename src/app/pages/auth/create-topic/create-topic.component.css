@@ -1,225 +1,182 @@
-.registro-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8rem 2rem;
-    background-color: var(--tech-light);
-    border-radius: var(--border-radius-lg);
-  }
-  
-  .registro-card {
-    width: 100%;
-    max-width: 800px;
-    background: white;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
-    transition: var(--transition-normal);
-  }
-  
-  .registro-card:hover {
-    box-shadow: var(--box-shadow-hover);
-  }
-  
-  /* Encabezado del formulario */
-  .registro-header {
-    padding: 2rem 2rem 1rem;
-    text-align: center;
-    background: var(--gradient-dark);
-    color: var(--tech-dark);
-  }
-  
-  .registro-title {
-    font-family: var(--font-primary);
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--tech-dark);
-  }
-  
-  .registro-subtitle {
-    font-size: var(--text-lg);
-    color: var(--tech-gray);
-    font-weight: 400;
-  }
-  
-  /* Formulario */
-  .formulario {
-    padding: 1.5rem 2rem 2rem;
-  }
-  
-  .form-section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .section-title {
-    font-family: var(--font-primary);
-    font-size: var(--text-lg);
-    font-weight: 600;
-    margin-bottom: 1.25rem;
-    color: var(--tech-dark);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 0.5rem;
-  }
-  
-  /* Grupos de campos */
-  .form-group {
-    margin-bottom: 1.25rem;
-  }
-  
-  .form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    font-size: var(--text-sm);
-    color: var(--tech-gray);
-  }
-  
-  /* Contenedores de input con iconos */
-  .input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: var(--border-radius);
-    font-family: var(--font-secondary);
-    font-size: var(--text-base);
-    color: var(--tech-dark);
-    background-color: white;
-    transition: var(--transition-fast);
-  }
-  
-  .form-input:focus {
-    outline: none;
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
-  }
-  
-  .form-input::placeholder {
-    color: rgba(0, 0, 0, 0.3);
-  }
-  
-  .textarea {
-    min-height: 120px;
-    padding-top: 2rem;
-    resize: vertical;
-  }
-  
-  /* Iconos */
-  .input-icon {
-    position: absolute;
-    left: 0.75rem;
-    top: 0.75rem;
-    color: var(--tech-gray);
-    opacity: 0.6;
-    pointer-events: none;
-  }
-  
-  /* Sección de foto */
-  .photo-section {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 1.5rem;
-  }
-  
-  .file-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .form-file-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
-  .file-input-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--accent-green);
-    color: var(--tech-dark);
-    border-radius: var(--border-radius);
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition-fast);
-  }
-  
-  .file-input-label:hover {
-    background-color: var(--secondary-green);
-    color: white;
-  }
-  
-  .file-input-label i {
-    margin-right: 0.25rem;
-  }
-  
-  .file-name {
-    font-size: var(--text-sm);
-    color: var(--tech-gray);
-    margin-top: 0.25rem;
-  }
-  
-  .preview-container {
-    margin-top: 1rem;
-    border: 1px dashed rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius);
-    padding: 0.5rem;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .image-preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: var(--border-radius-sm);
-    object-fit: contain;
-  }
-  
-  /* Mensajes de error */
-  .error-message {
-    display: block;
-    color: #E74C3C;
-    font-size: var(--text-sm);
-    margin-top: 0.25rem;
-  }
-  
-  /* Acciones del formulario */
-  .form-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 1.5rem;
-  }
-  
-  .cancel-btn, .submit-btn {
-    cursor: pointer;
-    min-width: 120px;
-  }
-  
-  .submit-btn {
-    background: var(--gradient-green);
-    color: white;
-  }
-  
-  .submit-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    background: linear-gradient(135deg, #a8e6cf, #a8e6cf);
-    transform: none !important;
-    box-shadow: none !important;
-  }
+/* ... (Tus variables y layout base se mantienen igual) ... */
+:host {
+  --c-primary: var(--primary-green);
+  --c-bg: #fafaf9;
+  --c-card-bg: #ffffff;
+  --c-border: #e7e5e4;
+  --c-text-main: var(--tech-dark);
+  --c-text-sec: var(--tech-gray);
+  --c-danger: #ef4444;
+}
+
+.create-layout { min-height: 100vh; background-color: var(--c-bg); padding: 8rem 1rem 4rem; }
+.create-container { max-width: 800px; margin: 0 auto; }
+
+/* HEADER & CARD - (Igual que antes) */
+.page-header { margin-bottom: 2.5rem; }
+.page-title { font-family: var(--font-primary); font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.page-subtitle { font-family: var(--font-secondary); color: var(--c-text-sec); }
+.create-card { background-color: var(--c-card-bg); border-radius: 1rem; padding: 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 3rem; }
+
+/* --- EDITOR WYSIWYG ESTILOS --- */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f3f4f6;
+  border: 1px solid var(--c-border);
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #4b5563; transition: all 0.2s;
+}
+.tool-btn:hover { background-color: var(--c-primary); color: white; border-color: var(--c-primary); }
+.tool-separator { width: 1px; height: 20px; background-color: #d1d5db; margin: 0 0.5rem; }
+
+/* El DIV editable que parece Textarea */
+.rich-editor {
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid var(--c-border);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: white;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--c-text-main);
+}
+
+.rich-editor:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px rgba(0, 176, 95, 0.1);
+}
+
+/* Placeholder simulado para div editable */
+.rich-editor:empty:before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  display: block; /* For Firefox */
+}
+
+/* --- ESTILOS VISTA PREVIA CON DOBLE FECHA --- */
+.preview-card { background: white; border-radius: 1rem; border: 1px solid var(--c-border); overflow: hidden; }
+.preview-header { background: #f8fafc; padding: 1rem 1.5rem; border-bottom: 1px solid var(--c-border); font-weight: 700; color: var(--c-text-sec); text-transform: uppercase; font-size: 0.9rem; }
+.preview-body { padding: 2.5rem; }
+
+/* Meta Header: Categoría + Fecha Evento */
+.preview-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.badge-category {
+  background-color: var(--c-primary);
+  color: white;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.event-date-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff7ed; /* Fondo naranja muy suave */
+  color: #c2410c; /* Naranja oscuro / Tierra */
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #ffedd5;
+}
+
+/* Título */
+.preview-h1 {
+  font-family: var(--font-primary);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--c-text-main);
+  margin-bottom: 0.8rem;
+  line-height: 1.1;
+}
+.preview-h1.placeholder { color: #d1d5db; }
+
+/* Meta Autor + Fecha Publicación */
+.author-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--c-text-sec);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.author-info, .pub-date { display: flex; align-items: center; gap: 0.4rem; }
+.avatar-icon { font-size: 1.2rem; color: #9ca3af; }
+
+.preview-main-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* --- ESTILOS DEL CONTENIDO RENDERIZADO (Wysiwyg result) --- */
+.article-content { color: #374151; line-height: 1.8; font-size: 1.1rem; }
+
+/* Estos estilos aseguran que lo que escribiste en el editor se vea bien en el preview */
+.article-content ::ng-deep h3 { 
+  font-family: var(--font-primary); font-size: 1.5rem; font-weight: 700; 
+  color: var(--c-text-main); margin-top: 1.5rem; margin-bottom: 0.5rem; 
+}
+.article-content ::ng-deep p { margin-bottom: 1rem; }
+.article-content ::ng-deep ul, .article-content ::ng-deep ol { 
+  margin-left: 1.5rem; margin-bottom: 1rem; 
+}
+.article-content ::ng-deep ul { list-style: disc; }
+.article-content ::ng-deep ol { list-style: decimal; }
+.article-content ::ng-deep li { margin-bottom: 0.3rem; }
+.article-content ::ng-deep b, .article-content ::ng-deep strong { font-weight: 700; color: #000; }
+.article-content ::ng-deep i, .article-content ::ng-deep em { font-style: italic; }
+
+/* Inputs generales */
+.form-grid-row { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 768px) { .form-grid-row { grid-template-columns: 1fr 1fr; } }
+.input-label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--c-text-main); }
+.input-wrapper { position: relative; }
+.input-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+.form-input, .form-select { width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-family: var(--font-secondary); }
+.select-wrapper { position: relative; }
+.select-arrow { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--c-primary); box-shadow: 0 0 0 3px rgba(0,176,95,0.1); }
+.file-upload-box { border: 2px dashed #d1d5db; padding: 2rem; text-align: center; cursor: pointer; border-radius: 0.8rem; transition: all 0.2s; background: #fff; }
+.file-upload-box:hover { border-color: var(--c-primary); background: #f0fdf4; }
+.upload-icon { font-size: 2rem; color: #9ca3af; margin-bottom: 0.5rem; }
+.hidden-input { display: none; }
+.cover-preview { max-width: 100%; max-height: 200px; object-fit: cover; border-radius: 0.5rem; }
+.btn-submit { background: var(--c-primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; margin-left: 1rem; }
+.btn-cancel { background: white; border: 1px solid var(--c-border); padding: 0.8rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; }
+.error-msg { color: var(--c-danger); font-size: 0.85rem; margin-top: 0.3rem; display: block; }

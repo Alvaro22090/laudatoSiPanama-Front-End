@@ -1,156 +1,253 @@
+/* --- LAYOUT PRINCIPAL (Comportamiento Original) --- */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 15vh;
     z-index: 1000;
-    background: #ecf1ed;
-    transition: var(--transition-normal);
-    padding: 0.5rem 0;
+    
+    /* IMPORTANTE: Quitamos background y backdrop-filter de aquí
+       para que el modal no se quede atrapado dentro del navbar */
+    background-color: transparent; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Transición solo de altura para no afectar el position fixed de los hijos */
+    transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Usamos ::before para el fondo y el efecto borroso.
+   Esto permite que el Modal (que es hijo) pueda salir de este contenedor. */
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Estilos visuales EcoLaudato */
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-sm);
+    
+    z-index: -1; /* Se pone detrás del contenido */
+    transition: all 0.5s ease;
+}
+
+/* --- ESTADO SCROLLED (Al bajar) --- */
 .navbar.scrolled {
-    background: rgb(104, 207, 130);
-    box-shadow: var(--box-shadow);
-}
-.navbar-elements{
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+    height: 10vh;
 }
 
-.navbar-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
+.navbar.scrolled::before {
+    /* El fondo se vuelve un poco más sólido al bajar */
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--glass-shadow);
+}
+
+/* Contenedor interno para limitar el ancho */
+.nav-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1280px;
+    padding: 0 1.5rem;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 
-.navbar-logo {
+/* --- LOGO --- */
+.nav-logo {
+    height: 70%; /* El logo ocupa porcentaje de la altura del navbar */
     display: flex;
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-}
-
-.nav-logo img {
-    height: 90px;
     transition: var(--transition-normal);
-    border-radius: var(--border-radius);
 }
 
-.nav-logo:hover img{
-    background: var(--glass-bg);
-    transform: translateY(-2px);
-}
 
+.icono-png {
+    /* Establece el ancho y el alto. Los íconos suelen ser cuadrados. */
+    width: 80px;
+    height: 80px;
+
+    /* Asegura que la imagen esté alineada correctamente con el texto si está en una línea. */
+    vertical-align: middle; 
+}
 .logo-text {
     font-family: var(--font-primary);
-    font-size: var(--text-xl);
-    font-weight: 600;
-    color: var(--tech-dark);
-    letter-spacing: 0.5px;
+    font-size: 1.8rem; /* Texto grande */
+    font-weight: 700;
+    color: var(--primary-green);
+    letter-spacing: -0.5px;
 }
 
-.navbar-links {
-    display: flex;
+.text-earth {
+    color: var(--color-earth);
+}
+
+/* --- DESKTOP MENU --- */
+.nav-desktop {
+    display: none;
+    height: 100%;
+    align-items: center;
     gap: 2rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    height: 100%;
     align-items: center;
 }
 
-.nav-link {
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--tech-dark);
+.nav-links a {
     text-decoration: none;
-    font-size: var(--text-lg);
-    font-weight: 600;
-    padding: 0.5rem;
+    color: var(--tech-gray);
+    font-weight: 500;
+    font-size: 1.1rem; /* Texto legible */
+    padding: 0.5rem 1rem;
     border-radius: var(--border-radius);
     transition: var(--transition-fast);
+    font-family: var(--font-secondary);
 }
 
-.nav-link i {
-    font-size: 1.1em;
-    color: var(--tech-dark);
-    transition: var(--transition-fast);
-}
-
-.nav-link:hover {
-    background: var(--glass-bg);
+.nav-links a:hover {
+    background-color: var(--accent-green);
+    color: var(--primary-green);
     transform: translateY(-2px);
 }
 
-.nav-link:hover i {
-    transform: scale(1.1);
+.nav-links a.active {
+    color: var(--primary-green);
+    font-weight: 600;
 }
 
-.navbar-actions {
+/* Botones de Auth */
+.nav-auth {
     display: flex;
     align-items: center;
     gap: 1rem;
-    justify-content: flex-end;
 }
 
-.login-btn {
-    min-width: 140px;  
+.btn-login {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--tech-gray);
+    cursor: pointer;
+    transition: color 0.3s;
+    font-family: var(--font-secondary);
 }
 
-.menu-btn {
-    display: none;
-    flex-direction: column;
-    gap: 6px;
+.btn-login:hover {
+    color: var(--primary-green);
+}
+
+.btn-register {
+    background-color: var(--primary-green);
+    color: white;
+    padding: 0.7rem 1.8rem;
+    border-radius: var(--border-radius-full);
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(21, 128, 61, 0.2);
+    transition: var(--transition-normal);
+}
+
+.btn-register:hover {
+    background-color: var(--secondary-green);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(21, 128, 61, 0.3);
+}
+
+/* --- MOBILE TOGGLE --- */
+.menu-toggle {
+    display: flex;
     background: none;
     border: none;
     cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
     padding: 0.5rem;
 }
 
-.menu-btn span {
+.line-hamburguer {
     display: block;
-    width: 25px;
-    height: 2px;
-    background-color: var(--tech-dark);
-    border-radius: 2px;
-    transition: var(--transition-fast);
+    width: 30px;
+    height: 3px;
+    background-color: var(--tech-gray);
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
 }
 
-@media (max-width: 768px) {
-.navbar-links {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    background: var(--tech-light);
-    padding: 2rem;
-    flex-direction: column;
-    gap: 1rem;
-    transform: translateY(-100%);
+/* Animación Hamburguesa cuando está activo */
+.menu-toggle.active .line-hamburguer:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+.menu-toggle.active .line-hamburguer:nth-child(2) {
     opacity: 0;
-    visibility: hidden;
-    transition: var(--transition-normal);
+}
+.menu-toggle.active .line-hamburguer:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
 }
 
-.navbar-links.active {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-}
-
-.menu-btn {
+/* --- MOBILE MENU OVERLAY --- */
+.mobile-menu {
+    position: fixed;
+    top: 15vh; /* Empieza justo debajo del navbar alto */
+    left: 0;
+    width: 100%;
+    height: 85vh; /* El resto de la pantalla */
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrado verticalmente como en tu original */
+    gap: 2rem;
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
 }
 
-.login-btn span {
-    display: none;
+/* Ajuste del menú móvil cuando el navbar se encoge */
+.navbar.scrolled ~ .mobile-menu, 
+.navbar.scrolled .mobile-menu {
+    top: 10vh; 
+    height: 90vh;
 }
 
-.login-btn {
-    min-width: unset;
-    padding: 0.75rem;
+.mobile-menu a, .mobile-menu button {
+    font-size: 1.5rem;
+    color: var(--tech-gray);
+    text-decoration: none;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-primary);
 }
+
+.mobile-menu a.highlight {
+    color: var(--primary-green);
+}
+
+@media (min-width: 900px) {
+    .nav-desktop { display: flex; }
+    .menu-toggle { display: none; }
+    .mobile-menu { display: none; }
+}
+
+/* Ajuste para pantallas muy pequeñas (landscape) */
+@media (max-height: 500px) {
+    .navbar { height: 20vh; }
+    .navbar.scrolled { height: 15vh; }
 }

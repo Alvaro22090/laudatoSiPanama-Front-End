@@ -1,56 +1,52 @@
 <footer class="footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Laudato Si" class="footer-logo">
-        <h3>Laudato Si Panamá</h3>
-        <p>Portal para el cuidado de nuestro planeta en Panamá.</p>
-      </div>
-  
-      <div class="footer-links">
-        <h4>Navegación</h4>
-        <nav>
-          <a routerLink="/">Inicio</a>
-          <a routerLink="/quienes-somos">Quienes Somos</a>
-          <a routerLink="/foro">Foro</a>
-          <a routerLink="/contacto">Contacto</a>
-          <a routerLink="/registro">Registro</a>
-        </nav>
-      </div>
-  
-      <div class="footer-newsletter">
-        <h4>Contactanos</h4>
-        <p>Mantente informado sobre nuestras últimas iniciativas</p>
-        <div class="newsletter-form">
-          <input type="email" placeholder="Tu email" class="newsletter-input">
-          <button class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i>
-          </button>
+    <div class="footer-container">
+        
+        <!-- SECCIÓN PRINCIPAL (Grilla de 3 columnas como antes) -->
+        <div class="footer-grid">
+            <!-- 1. Marca -->
+            <div class="footer-brand">
+                <div class="brand-title">
+                    <i class="fas fa-leaf"></i>
+                    <h3>LaudatoSi' Panamá</h3>
+                </div>
+                <p>Cuidando nuestra casa común. Un espacio para conectar, compartir y actuar por un futuro más sostenible.</p>
+            </div>
+        
+            <!-- 2. Enlaces Rápidos -->
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <nav class="footer-nav">
+                    <a routerLink="/description">Quiénes Somos</a>
+                    <a routerLink="/foro">Eventos y Anuncios</a>
+                    <a routerLink="/contacto">Contacto</a>
+                </nav>
+            </div>
+        
+            <!-- 3. Contacto -->
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p class="contact-item"><i class="fas fa-envelope"></i> info&#64;LaudatoSi.org</p>
+                <p class="contact-item"><i class="fas fa-phone"></i> +507 1234 5678</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
         </div>
-        <div class="social-links">
-          <a href="#" class="social-link">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="#" class="social-link">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="#" class="social-link">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="#" class="social-link">
-            <i class="fab fa-instagram"></i>
-          </a>
+
+        <!-- SECCIÓN INFERIOR (Compacta: Izquierda y Derecha) -->
+        <div class="footer-bottom">
+            <div class="copyright">
+                &copy; {{ currentYear }} LaudatoSi Panamá. Todos los derechos reservados.
+            </div>
+            
+            <div class="legal-links">
+                <a routerLink="/terminos">Términos y Condiciones</a>
+                <span class="separator">•</span>
+                <a routerLink="/privacidad">Política de Privacidad</a>
+            </div>
         </div>
-      </div>
-    </div>
-  
-    <div class="footer-bottom">
-      <div class="footer-info">
-        <p>&copy; 2025 Laudato Si. Todos los derechos reservados.</p>
-      </div>
-      <div class="footer-legal">
-        <a href="/privacidad">Privacidad</a>
-        <a href="/terminos">Términos</a>
-        <a href="/cookies">Cookies</a>
-      </div>
     </div>
 </footer>

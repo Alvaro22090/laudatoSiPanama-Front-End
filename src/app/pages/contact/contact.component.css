@@ -1,80 +1,246 @@
-  h1 {
-    font-family: 'Poppins', sans-serif;
-    color: #00796B;
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+:host {
+  /* Variables locales basadas en el tema global */
+  --c-primary: var(--primary-green);
+  --c-accent: var(--color-earth);
+  --c-bg: #f5f5f4; /* Stone 50 */
+  --c-text-main: var(--tech-dark);
+  --c-text-sec: var(--tech-gray);
+  --c-border: #e7e5e4;
+}
+
+.contact-layout {
+  min-height: 100vh;
+  background-color: var(--c-bg);
+  padding: 8rem 1.5rem 4rem; /* Padding top para navbar fixed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- HEADER --- */
+.contact-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+}
+
+.header-title {
+  font-family: var(--font-primary);
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--c-text-main);
+  margin-bottom: 1rem;
+}
+
+.header-subtitle {
+  font-family: var(--font-secondary);
+  font-size: 1.25rem;
+  color: var(--c-text-sec);
+  line-height: 1.6;
+}
+
+/* --- CARD WRAPPER (Split Layout) --- */
+.contact-card-wrapper {
+  background: white;
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+}
+
+/* --- PANEL IZQUIERDO (INFO) --- */
+.contact-info-panel {
+  /* Fondo Azul Corporativo (Estilo EcoLaudato) */
+  background-color: var(--c-accent);
+  background-image: linear-gradient(135deg, var(--c-accent), #005a8d);
+  color: white;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.info-title {
+  font-family: var(--font-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.info-desc {
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.info-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.icon-circle {
+  width: 40px; height: 40px;
+  background-color: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.info-text h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-secondary);
+  color: white; /* Asegurar contraste */
+}
+
+.info-text p {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-btn {
+  width: 45px; height: 45px;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-btn:hover {
+  background-color: white;
+  color: var(--c-accent);
+  transform: translateY(-3px);
+}
+
+/* --- PANEL DERECHO (FORM) --- */
+.contact-form-panel {
+  padding: 3rem;
+  background-color: white;
+}
+
+.main-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-grid-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--c-text-main);
+  margin-bottom: 0.5rem;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--c-border);
+  border-radius: 0.8rem;
+  background-color: #f9fafb;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--c-text-main);
+  transition: all 0.2s;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  outline: none;
+  background-color: white;
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 4px rgba(0, 176, 95, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.error-msg {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+.submit-btn {
+  background-color: var(--c-text-main); /* Botón negro/oscuro elegante */
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.submit-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (min-width: 900px) {
+  .contact-card-wrapper {
+    grid-template-columns: 2fr 3fr; /* Panel info más angosto */
+  }
+
+  .form-grid-row {
+    grid-template-columns: 1fr 1fr; /* Nombre y Asunto en fila */
+  }
+
+  .contact-info-panel {
+    padding: 4rem;
   }
   
-  p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    text-align: center;
-    margin-bottom: 40px;
+  .contact-form-panel {
+    padding: 4rem;
   }
-  
-  /* Contenedor principal */
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 6rem 2rem;
-  }
-  
-  /* Formulario de contacto */
-  .formulario-contacto {
-    background-color: #FFFFFF;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #00796B;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #B2DFDB;
-    border-radius: 5px;
-    font-size: 1rem;
-    color: #333333;
-    background-color: #F5F5F5;
-    transition: border-color 0.3s ease;
-  }
-  
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-color: #80CBC4;
-    outline: none;
-  }
-  
-  .form-group textarea {
-    resize: vertical;
-  }
-  
-  /* Botón de enviar */
-  .boton {
-    display: inline-block;
-    background-color: #00796B;
-    color: #FFFFFF;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .boton:hover {
-    background-color: #80CBC4;
-  }
+}

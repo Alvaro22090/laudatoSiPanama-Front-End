@@ -45,7 +45,7 @@ export const routes: Routes = [
         title: 'Registro-topico'
     },
     {
-        path: 'topico',
+        path: 'topico/:id',
         component: TopicComponent,
         title: 'Topico'
     }
