@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: 'https://api.example.com',
+    apiUrl: 'https://vivacious-beauty-production-bfd6.up.railway.app',
 };
