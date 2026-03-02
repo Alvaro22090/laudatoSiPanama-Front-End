@@ -1,4 +1,11 @@
+/* ---- Fuentes ---- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap');
+@import 'quill/dist/quill.snow.css';
+
 :root {
+    /* Tipografía del foro (cards, inputs, botones, metadatos) */
+    --font-forum: 'Plus Jakarta Sans', sans-serif;
+
     /* --- PALETA DE COLORES (Identidad Home) --- */
     
     /* Tu Verde Principal (Botones, Iconos, 'Eco') */
@@ -24,6 +31,15 @@
     /* --- TIPOGRAFÍA (Mantenemos la elegancia) --- */
     --font-primary: 'Merriweather', serif; /* Títulos */
     --font-secondary: 'Inter', sans-serif; /* Textos / UI */
+
+    /* --- NAVBAR (Fuente de verdad para la altura del navbar fijo) ---
+       Todos los componentes deben usar esta variable en lugar de valores hardcodeados.
+       El <main> en app.component.css aplica el clearance automáticamente. */
+    --navbar-height: 15vh;
+    --navbar-height-scrolled: 10vh;
+
+    /* --- TRANSICIONES --- */
+    --transition-fast: all 0.15s ease;
 
     /* --- EFECTOS VISUALES --- */
     --glass-bg: rgba(255, 255, 255, 0.95);
@@ -73,4 +89,52 @@ h1, h2, h3, h4, h5 {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-green); /* Tu verde */
+}
+
+/* En landscape con pantalla muy baja (ej. móvil horizontal),
+   el navbar se hace más grande en vh, así que recalibramos las variables. */
+@media (max-height: 500px) {
+    :root {
+        --navbar-height: 20vh;
+        --navbar-height-scrolled: 15vh;
+    }
+}
+
+/* ================================================================
+   PROSA DEL FORO — estilos globales para HTML inyectado via [innerHTML]
+   Reemplaza el uso de ::ng-deep en topic.component.css
+   ================================================================ */
+.forum-prose h2,
+.forum-prose h3 {
+    font-family: var(--font-primary);
+    color: var(--tech-dark);
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+}
+.forum-prose h2 { font-size: 1.6rem; }
+.forum-prose h3 { font-size: 1.25rem; }
+.forum-prose p  { margin-bottom: 1.25rem; }
+.forum-prose ul { list-style: disc;    padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.forum-prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.forum-prose li { margin-bottom: 0.4rem; }
+.forum-prose strong, .forum-prose b { font-weight: 700; color: var(--tech-dark); }
+.forum-prose em,     .forum-prose i  { font-style: italic; }
+.forum-prose blockquote {
+    border-left: 3px solid var(--primary-green);
+    padding: 0.5rem 1rem;
+    margin: 1.5rem 0;
+    color: var(--tech-gray);
+    font-style: italic;
+}
+.forum-prose a {
+    color: var(--color-earth);
+    text-decoration: underline;
+}
+.forum-prose img {
+    width: 100%;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+    display: block;
 }

@@ -1,0 +1,35 @@
+<article class="card" [routerLink]="['/foro', topic.topicoId]">
+
+  <div class="card-img-wrap">
+    <span class="category-chip" [class]="categoryClass">
+      {{ topic.topicoCategoria || 'Anuncio' }}
+    </span>
+    @if (topic.topicoFechaEvento) {
+      <span class="event-chip">
+        <i class="fas fa-calendar-star"></i> Evento
+      </span>
+    }
+    <img [src]="topic.topicoImagen" [alt]="topic.topicoTitulo" loading="lazy">
+  </div>
+
+  <div class="card-body">
+    <div class="card-meta">
+      <span><i class="far fa-calendar-alt"></i> {{ formatDate(topic.topicoFecha) }}</span>
+      <span><i class="far fa-clock"></i> {{ readingTime }} lectura</span>
+    </div>
+
+    <h3 class="card-title">{{ topic.topicoTitulo }}</h3>
+    <p class="card-excerpt">{{ topic.topicoResumen }}</p>
+
+    <div class="card-footer">
+      <div class="author-chip">
+        <span class="author-avatar">{{ topic.topicoAutor.charAt(0).toUpperCase() }}</span>
+        <span class="author-name">{{ topic.topicoAutor }}</span>
+      </div>
+      <span class="link-detail">
+        Leer <i class="fas fa-arrow-right"></i>
+      </span>
+    </div>
+  </div>
+
+</article>

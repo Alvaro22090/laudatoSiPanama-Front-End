@@ -1,91 +1,104 @@
-<div class="forum-page-wrapper">
-  <div class="forum-container">
+<div class="forum-wrapper">
 
-    <!-- HEADER (Solo visible en modo lista) -->
-    @if (!selectedTopic()) {
-      <div class="forum-header">
-        <div class="header-content">
-          <h1 class="page-title">Tablón de Anuncios</h1>
-          <p class="page-subtitle">Eventos, noticias y actividades de nuestra comunidad.</p>
-        </div>
-        
-        <!-- Botón Publicar -->
-        @if (isLoggedIn()) {
-          <a routerLink="/registro-topico" class="btn-create">
-            <i class="fas fa-plus"></i> Publicar Anuncio
-          </a>
-        }
-      </div>
+  <!-- ====================================================
+       HEADER
+       ==================================================== -->
+  <header class="forum-header">
+    <div class="header-text">
+      <h1 class="forum-title">Tablón de <em>Anuncios</em></h1>
+      <p class="forum-subtitle">Eventos, noticias y actividades de la comunidad Laudato Si' Panamá.</p>
+    </div>
+    @if (isLoggedIn()) {
+      <a routerLink="/registro-topico" class="btn-publish">
+        <i class="fas fa-plus"></i> Publicar
+      </a>
+    }
+  </header>
 
-      <!-- BARRA DE HERRAMIENTAS (Filtro) -->
-      <div class="toolbar">
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input 
-            type="text" 
-            placeholder="Buscar temas..." 
-            [value]="filtro()" 
-            (input)="onFiltroChange($event)">
-        </div>
-      </div>
+  <!-- ====================================================
+       TOOLBAR — Búsqueda + Filtros de categoría
+       ==================================================== -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input
+        type="search"
+        placeholder="Buscar publicaciones…"
+        (input)="onSearch($event)"
+        autocomplete="off">
+    </div>
 
-      <!-- GRID DE TÓPICOS -->
-      <div class="topics-grid animate-fade-in">
-        @for (topic of topicosPaginados(); track topic.topicoId) {
-          <!-- Al hacer click, llamamos a selectTopic() en lugar de routerLink -->
-          <article class="topic-card" (click)="selectTopic(topic)">
-            
-            <div class="card-image-wrap">
-              <!-- Categoría Flotante -->
-              <span class="category-tag">{{ topic.topicoCategoria || 'Anuncio' }}</span>
-              <img [src]="topic.topicoImagen" [alt]="topic.topicoTitulo">
-            </div>
+    <div class="category-chips">
+      @for (cat of CATEGORIAS; track cat) {
+        <button
+          class="chip"
+          [class.chip--active]="categoriaActiva() === cat"
+          (click)="onCategoria(cat)">
+          {{ cat === 'todos' ? 'Todos' : cat }}
+        </button>
+      }
+    </div>
+  </div>
 
-            <div class="card-body">
-              <div class="card-meta">
-                <span><i class="far fa-calendar"></i> {{ formatDate(topic.topicoFecha) }}</span>
-                <span><i class="far fa-user"></i> {{ topic.topicoAutor }}</span>
-              </div>
-              
-              <h3 class="card-title">{{ topic.topicoTitulo }}</h3>
-              <p class="card-excerpt">{{ topic.topicoResumen }}</p>
-              
-              <div class="card-footer">
-                <span class="link-detail">
-                  Ver detalles <i class="fas fa-arrow-right"></i>
-                </span>
-              </div>
-            </div>
+  <!-- ====================================================
+       BANNER DE NUEVO TÓPICO (WebSocket)
+       ==================================================== -->
+  @if (hasPendingNew()) {
+    <div class="new-banner" (click)="showNewTopics()">
+      <i class="fas fa-arrow-up"></i>
+      {{ newTopicsBuffer().length }}
+      {{ newTopicsBuffer().length === 1 ? 'nueva publicación' : 'nuevas publicaciones' }}
+      — Click para ver
+    </div>
+  }
 
-          </article>
-        } @empty {
-          <div class="empty-state">
-            <p>No se encontraron resultados.</p>
+  <!-- ====================================================
+       GRID DE TÓPICOS
+       ==================================================== -->
+  @if (isLoading()) {
+    <div class="loading-grid">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="skeleton-card">
+          <div class="sk-img"></div>
+          <div class="sk-body">
+            <div class="sk-line sk-line--short"></div>
+            <div class="sk-line"></div>
+            <div class="sk-line sk-line--medium"></div>
           </div>
-        }
-      </div>
-
-      <!-- PAGINACIÓN -->
-      @if (numeroTotalDePaginas() > 1) {
-        <div class="pagination">
-          <button (click)="cambiarPagina(paginaActual() - 1)" [disabled]="paginaActual() === 1">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <span class="page-info">{{ paginaActual() }} de {{ numeroTotalDePaginas() }}</span>
-          <button (click)="cambiarPagina(paginaActual() + 1)" [disabled]="paginaActual() === numeroTotalDePaginas()">
-            <i class="fas fa-chevron-right"></i>
-          </button>
         </div>
       }
+    </div>
+  } @else if (hasError()) {
+    <div class="empty-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>No se pudo cargar el contenido</h3>
+      <p>Verifica tu conexión e intenta de nuevo.</p>
+      <button class="btn-retry" (click)="onPageChange(0)">Reintentar</button>
+    </div>
+  } @else if (topicosVisibles().length === 0) {
+    <div class="empty-state">
+      <i class="fas fa-search"></i>
+      <h3>Sin resultados</h3>
+      <p>No encontramos publicaciones que coincidan con tu búsqueda.</p>
+    </div>
+  } @else {
+    <div class="topics-grid animate-in">
+      @for (topic of topicosVisibles(); track topic.topicoId) {
+        <app-forum-card [topic]="topic" />
+      }
+    </div>
+  }
 
-    } @else {
-      <!-- VISTA DE DETALLE (Se muestra cuando hay un tópico seleccionado) -->
-      <!-- Pasamos el tópico y escuchamos el evento de cierre -->
-      <app-topic 
-        [topicData]="selectedTopic()" 
-        (closeDetail)="clearSelection()">
-      </app-topic>
-    }
+  <!-- ====================================================
+       PAGINACIÓN
+       ==================================================== -->
+  @if (!isLoading() && !hasError()) {
+    <app-forum-pagination
+      [paginaActual]="paginaActual()"
+      [totalPaginas]="totalPaginas()"
+      [totalElementos]="totalElementos()"
+      (paginaCambiada)="onPageChange($event)">
+    </app-forum-pagination>
+  }
 
-  </div>
 </div>

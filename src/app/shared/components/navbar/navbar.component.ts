@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-// Importamos tu componente LoginComponent (asegúrate de que sea Standalone o esté en el módulo)
-import { LoginComponent } from "../../../pages/auth/login/login.component"; 
+import { LoginComponent } from "../../../pages/auth/login/login.component";
 
 @Component({
   selector: 'app-navbar',

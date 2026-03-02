@@ -1,0 +1,46 @@
+@if (totalPaginas > 1) {
+  <nav class="pagination" aria-label="Paginación">
+
+    <!-- Anterior -->
+    <button class="pg-btn pg-arrow"
+      [disabled]="paginaActual === 0"
+      (click)="goTo(paginaActual - 1)"
+      aria-label="Página anterior">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <!-- Primera página + ellipsis -->
+    @if (visiblePages[0] > 0) {
+      <button class="pg-btn" (click)="goTo(0)">1</button>
+      @if (visiblePages[0] > 1) {
+        <span class="pg-ellipsis">…</span>
+      }
+    }
+
+    <!-- Páginas visibles -->
+    @for (p of visiblePages; track p) {
+      <button class="pg-btn" [class.pg-btn--active]="p === paginaActual" (click)="goTo(p)">
+        {{ p + 1 }}
+      </button>
+    }
+
+    <!-- Última página + ellipsis -->
+    @if (visiblePages[visiblePages.length - 1] < totalPaginas - 1) {
+      @if (visiblePages[visiblePages.length - 1] < totalPaginas - 2) {
+        <span class="pg-ellipsis">…</span>
+      }
+      <button class="pg-btn" (click)="goTo(totalPaginas - 1)">{{ totalPaginas }}</button>
+    }
+
+    <!-- Siguiente -->
+    <button class="pg-btn pg-arrow"
+      [disabled]="paginaActual === totalPaginas - 1"
+      (click)="goTo(paginaActual + 1)"
+      aria-label="Página siguiente">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <span class="pg-info">{{ totalElementos }} publicaciones</span>
+
+  </nav>
+}

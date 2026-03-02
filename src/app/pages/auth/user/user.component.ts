@@ -1,7 +1,8 @@
 import {Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ApplicationData, UserServiceService } from '../../../core/services/user-service.service';
-import { LoginServiceService } from '../../../core/services/login-service.service';
+import { UserService } from '../../../core/services/user.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ApplicationData } from '../../../core/interfaces/user-data.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,8 +13,8 @@ import { CommonModule } from '@angular/common';
 })
 export class UserComponent implements OnInit{
   route: ActivatedRoute = inject(ActivatedRoute);
-  userService = inject(UserServiceService);
-  loginService = inject(LoginServiceService)
+  userService = inject(UserService);
+  loginService = inject(AuthService)
   userId: string | undefined;
   token: string | undefined;
   usuarioInformacion: ApplicationData = {

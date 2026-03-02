@@ -1,94 +1,100 @@
-@if (topicSignal(); as topic) {
-  <div class="detail-container animate-fade-in-up">
-    
-    <!-- HERO IMAGE AREA -->
-    <div class="hero-wrapper">
-      <!-- Fallback por si no hay imagen -->
-      <img [src]="topic.topicoImagen || 'assets/placeholder-topic.jpg'" [alt]="topic.topicoTitulo" class="hero-image">
-      
-      <button (click)="onClose()" class="btn-back">
-        <i class="fas fa-arrow-left"></i> Volver al tablón
-      </button>
-      
-      <div class="hero-overlay"></div>
+<!-- CARGANDO -->
+@if (isLoading()) {
+  <div class="topic-loading">
+    <div class="sk-hero"></div>
+    <div class="sk-content">
+      <div class="sk-line sk-line--40"></div>
+      <div class="sk-line sk-line--80"></div>
+      <div class="sk-line sk-line--60"></div>
     </div>
+  </div>
 
-    <!-- CONTENIDO FLOTANTE -->
-    <div class="content-card-wrapper">
-      <div class="content-card">
-        
-        <!-- Header del Artículo -->
-        <div class="article-header">
-          <div class="meta-badges">
-            <div class="badge-group">
-              <span class="category-badge">{{ topic.topicoCategoria || 'Anuncio' }}</span>
-              <!-- NUEVO: Badge si es evento -->
-              @if (isEvent()) {
-                <span class="event-badge"><i class="fas fa-calendar-star"></i> Evento</span>
-              }
-            </div>
-            
-            <div class="date-group">
-              <span class="date-badge">
-                <i class="far fa-clock"></i> {{ formatFecha(topic.topicoFecha) }}
-              </span>
-              <!-- NUEVO: Tiempo de lectura -->
-              <span class="reading-time">
-                &bull; {{ readingTime() }}
-              </span>
-            </div>
+<!-- ERROR -->
+} @else if (hasError()) {
+  <div class="topic-error">
+    <i class="fas fa-exclamation-circle"></i>
+    <h2>No pudimos cargar esta publicación</h2>
+    <p>Es posible que haya sido eliminada o que no tengas conexión.</p>
+    <button class="btn-back-pill" (click)="volver()">
+      <i class="fas fa-arrow-left"></i> Volver al tablón
+    </button>
+  </div>
+
+<!-- CONTENIDO -->
+} @else {
+  @if (topic(); as t) {
+    <div class="detail-wrap animate-in">
+
+      <!-- HERO -->
+      <div class="hero-wrap">
+        <img [src]="t.topicoImagen" [alt]="t.topicoTitulo" class="hero-img">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+          <div class="hero-chips">
+            <span class="chip-cat">{{ t.topicoCategoria || 'Anuncio' }}</span>
+            @if (isEvent()) {
+              <span class="chip-event"><i class="fas fa-calendar-star"></i> Evento</span>
+            }
           </div>
+          <h1 class="hero-title">{{ t.topicoTitulo }}</h1>
+        </div>
 
-          <h1 class="article-title">{{ topic.topicoTitulo }}</h1>
+        <button class="btn-back-pill" (click)="volver()">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
 
-          <div class="author-row">
-            <div class="author-avatar">
-              <!-- Usar inicial si no hay avatar real -->
-              {{ topic.topicoAutor.charAt(0).toUpperCase() }}
-            </div>
-            <div class="author-info">
-              <span class="author-name">Por {{ topic.topicoAutor }}</span>
-              <span class="author-role">Miembro de la comunidad</span>
-            </div>
-          </div>
+      <!-- CARD DE CONTENIDO -->
+      <div class="content-wrap">
+        <article class="content-card">
 
-          <!-- NUEVO: Tarjeta destacada si tiene fecha de evento -->
-          @if (topic.topicoFechaEvento) {
-            <div class="event-highlight-card">
-              <div class="event-icon">
-                <i class="fas fa-calendar-alt"></i>
+          <!-- META -->
+          <div class="meta-row">
+            <div class="author-chip">
+              <span class="author-avatar">{{ t.topicoAutor.charAt(0).toUpperCase() }}</span>
+              <div>
+                <p class="author-name">{{ t.topicoAutor }}</p>
+                <p class="author-sub">Miembro de la comunidad</p>
               </div>
-              <div class="event-info">
-                <span class="event-label">Fecha del Evento</span>
-                <strong class="event-datetime">{{ formatEventDate(topic.topicoFechaEvento) }}</strong>
-                <span class="event-cta">¡No olvides agendarlo!</span>
+            </div>
+            <div class="date-group">
+              <span><i class="far fa-calendar-alt"></i> {{ formatFecha(t.topicoFecha) }}</span>
+              <span class="reading">{{ readingTime() }}</span>
+            </div>
+          </div>
+
+          <!-- EVENTO DESTACADO -->
+          @if (t.topicoFechaEvento) {
+            <div class="event-card">
+              <div class="event-icon"><i class="fas fa-calendar-alt"></i></div>
+              <div>
+                <p class="event-label">Fecha del Evento</p>
+                <p class="event-date">{{ formatEventDate(t.topicoFechaEvento) }}</p>
+                <p class="event-hint">¡Agenda este evento!</p>
               </div>
             </div>
           }
 
-        </div>
+          <hr class="divider">
 
-        <hr class="divider">
+          <!-- CUERPO DEL ARTÍCULO -->
+          <div class="forum-prose" [innerHTML]="safeContent()"></div>
 
-        <div class="article-body prose" [innerHTML]="safeContent()"></div>
+          <!-- FOOTER -->
+          <footer class="article-footer">
+            <span class="ref-id">Ref. #{{ t.topicoId }}</span>
+            <div class="footer-actions">
+              <button class="btn-icon" (click)="copiarEnlace()" title="Copiar enlace">
+                <i class="fas fa-share-alt"></i>
+              </button>
+              <a href="/contacto" class="btn-contact">Contactar</a>
+            </div>
+          </footer>
 
-        <!-- Footer del Artículo -->
-        <div class="article-footer">
-          <div class="footer-left">
-            <p class="footer-note">ID Ref: #{{ topic.topicoId }} — Comentarios desactivados.</p>
-          </div>
-          
-          <div class="footer-actions">
-            <!-- NUEVO: Botón compartir -->
-            <button class="btn-secondary" (click)="shareTopic()" title="Copiar enlace">
-              <i class="fas fa-share-alt"></i>
-            </button>
-            <button class="btn-contact">Contactar Organizador</button>
-          </div>
-        </div>
-
+        </article>
       </div>
-    </div>
 
-  </div>
+    </div>
+  }
 }

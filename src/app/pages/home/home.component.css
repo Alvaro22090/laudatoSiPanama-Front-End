@@ -7,14 +7,17 @@
 
 /* --- HERO SECTION --- */
 .hero {
+  /* Compensamos el padding-top de <main> para que el hero siga siendo
+     verdaderamente full-screen (el navbar es transparente sobre la imagen). */
+  margin-top: calc(-1 * var(--navbar-height));
   height: 100vh;
   width: 100%;
   position: relative;
   display: flex;
   align-items: flex-end;
   text-align: center;
-  background-image: url(/home.jpg);
-  background-size: 100% 100%; /* Tu ajuste original */
+  background-image: url(/home/hero-fondo.jpg);
+  background-size: 100% 100%;
   background-position: bottom;
 }
 

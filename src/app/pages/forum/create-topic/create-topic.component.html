@@ -1,0 +1,187 @@
+@if (userId) {
+
+<div class="ct-layout">
+  <div class="ct-container">
+
+    <header class="ct-header">
+      <a routerLink="/foro" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Volver
+      </a>
+      <div>
+        <h1 class="ct-title">Nueva Publicación</h1>
+        <p class="ct-subtitle">Comparte un evento, anuncio o noticia con la comunidad.</p>
+      </div>
+    </header>
+
+    <!-- GRID: formulario + preview -->
+    <div class="ct-grid">
+
+      <!-- ================================================
+           FORMULARIO
+           ================================================ -->
+      <form [formGroup]="form" (ngSubmit)="submit()" class="ct-form" novalidate>
+
+        <!-- TÍTULO -->
+        <div class="field">
+          <label class="field-label" for="titulo">Título <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-heading input-icon"></i>
+            <input
+              id="titulo"
+              type="text"
+              formControlName="topicoTitulo"
+              class="field-input"
+              [class.field-input--err]="invalid('topicoTitulo')"
+              placeholder="Ej: Jornada de Reforestación en el Parque Nacional">
+          </div>
+          @if (invalid('topicoTitulo')) {
+            <span class="field-err">El título es requerido (mínimo 5 caracteres)</span>
+          }
+        </div>
+
+        <!-- CATEGORÍA + FECHA EVENTO -->
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="cat">Categoría <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="cat" formControlName="topicoCategoria" class="field-select">
+                <option value="Anuncio">Anuncio</option>
+                <option value="Evento">Evento</option>
+                <option value="Noticia">Noticia</option>
+                <option value="Educación">Educación</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="fechaEvento">
+              Fecha del Evento
+              <span class="optional">(opcional)</span>
+            </label>
+            <div class="input-wrap">
+              <i class="far fa-calendar-alt input-icon"></i>
+              <input
+                id="fechaEvento"
+                type="date"
+                formControlName="topicoFechaEvento"
+                class="field-input"
+                [min]="today">
+            </div>
+          </div>
+        </div>
+
+        <!-- IMAGEN DE PORTADA -->
+        <div class="field">
+          <label class="field-label">Imagen de portada <span class="req">*</span></label>
+          <div class="upload-zone"
+            [class.upload-zone--has-img]="mainImagePreview"
+            (click)="imgInput.click()">
+            @if (mainImagePreview) {
+              <img [src]="mainImagePreview" class="upload-preview" alt="Vista previa">
+              <div class="upload-overlay">
+                <i class="fas fa-camera"></i> Cambiar imagen
+              </div>
+            } @else {
+              <i class="fas fa-cloud-upload-alt upload-icon"></i>
+              <p class="upload-text"><strong>Click para subir</strong> o arrastra aquí</p>
+              <p class="upload-hint">PNG, JPG, WEBP — máx. 5 MB</p>
+            }
+            <input #imgInput type="file" accept="image/*" (change)="onImageSelected($event)" class="sr-only">
+          </div>
+          @if (invalid('topicoImagen')) {
+            <span class="field-err">La imagen de portada es requerida</span>
+          }
+        </div>
+
+        <!-- EDITOR QUILL -->
+        <div class="field">
+          <label class="field-label">Contenido <span class="req">*</span></label>
+          <div class="quill-wrap" [class.quill-wrap--err]="invalid('topicoContenido')">
+            <div #quillContainer></div>
+          </div>
+          @if (invalid('topicoContenido')) {
+            <span class="field-err">El contenido es requerido (mínimo 20 caracteres)</span>
+          }
+        </div>
+
+        <!-- ERROR GLOBAL -->
+        @if (submitError) {
+          <div class="submit-error">
+            <i class="fas fa-exclamation-triangle"></i> {{ submitError }}
+          </div>
+        }
+
+        <hr class="divider">
+
+        <div class="form-actions">
+          <a routerLink="/foro" class="btn-cancel">Cancelar</a>
+          <button type="submit" class="btn-submit" [disabled]="form.invalid || isSubmitting">
+            @if (isSubmitting) {
+              <i class="fas fa-spinner fa-spin"></i> Publicando…
+            } @else {
+              <i class="fas fa-paper-plane"></i> Publicar
+            }
+          </button>
+        </div>
+
+      </form>
+
+      <!-- ================================================
+           VISTA PREVIA EN VIVO
+           ================================================ -->
+      <aside class="ct-preview">
+        <div class="preview-header">
+          <i class="far fa-eye"></i> Vista previa
+        </div>
+        <div class="preview-body">
+
+          <div class="preview-chips">
+            <span class="pv-chip pv-chip--cat">
+              {{ form.get('topicoCategoria')?.value || 'Categoría' }}
+            </span>
+            @if (form.get('topicoFechaEvento')?.value) {
+              <span class="pv-chip pv-chip--event">
+                <i class="far fa-calendar-check"></i>
+                {{ form.get('topicoFechaEvento')?.value | date:'mediumDate' }}
+              </span>
+            }
+          </div>
+
+          <h2 class="pv-title">
+            {{ form.get('topicoTitulo')?.value || 'Título de la publicación' }}
+          </h2>
+
+          <div class="pv-meta">
+            <span><i class="fas fa-user-circle"></i> {{ userId }}</span>
+            <span><i class="far fa-clock"></i> {{ creationDate | date:'mediumDate' }}</span>
+          </div>
+
+          @if (mainImagePreview) {
+            <img [src]="mainImagePreview" class="pv-img" alt="Portada">
+          }
+
+          <div class="pv-content"
+            [innerHTML]="form.get('topicoContenido')?.value || '<p class=\'pv-placeholder\'>El contenido aparecerá aquí…</p>'">
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+} @else {
+
+  <!-- Acceso restringido -->
+  <div class="restricted">
+    <div class="restricted-box">
+      <i class="fas fa-lock"></i>
+      <h2>Acceso Restringido</h2>
+      <p>Debes iniciar sesión para publicar en el foro.</p>
+      <a routerLink="/foro" class="btn-submit">Ir al tablón</a>
+    </div>
+  </div>
+
+}

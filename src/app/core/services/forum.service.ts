@@ -1,100 +1,85 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { PaginaTopicoRespuesta, TopicData, Topicos } from '../interfaces/forum.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ForumService {
-  private apiUrl: string = environment.apiUrl;
-  private applicationUrl: string = `${this.apiUrl}/topicos`;
+  private readonly baseUrl = `${environment.apiUrl}/topicos`;
 
-  async getTopicos(): Promise<Topicos[]> {
-    const data = await fetch(this.applicationUrl, {
-      method: 'GET',
-    });
-    return (await data.json()) ?? [];
+  /** Lista paginada de tópicos */
+  getTopicos(
+    page = 0,
+    size = 6,
+    sort = 'topicoFecha,desc'
+  ): Observable<PaginaTopicoRespuesta> {
+    const url = `${this.baseUrl}?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`;
+    return from(
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`Error ${res.status} al cargar tópicos`);
+          return res.json() as Promise<PaginaTopicoRespuesta>;
+        })
+    );
   }
 
-  async getTopicosId(topicoId: number): Promise<Topicos> {
-    const data = await fetch(`${this.applicationUrl}/${topicoId}`, {
-      method: 'GET',
-    });
-    return (await data.json()) ?? {};
+  /** Búsqueda full-text en el servidor con debounce aplicado en el componente */
+  searchTopicos(query: string, page = 0, size = 6): Observable<PaginaTopicoRespuesta> {
+    const url = `${this.baseUrl}/search?q=${encodeURIComponent(query)}&page=${page}&size=${size}`;
+    return from(
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`Error ${res.status} en la búsqueda`);
+          return res.json() as Promise<PaginaTopicoRespuesta>;
+        })
+    );
   }
-  
+
+  /** Detalle de un tópico por ID */
+  getTopicoPorId(id: number): Observable<Topicos> {
+    return from(
+      fetch(`${this.baseUrl}/${id}`)
+        .then(res => {
+          if (!res.ok) throw new Error(`Tópico #${id} no encontrado`);
+          return res.json() as Promise<Topicos>;
+        })
+    );
+  }
+
+  /** Subida de imagen para el contenido del editor */
   uploadContentImage(imageFile: File, token: string): Observable<{ imageUrl: string }> {
     const formData = new FormData();
     formData.append('image', imageFile, imageFile.name);
-
-    const promise = fetch(`${this.applicationUrl}/contenido/upload-image`, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Error en la subida de la imagen.');
-      }
-      return response.json();
-    });
-
-    return from(promise); // Convierte la Promise de fetch en un Observable
+    return from(
+      fetch(`${this.baseUrl}/contenido/upload-image`, {
+        method: 'POST',
+        body: formData,
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        if (!res.ok) throw new Error('Error al subir la imagen');
+        return res.json() as Promise<{ imageUrl: string }>;
+      })
+    );
   }
 
-  async submitApplication(topico: TopicData, token: string): Promise<void> {
+  /** Publicación de un nuevo tópico */
+  submitTopico(topico: TopicData, token: string): Observable<void> {
+    const payload = { ...topico };
+    const imagen = payload.topicoImagen;
+    delete payload.topicoImagen;
+
     const formData = new FormData();
-    const topicoData = { ...topico };
-    const topicoImagen = topicoData.topicoImagen;
-    delete topicoData.topicoImagen;
+    formData.append('topicoData', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+    if (imagen) formData.append('topicoImagen', imagen);
 
-    formData.append('topicoData', new Blob([JSON.stringify(topicoData)], { type: 'application/json' }));
-    
-    if (topicoImagen) {
-      formData.append('topicoImagen', topicoImagen);
-    }
-
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    };
-
-    const response = await fetch(this.applicationUrl, {
-      method: 'POST',
-      body: formData,
-      headers: headers
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("Error del servidor:", errorBody);
-      throw new Error('Error al enviar el tópico');
-    }
-
-    console.log('Tópico enviado con éxito');
+    return from(
+      fetch(this.baseUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { Authorization: `Bearer ${token}` }
+      }).then(res => {
+        if (!res.ok) throw new Error('Error al publicar el tópico');
+      })
+    );
   }
-  
-  constructor() { }
-}
-
-export interface TopicData {
-  topicoTitulo: string;
-  topicoAutor: string;
-  topicoResumen: string;
-  topicoCategoria?: string; // Nuevo
-  topicoFechaEvento?: string;
-  topicoImagen?: File | null;
-  topicoContenido: string;
-}
-
-export interface Topicos{
-  topicoId: number;
-  topicoTitulo: string;
-  topicoAutor: string;
-  topicoCategoria?: string;
-  topicoFecha: Date;
-  topicoFechaEvento?: Date;
-  topicoResumen: string;
-  topicoImagen: string;
-  topicoContenido: string;
 }

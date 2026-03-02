@@ -1,83 +1,137 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { LoginServiceService, User } from '../../core/services/login-service.service';
+import {
+  Component, computed, DestroyRef, inject, OnInit, signal
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { ForumService, Topicos } from '../../core/services/forum.service';
-import { TopicComponent } from '../forum/topic/topic.component';
+import { EMPTY, Subject } from 'rxjs';
+import {
+  catchError, debounceTime, distinctUntilChanged, switchMap
+} from 'rxjs/operators';
 
+import { AuthService } from '../../core/services/auth.service';
+import { ForumService } from '../../core/services/forum.service';
+import { ForumRealtimeService } from '../../core/services/forum-realtime.service';
+import { Topicos } from '../../core/interfaces/forum.interface';
+import { ForumCardComponent } from './forum-card/forum-card.component';
+import { ForumPaginationComponent } from './forum-pagination/forum-pagination.component';
 
 @Component({
   selector: 'app-forum',
   standalone: true,
-  imports: [CommonModule, RouterLink, TopicComponent], // Agregamos TopicComponent
+  imports: [RouterLink, ForumCardComponent, ForumPaginationComponent],
   templateUrl: './forum.component.html',
-  styleUrl: './forum.component.css'
+  styleUrl: './forum.component.css',
 })
 export class ForumComponent implements OnInit {
-  private loginService = inject(LoginServiceService);
-  private forumService = inject(ForumService);
+  private destroyRef    = inject(DestroyRef);
+  private forumService  = inject(ForumService);
+  private authService   = inject(AuthService);
+  private realtimeService = inject(ForumRealtimeService);
 
-  isLoggedIn = signal(false);
-  currentUser = signal<User | null>(null);
-  
-  // Lista de tópicos
-  private topics = signal<Topicos[]>([]);
-  
-  // Tópico Seleccionado (Controla la vista)
-  selectedTopic = signal<Topicos | null>(null);
+  // --- Estado UI ---
+  isLoggedIn    = signal(false);
+  isLoading     = signal(true);
+  hasError      = signal(false);
 
-  // Filtros y Paginación
-  filtro = signal('');
-  paginaActual = signal(1);
-  readonly elementosPorPagina = 6;
+  // --- Estado de datos ---
+  topics        = signal<Topicos[]>([]);
+  totalPaginas  = signal(0);
+  totalElementos = signal(0);
+  paginaActual  = signal(0);           // 0-indexed (Spring)
 
-  // Estado Derivado
-  topicosFiltrados = computed(() => {
-    const texto = this.filtro().toLowerCase();
-    return this.topics().filter(t => t.topicoTitulo.toLowerCase().includes(texto));
+  // --- Filtros ---
+  categoriaActiva = signal('todos');
+  searchQuery     = signal('');
+
+  // --- Buffer de nuevos tópicos vía WebSocket ---
+  newTopicsBuffer = signal<Topicos[]>([]);
+
+  // --- Constantes ---
+  readonly PAGE_SIZE = 6;
+  readonly CATEGORIAS = ['todos', 'Anuncio', 'Evento', 'Noticia', 'Educación'];
+
+  // --- Streams privados ---
+  private readonly searchInput$ = new Subject<string>();
+  private readonly loadRequest$ = new Subject<{ query: string; page: number }>();
+
+  // --- Estado derivado ---
+  topicosVisibles = computed(() => {
+    const cat = this.categoriaActiva();
+    const all = this.topics();
+    return cat === 'todos' ? all : all.filter(t => t.topicoCategoria === cat);
   });
-  
-  numeroTotalDePaginas = computed(() => Math.ceil(this.topicosFiltrados().length / this.elementosPorPagina));
-  
-  topicosPaginados = computed(() => {
-    const inicio = (this.paginaActual() - 1) * this.elementosPorPagina;
-    return this.topicosFiltrados().slice(inicio, inicio + this.elementosPorPagina);
-  });
+
+  hasPendingNew = computed(() => this.newTopicsBuffer().length > 0);
 
   ngOnInit(): void {
-    this.loginService.currentUser$.subscribe(user => {
-      this.isLoggedIn.set(!!user);
-      this.currentUser.set(user);
+    // 1. Sesión
+    this.authService.currentUser$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(user => this.isLoggedIn.set(!!user));
+
+    // 2. Pipeline de carga unificado (soporta búsqueda y paginación)
+    this.loadRequest$.pipe(
+      switchMap(({ query, page }) => {
+        this.isLoading.set(true);
+        this.hasError.set(false);
+        this.paginaActual.set(page);
+
+        const source$ = query.trim()
+          ? this.forumService.searchTopicos(query, page, this.PAGE_SIZE)
+          : this.forumService.getTopicos(page, this.PAGE_SIZE);
+
+        return source$.pipe(
+          catchError(() => {
+            this.hasError.set(true);
+            this.isLoading.set(false);
+            return EMPTY;
+          })
+        );
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(resp => {
+      this.topics.set(resp.contenido);
+      this.totalPaginas.set(resp.totalPaginas);
+      this.totalElementos.set(resp.totalElementos);
+      this.isLoading.set(false);
     });
 
-    this.forumService.getTopicos().then(data => {
-      // Ordenar por fecha (opcional)
-      this.topics.set(data.reverse()); 
+    // 3. Búsqueda con debounce → redirige al pipeline
+    this.searchInput$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(q => {
+      this.searchQuery.set(q);
+      this.loadRequest$.next({ query: q, page: 0 });
     });
+
+    // 4. WebSocket → buffer de nuevos tópicos
+    this.realtimeService.newTopic$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(topic => this.newTopicsBuffer.update(p => [topic, ...p]));
+
+    // 5. Carga inicial
+    this.loadRequest$.next({ query: '', page: 0 });
   }
 
-  // --- Lógica de Selección ---
-  selectTopic(topic: Topicos) {
-    this.selectedTopic.set(topic);
+  // --- Acciones ---
+
+  onSearch(e: Event): void {
+    this.searchInput$.next((e.target as HTMLInputElement).value);
+  }
+
+  onCategoria(cat: string): void {
+    this.categoriaActiva.set(cat);
+  }
+
+  onPageChange(page: number): void {
+    this.loadRequest$.next({ query: this.searchQuery(), page });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  clearSelection() {
-    this.selectedTopic.set(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // --- Utilidades ---
-  onFiltroChange(e: Event) {
-    this.filtro.set((e.target as HTMLInputElement).value);
-    this.paginaActual.set(1);
-  }
-  
-  cambiarPagina(p: number) {
-    if (p > 0 && p <= this.numeroTotalDePaginas()) this.paginaActual.set(p);
-  }
-
-  formatDate(dateStr: string | Date): string {
-    return new Date(dateStr).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+  showNewTopics(): void {
+    this.topics.update(prev => [...this.newTopicsBuffer(), ...prev]);
+    this.newTopicsBuffer.set([]);
   }
 }

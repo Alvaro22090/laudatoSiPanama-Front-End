@@ -213,10 +213,10 @@
 }
 
 /* Responsividad ajustada */
-@media (max-width: 1000px) {
-  /* En móvil, los botones del componente login se ocultan 
-     porque el Navbar maneja el menú móvil con la referencia #loginRef */
+/* El breakpoint coincide con el del navbar (min-width: 900px muestra el menú de escritorio).
+   Por debajo de 900px el menú hamburguesa gestiona la autenticación. */
+@media (max-width: 899px) {
   .navbar-actions {
-    display: none; 
+    display: none;
   }
 }

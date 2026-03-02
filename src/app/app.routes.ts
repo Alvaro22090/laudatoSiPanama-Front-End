@@ -1,52 +1,57 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { ForumComponent } from './pages/forum/forum.component';
-import { RegisterComponent } from './pages/auth/register/register.component';
-import { UserComponent } from './pages/auth/user/user.component';
-import { CreateTopicComponent } from './pages/auth/create-topic/create-topic.component';
-import { TopicComponent } from './pages/forum/topic/topic.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent,
-        title: 'Home'
-    },
-    {
-        path: 'description',
-        component: AboutComponent,
-        title: 'Description'
-    },
-    {
-        path: 'contacto',
-        component: ContactComponent,
-        title: 'Contact'
-    },
-    {
-        path: 'foro',
-        component: ForumComponent,
-        title: 'Forum'
-    },
-    {
-        path: 'registro',
-        component: RegisterComponent,
-        title: 'Register'
-    },
-    {
-        path: 'usuario',
-        component: UserComponent,
-        title: 'Register'
-    },
-    {
-        path: 'registro-topico',
-        component: CreateTopicComponent,
-        title: 'Registro-topico'
-    },
-    {
-        path: 'topico/:id',
-        component: TopicComponent,
-        title: 'Topico'
-    }
+  {
+    path: '',
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+    title: 'Home'
+  },
+  {
+    path: 'description',
+    loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
+    title: 'Description'
+  },
+  {
+    path: 'contacto',
+    loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent),
+    title: 'Contacto'
+  },
+  {
+    path: 'foro',
+    loadComponent: () => import('./pages/forum/forum.component').then(m => m.ForumComponent),
+    title: 'Foro'
+  },
+  {
+    path: 'foro/:id',
+    loadComponent: () => import('./pages/forum/topic/topic.component').then(m => m.TopicComponent),
+    title: 'Publicación'
+  },
+  {
+    path: 'registro',
+    loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent),
+    title: 'Registro'
+  },
+  {
+    path: 'usuario',
+    loadComponent: () => import('./pages/auth/user/user.component').then(m => m.UserComponent),
+    canActivate: [authGuard],
+    title: 'Mi Perfil'
+  },
+  {
+    path: 'registro-topico',
+    loadComponent: () => import('./pages/forum/create-topic/create-topic.component').then(m => m.CreateTopicComponent),
+    canActivate: [authGuard],
+    title: 'Crear Tópico'
+  },
+  {
+    path: 'politica-privacidad',
+    loadComponent: () => import('./pages/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent),
+    title: 'Política de Privacidad'
+  },
+  {
+    path: 'terminos-condiciones',
+    loadComponent: () => import('./pages/terms-and-conditions/terms-and-conditions.component').then(m => m.TermsAndConditionsComponent),
+    title: 'Términos y Condiciones'
+  }
 ];

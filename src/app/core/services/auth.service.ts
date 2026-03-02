@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { LoginData, User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginServiceService {
+export class AuthService {
   private apiUrl: string = environment.apiUrl;
   private loginUrl: string = `${this.apiUrl}/login`;
-  
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
+
+  constructor() {
+    this.loadUserFromStorage();
+  }
 
   private loadUserFromStorage(): void {
     const storedUser = localStorage.getItem('currentUser');
@@ -45,10 +50,6 @@ export class LoginServiceService {
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
-  
-  constructor() { 
-    this.loadUserFromStorage();
-  }
 
   logout(): void {
     localStorage.removeItem('currentUser');
@@ -72,15 +73,4 @@ export class LoginServiceService {
     const user = this.currentUserSubject.value;
     return user ? user.jwTtoken : null;
   }
-}
-
-export interface LoginData {
-  usuarioId: string;
-  usuarioContrasena: string;
-}
-
-export interface User {
-  role: string;
-  user: string;
-  jwTtoken: string;
 }

@@ -1,0 +1,62 @@
+:host { font-family: var(--font-forum); }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 2rem 0;
+}
+
+.pg-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.5rem;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 0.5rem;
+  font-family: var(--font-forum);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tech-gray);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pg-btn:hover:not(:disabled) {
+  background: var(--primary-green);
+  color: white;
+  border-color: var(--primary-green);
+}
+
+.pg-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pg-btn--active {
+  background: var(--primary-green);
+  color: white;
+  border-color: var(--primary-green);
+  pointer-events: none;
+}
+
+.pg-arrow { color: var(--tech-dark); }
+
+.pg-ellipsis {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  padding: 0 0.2rem;
+}
+
+.pg-info {
+  margin-left: 0.75rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  font-weight: 500;
+  white-space: nowrap;
+}

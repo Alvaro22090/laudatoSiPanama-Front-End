@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ApplicationData, UserServiceService } from '../../../core/services/user-service.service';
+import { UserService } from '../../../core/services/user.service';
+import { ApplicationData } from '../../../core/interfaces/user-data.interface';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -17,7 +18,7 @@ export class RegisterComponent {
   imagenPreview: string | null = null;
   users: string[] | null = null;
 
-  componentService = inject(UserServiceService);
+  componentService = inject(UserService);
   registro = inject(FormBuilder);
   router = inject(Router);
 

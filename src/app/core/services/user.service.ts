@@ -1,22 +1,23 @@
-import {Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-
+import { ApplicationData } from '../interfaces/user-data.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiceService {
+export class UserService {
   private apiUrl: string = environment.apiUrl;
   private applicationUrl: string = `${this.apiUrl}/registros`;
-  private userUrl: string = `${this.apiUrl}/usuarios`
+  private userUrl: string = `${this.apiUrl}/usuarios`;
+
+  constructor() { }
 
   async submitApplication(usuario: ApplicationData): Promise<void> {
-
     const formData = new FormData();
-    const usuarioData = {...usuario};
+    const usuarioData = { ...usuario };
     const imagenPerfil = usuarioData.usuarioPerfil;
     delete usuarioData.usuarioPerfil;
-    formData.append('usuarioData', new Blob([JSON.stringify(usuarioData)], {type: 'application/json'}));
+    formData.append('usuarioData', new Blob([JSON.stringify(usuarioData)], { type: 'application/json' }));
     if (imagenPerfil) {
       formData.append('usuarioPerfil', imagenPerfil);
     }
@@ -28,7 +29,7 @@ export class UserServiceService {
     if (!response.ok) {
       throw new Error('Error al enviar la solicitud');
     }
-    const result = await response.json();
+    await response.json();
     console.log('Aplicación enviada con éxito');
   }
 
@@ -41,9 +42,8 @@ export class UserServiceService {
 
   async getUserById(usuarioId: string, token: string): Promise<ApplicationData> {
     const headers: HeadersInit = {
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
     };
-
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -53,17 +53,4 @@ export class UserServiceService {
     });
     return (await data.json()) ?? {};
   }
-
-  constructor() { }
 }
-
-export interface ApplicationData {
-  usuarioNombre: string;
-  usuarioId: string;
-  usuarioEmail: string;
-  usuarioContraseña: string;
-  usuarioNacimiento: Date | null;
-  usuarioGenero: string;
-  usuarioPerfil?: File | null ;
-}
-

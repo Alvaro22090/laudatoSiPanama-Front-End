@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 15vh;
+    height: var(--navbar-height);
     z-index: 1000;
     
     /* IMPORTANTE: Quitamos background y backdrop-filter de aquí
@@ -42,7 +42,7 @@
 
 /* --- ESTADO SCROLLED (Al bajar) --- */
 .navbar.scrolled {
-    height: 10vh;
+    height: var(--navbar-height-scrolled);
 }
 
 .navbar.scrolled::before {
@@ -203,26 +203,25 @@
 /* --- MOBILE MENU OVERLAY --- */
 .mobile-menu {
     position: fixed;
-    top: 15vh; /* Empieza justo debajo del navbar alto */
+    top: var(--navbar-height);
     left: 0;
     width: 100%;
-    height: 85vh; /* El resto de la pantalla */
+    height: calc(100vh - var(--navbar-height));
     background-color: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centrado verticalmente como en tu original */
+    justify-content: center;
     gap: 2rem;
     transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999;
 }
 
 /* Ajuste del menú móvil cuando el navbar se encoge */
-.navbar.scrolled ~ .mobile-menu, 
 .navbar.scrolled .mobile-menu {
-    top: 10vh; 
-    height: 90vh;
+    top: var(--navbar-height-scrolled);
+    height: calc(100vh - var(--navbar-height-scrolled));
 }
 
 .mobile-menu a, .mobile-menu button {
@@ -246,8 +245,32 @@
     .mobile-menu { display: none; }
 }
 
-/* Ajuste para pantallas muy pequeñas (landscape) */
-@media (max-height: 500px) {
-    .navbar { height: 20vh; }
-    .navbar.scrolled { height: 15vh; }
+/* Tablet / Laptop estrecho (900px–1200px): escala el logo y los links para
+   evitar que el navbar se sienta apretado antes de llegar a 1280px. */
+@media (min-width: 900px) and (max-width: 1200px) {
+    .icono-png {
+        width: 56px;
+        height: 56px;
+    }
+    .logo-text {
+        font-size: 1.35rem;
+    }
+    .nav-links {
+        gap: 0.5rem;
+    }
+    .nav-links a {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.7rem;
+    }
+    .nav-container {
+        padding: 0 1rem;
+    }
+    .btn-register {
+        padding: 0.6rem 1.3rem;
+        font-size: 0.9rem;
+    }
 }
+
+/* El override landscape se gestiona en styles.css redefiniendo
+   --navbar-height y --navbar-height-scrolled dentro de @media (max-height: 500px).
+   El navbar consume las variables, no necesita reglas propias aquí. */

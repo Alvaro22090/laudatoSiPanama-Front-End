@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { LoginData, LoginServiceService } from '../../../core/services/login-service.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { LoginData } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginUsuario: FormGroup;
   login = inject(FormBuilder);
   router = inject(Router);
-  loginService = inject(LoginServiceService);
+  loginService = inject(AuthService);
 
   constructor() {
     this.loginUsuario = this.login.group({

@@ -11,9 +11,8 @@
 
 .register-layout {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navbar-height));
   background-color: var(--c-bg);
-  padding-top: 80px; /* Espacio para el Navbar fixed */
 }
 
 /* --- COLUMNA IZQUIERDA (BRANDING) --- */
@@ -336,9 +335,22 @@ select {
 
 
 /* --- MEDIA QUERIES --- */
+
+/* Tablet (768px): muestra el panel de marca pero con padding reducido.
+   Los form-row permanecen en 1 columna para evitar inputs de ~128px de ancho. */
 @media (min-width: 768px) {
   .register-brand { display: flex; }
-  .register-form-container { width: 50%; padding: 4rem; }
+  .register-form-container { width: 50%; padding: 1.5rem 1.5rem 3rem; }
   .form-header { text-align: left; }
+}
+
+/* Laptop (1024px): el panel tiene espacio suficiente para 2 columnas en los inputs. */
+@media (min-width: 1024px) {
+  .register-form-container { padding: 3rem; }
   .form-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Escritorio amplio (1280px): padding generoso. */
+@media (min-width: 1280px) {
+  .register-form-container { padding: 4rem; }
 }

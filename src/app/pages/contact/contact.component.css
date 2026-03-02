@@ -9,9 +9,9 @@
 }
 
 .contact-layout {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navbar-height));
   background-color: var(--c-bg);
-  padding: 8rem 1.5rem 4rem; /* Padding top para navbar fixed */
+  padding: 3rem 1.5rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,19 +227,25 @@
 }
 
 /* --- MEDIA QUERIES --- */
-@media (min-width: 900px) {
-  .contact-card-wrapper {
-    grid-template-columns: 2fr 3fr; /* Panel info más angosto */
-  }
 
+/* Tablet (900px–1023px): el panel de info con 2fr/3fr + padding 4rem deja solo ~213px
+   de ancho interno. Mantenemos layout en columna única hasta 1024px. */
+@media (min-width: 900px) {
   .form-grid-row {
-    grid-template-columns: 1fr 1fr; /* Nombre y Asunto en fila */
+    grid-template-columns: 1fr 1fr; /* Nombre y Asunto en fila (el form es full-width) */
+  }
+}
+
+/* Laptop (1024px+): el panel info tiene ~328px internos — suficiente para el contenido. */
+@media (min-width: 1024px) {
+  .contact-card-wrapper {
+    grid-template-columns: 2fr 3fr;
   }
 
   .contact-info-panel {
     padding: 4rem;
   }
-  
+
   .contact-form-panel {
     padding: 4rem;
   }

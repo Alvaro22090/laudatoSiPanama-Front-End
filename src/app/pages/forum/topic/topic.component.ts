@@ -1,46 +1,77 @@
-import { Component, computed, EventEmitter, inject, Input, Output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component, computed, DestroyRef, inject, OnInit, signal
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Topicos } from '../../../core/services/forum.service';
+import { switchMap } from 'rxjs/operators';
+
+import { ForumService } from '../../../core/services/forum.service';
+import { Topicos } from '../../../core/interfaces/forum.interface';
 
 @Component({
   selector: 'app-topic',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './topic.component.html',
-  styleUrl: './topic.component.css'
+  styleUrl: './topic.component.css',
 })
-export class TopicComponent {
-  private sanitizer = inject(DomSanitizer);
+export class TopicComponent implements OnInit {
+  private destroyRef   = inject(DestroyRef);
+  private route        = inject(ActivatedRoute);
+  private router       = inject(Router);
+  private sanitizer    = inject(DomSanitizer);
+  private forumService = inject(ForumService);
 
-  topicSignal = signal<Topicos | null>(null);
-  
-  @Input({ required: true }) set topicData(value: Topicos | null) {
-    this.topicSignal.set(value);
+  topic     = signal<Topicos | null>(null);
+  isLoading = signal(true);
+  hasError  = signal(false);
+
+  safeContent = computed<SafeHtml>(() => {
+    const c = this.topic()?.topicoContenido;
+    return c ? this.sanitizer.bypassSecurityTrustHtml(c) : '';
+  });
+
+  isEvent = computed(() => !!this.topic()?.topicoFechaEvento);
+
+  readingTime = computed(() => {
+    const text  = this.topic()?.topicoContenido ?? '';
+    const words = text.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    return `${Math.max(1, Math.ceil(words / 200))} min de lectura`;
+  });
+
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = Number(params.get('id'));
+        this.isLoading.set(true);
+        this.hasError.set(false);
+        return this.forumService.getTopicoPorId(id);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: data => {
+        this.topic.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.hasError.set(true);
+        this.isLoading.set(false);
+      }
+    });
   }
 
-  @Output() closeDetail = new EventEmitter<void>();
+  volver(): void {
+    this.router.navigate(['/foro']);
+  }
 
-  // 1. Sanitización
-  safeContent = computed<SafeHtml>(() => {
-    const content = this.topicSignal()?.topicoContenido;
-    return content ? this.sanitizer.bypassSecurityTrustHtml(content) : '';
-  });
-
-  // 2. NUEVO: Detectar si es un evento futuro
-  isEvent = computed(() => {
-    const fechaEvento = this.topicSignal()?.topicoFechaEvento;
-    return !!fechaEvento; // Retorna true si existe fecha de evento
-  });
-
-  // 3. NUEVO: Calcular tiempo de lectura estimado basado en el contenido
-  readingTime = computed(() => {
-    const text = this.topicSignal()?.topicoContenido || '';
-    const wordsPerMinute = 200;
-    const words = text.replace(/<[^>]*>/g, '').split(/\s+/).length;
-    const minutes = Math.ceil(words / wordsPerMinute);
-    return `${minutes} min de lectura`;
-  });
+  copiarEnlace(): void {
+    const id = this.topic()?.topicoId;
+    if (!id) return;
+    navigator.clipboard
+      .writeText(`${window.location.origin}/foro/${id}`)
+      .then(() => alert('Enlace copiado'));
+  }
 
   formatFecha(fecha: string | Date | undefined): string {
     if (!fecha) return '';
@@ -49,25 +80,11 @@ export class TopicComponent {
     });
   }
 
-  // Formato específico para eventos (ej: Sábado, 12 de Agosto)
   formatEventDate(fecha: string | Date | undefined): string {
     if (!fecha) return '';
     return new Date(fecha).toLocaleDateString('es-ES', {
-      weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+      weekday: 'long', day: 'numeric', month: 'long',
+      hour: '2-digit', minute: '2-digit'
     });
-  }
-
-  // 4. NUEVO: Acción para "Compartir" usando el ID
-  shareTopic() {
-    const id = this.topicSignal()?.topicoId;
-    if(id) {
-      // Aquí podrías copiar al portapapeles la URL actual + el ID
-      const url = `${window.location.origin}/topic/${id}`; 
-      navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles'));
-    }
-  }
-
-  onClose() {
-    this.closeDetail.emit();
   }
 }

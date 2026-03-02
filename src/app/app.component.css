@@ -1,0 +1,7 @@
+/* El navbar es position:fixed, por lo que no ocupa espacio en el flujo normal.
+   Aplicamos el clearance aquí, en un único lugar, para que TODOS los componentes
+   hijos del router-outlet arranquen justo debajo del navbar.
+   Cada componente solo necesita gestionar su propio espaciado interno. */
+main {
+    padding-top: var(--navbar-height);
+}
