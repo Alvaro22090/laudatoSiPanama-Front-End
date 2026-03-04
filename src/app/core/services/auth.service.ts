@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LoginData, User } from '../interfaces/user.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl: string = environment.apiUrl;
-  private loginUrl: string = `${this.apiUrl}/login`;
+  private readonly http       = inject(HttpClient);
+  private readonly loginUrl   = `${environment.apiUrl}/login`;
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
+  readonly currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
     this.loadUserFromStorage();
@@ -21,32 +20,18 @@ export class AuthService {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       try {
-        const user: User = JSON.parse(storedUser);
-        this.currentUserSubject.next(user);
-      } catch (e) {
+        this.currentUserSubject.next(JSON.parse(storedUser) as User);
+      } catch {
         this.logout();
       }
     }
   }
 
   async submitLogin(usuario: LoginData): Promise<void> {
-    const response = await fetch(this.loginUrl, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(usuario)
-    });
-    if (!response.ok) {
-      throw new Error('Error al enviar la solicitud');
-    }
-    const result = await response.json();
-    const user: User = {
-      role: result.role,
-      user: result.user,
-      jwTtoken: result.jwTtoken
-    };
-    console.log('Aplicación enviada con éxito: ', JSON.stringify(user));
+    const result = await firstValueFrom(
+      this.http.post<{ role: string; user: string; jwTtoken: string }>(this.loginUrl, usuario)
+    );
+    const user: User = { role: result.role, user: result.user, jwTtoken: result.jwTtoken };
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
@@ -65,12 +50,10 @@ export class AuthService {
   }
 
   hasRole(role: string): boolean {
-    const user = this.currentUserSubject.value;
-    return !!user && user.role === role;
+    return this.currentUserSubject.value?.role === role;
   }
 
   getToken(): string | null {
-    const user = this.currentUserSubject.value;
-    return user ? user.jwTtoken : null;
+    return this.currentUserSubject.value?.jwTtoken ?? null;
   }
 }

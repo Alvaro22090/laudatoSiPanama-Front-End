@@ -1,56 +1,35 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApplicationData } from '../interfaces/user-data.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl: string = environment.apiUrl;
-  private applicationUrl: string = `${this.apiUrl}/registros`;
-  private userUrl: string = `${this.apiUrl}/usuarios`;
+  private readonly http           = inject(HttpClient);
+  private readonly applicationUrl = `${environment.apiUrl}/registros`;
+  private readonly userUrl        = `${environment.apiUrl}/usuarios`;
 
-  constructor() { }
-
+  /** Registro de nuevo usuario con imagen de perfil opcional (endpoint público) */
   async submitApplication(usuario: ApplicationData): Promise<void> {
-    const formData = new FormData();
+    const formData    = new FormData();
     const usuarioData = { ...usuario };
-    const imagenPerfil = usuarioData.usuarioPerfil;
+    const imagen      = usuarioData.usuarioPerfil;
     delete usuarioData.usuarioPerfil;
+
     formData.append('usuarioData', new Blob([JSON.stringify(usuarioData)], { type: 'application/json' }));
-    if (imagenPerfil) {
-      formData.append('usuarioPerfil', imagenPerfil);
-    }
-    console.log('Enviando aplicación: ', formData);
-    const response = await fetch(this.applicationUrl, {
-      method: 'POST',
-      body: formData,
-    });
-    if (!response.ok) {
-      throw new Error('Error al enviar la solicitud');
-    }
-    await response.json();
-    console.log('Aplicación enviada con éxito');
+    if (imagen) formData.append('usuarioPerfil', imagen);
+
+    await firstValueFrom(this.http.post<void>(this.applicationUrl, formData));
   }
 
+  /** Lista de IDs de usuario existentes, usada para validación async en registro (endpoint público) */
   async getUsers(): Promise<string[]> {
-    const data = await fetch(`${this.applicationUrl}/users`, {
-      method: 'GET',
-    });
-    return (await data.json()) ?? [];
+    return firstValueFrom(this.http.get<string[]>(`${this.applicationUrl}/users`));
   }
 
-  async getUserById(usuarioId: string, token: string): Promise<ApplicationData> {
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-    };
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    const data = await fetch(`${this.userUrl}/${usuarioId}`, {
-      method: 'GET',
-      headers: headers
-    });
-    return (await data.json()) ?? {};
+  /** Perfil completo del usuario (requiere auth — interceptor añade el token) */
+  async getUserById(usuarioId: string): Promise<ApplicationData> {
+    return firstValueFrom(this.http.get<ApplicationData>(`${this.userUrl}/${usuarioId}`));
   }
 }

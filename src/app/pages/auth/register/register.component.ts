@@ -113,12 +113,16 @@ export class RegisterComponent {
       usuarioPerfil: this.selectedFile ?? null
     };
 
-    this.componentService.submitApplication(usuario);
-    console.log(this.registroUsuario.value);
-    this.registroUsuario.reset();
-    this.selectedFile = null;
-    this.imagenPreview = null;
-    this.router.navigate(['']);
+    this.componentService.submitApplication(usuario)
+      .then(() => {
+        this.registroUsuario.reset();
+        this.selectedFile = null;
+        this.imagenPreview = null;
+        this.router.navigate(['']);
+      })
+      .catch(() => {
+        alert('Error al registrar el usuario. Verifica los datos e intenta de nuevo.');
+      });
   }
 
   

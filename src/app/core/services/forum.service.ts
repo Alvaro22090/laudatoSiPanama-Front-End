@@ -1,85 +1,50 @@
-import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PaginaTopicoRespuesta, TopicData, Topicos } from '../interfaces/forum.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ForumService {
+  private readonly http    = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/topicos`;
 
-  /** Lista paginada de tópicos */
-  getTopicos(
-    page = 0,
-    size = 6,
-    sort = 'topicoFecha,desc'
-  ): Observable<PaginaTopicoRespuesta> {
-    const url = `${this.baseUrl}?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`;
-    return from(
-      fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error(`Error ${res.status} al cargar tópicos`);
-          return res.json() as Promise<PaginaTopicoRespuesta>;
-        })
-    );
+  /** Lista paginada de tópicos (endpoint público) */
+  getTopicos(page = 0, size = 6, sort = 'topicoFecha,desc'): Observable<PaginaTopicoRespuesta> {
+    return this.http.get<PaginaTopicoRespuesta>(this.baseUrl, {
+      params: { page, size, sort }
+    });
   }
 
-  /** Búsqueda full-text en el servidor con debounce aplicado en el componente */
+  /** Búsqueda full-text con debounce aplicado en el componente (endpoint público) */
   searchTopicos(query: string, page = 0, size = 6): Observable<PaginaTopicoRespuesta> {
-    const url = `${this.baseUrl}/search?q=${encodeURIComponent(query)}&page=${page}&size=${size}`;
-    return from(
-      fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error(`Error ${res.status} en la búsqueda`);
-          return res.json() as Promise<PaginaTopicoRespuesta>;
-        })
-    );
+    return this.http.get<PaginaTopicoRespuesta>(`${this.baseUrl}/search`, {
+      params: { q: query, page, size }
+    });
   }
 
-  /** Detalle de un tópico por ID */
+  /** Detalle de un tópico por ID (endpoint público) */
   getTopicoPorId(id: number): Observable<Topicos> {
-    return from(
-      fetch(`${this.baseUrl}/${id}`)
-        .then(res => {
-          if (!res.ok) throw new Error(`Tópico #${id} no encontrado`);
-          return res.json() as Promise<Topicos>;
-        })
-    );
+    return this.http.get<Topicos>(`${this.baseUrl}/${id}`);
   }
 
-  /** Subida de imagen para el contenido del editor */
-  uploadContentImage(imageFile: File, token: string): Observable<{ imageUrl: string }> {
+  /** Subida de imagen para el contenido del editor (requiere auth — interceptor añade el token) */
+  uploadContentImage(imageFile: File): Observable<{ imageUrl: string }> {
     const formData = new FormData();
     formData.append('image', imageFile, imageFile.name);
-    return from(
-      fetch(`${this.baseUrl}/contenido/upload-image`, {
-        method: 'POST',
-        body: formData,
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(res => {
-        if (!res.ok) throw new Error('Error al subir la imagen');
-        return res.json() as Promise<{ imageUrl: string }>;
-      })
-    );
+    return this.http.post<{ imageUrl: string }>(`${this.baseUrl}/contenido/upload-image`, formData);
   }
 
-  /** Publicación de un nuevo tópico */
-  submitTopico(topico: TopicData, token: string): Observable<void> {
+  /** Publicación de un nuevo tópico (requiere auth — interceptor añade el token) */
+  submitTopico(topico: TopicData): Observable<Topicos> {
     const payload = { ...topico };
-    const imagen = payload.topicoImagen;
+    const imagen  = payload.topicoImagen;
     delete payload.topicoImagen;
 
     const formData = new FormData();
     formData.append('topicoData', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
     if (imagen) formData.append('topicoImagen', imagen);
 
-    return from(
-      fetch(this.baseUrl, {
-        method: 'POST',
-        body: formData,
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(res => {
-        if (!res.ok) throw new Error('Error al publicar el tópico');
-      })
-    );
+    return this.http.post<Topicos>(this.baseUrl, formData);
   }
 }

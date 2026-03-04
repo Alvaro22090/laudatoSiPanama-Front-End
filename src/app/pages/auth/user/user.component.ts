@@ -1,5 +1,5 @@
-import {Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ApplicationData } from '../../../core/interfaces/user-data.interface';
@@ -11,12 +11,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
-export class UserComponent implements OnInit{
-  route: ActivatedRoute = inject(ActivatedRoute);
-  userService = inject(UserService);
-  loginService = inject(AuthService)
-  userId: string | undefined;
-  token: string | undefined;
+export class UserComponent implements OnInit {
+  private readonly userService  = inject(UserService);
+  private readonly loginService = inject(AuthService);
+
   usuarioInformacion: ApplicationData = {
     usuarioNombre: '',
     usuarioId: '',
@@ -26,25 +24,25 @@ export class UserComponent implements OnInit{
     usuarioGenero: '',
     usuarioPerfil: null
   };
-  constructor() {
-  }
+
   ngOnInit(): void {
-    this.loginService.currentUser$.subscribe((user) => {
-      this.userId = user?.user;
-      this.token = user?.jwTtoken;
+    // currentUser$ es BehaviorSubject — emite el valor actual de forma síncrona.
+    // La llamada a getUserById va dentro del subscribe para evitar race conditions.
+    this.loginService.currentUser$.subscribe(user => {
+      if (user?.user) {
+        this.userService.getUserById(user.user).then(info => {
+          this.usuarioInformacion = info;
+        });
+      }
     });
-    if (this.userId && this.token){
-      this.userService.getUserById(this.userId, this.token).then((usuarioInformacion) => {
-        this.usuarioInformacion = usuarioInformacion;
-    })
-    }
   }
+
   getInitials(): string {
-    if (!this.usuarioInformacion.usuarioNombre) return '';
-    
-    const names = this.usuarioInformacion.usuarioNombre.split(' ');
-    if (names.length === 1) return names[0].charAt(0).toUpperCase();
-    
-    return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+    const nombre = this.usuarioInformacion.usuarioNombre;
+    if (!nombre) return '';
+    const names = nombre.split(' ');
+    return names.length === 1
+      ? names[0].charAt(0).toUpperCase()
+      : (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   }
 }

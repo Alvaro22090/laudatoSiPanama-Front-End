@@ -117,7 +117,7 @@ export class CreateTopicComponent implements OnInit, AfterViewInit {
       topicoContenido:  v.topicoContenido,
     };
 
-    this.forumService.submitTopico(topicData, this.token).pipe(
+    this.forumService.submitTopico(topicData).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => this.router.navigate(['/foro']),
