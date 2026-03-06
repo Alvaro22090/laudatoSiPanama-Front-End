@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'https://vivacious-beauty-production-bfd6.up.railway.app',
-  wsUrl:  'https://vivacious-beauty-production-bfd6.up.railway.app/ws',
+  apiUrl: 'http://157.137.208.233',
+  wsUrl:  'http://157.137.208.233/ws',
 };
