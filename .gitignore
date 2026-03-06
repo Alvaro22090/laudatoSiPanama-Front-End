@@ -40,3 +40,24 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+src/environments/environment.development.ts
+
+# Claude Code
+.claude/
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+/coverage
+
+# Package manager locks (keep package-lock.json but ignore others)
+yarn.lock
+pnpm-lock.yaml
