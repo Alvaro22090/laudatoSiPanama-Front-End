@@ -1,0 +1,31 @@
+<div class="verify-page">
+  <div class="verify-card">
+
+    @if (estado === 'cargando') {
+      <div class="verify-icon loading">
+        <i class="fas fa-circle-notch fa-spin"></i>
+      </div>
+      <h1>Verificando tu correo...</h1>
+      <p>Por favor espera un momento.</p>
+    }
+
+    @if (estado === 'exito') {
+      <div class="verify-icon success">
+        <i class="fas fa-circle-check"></i>
+      </div>
+      <h1>¡Correo verificado!</h1>
+      <p>Tu cuenta ha sido activada exitosamente. Ya puedes iniciar sesión y participar en la comunidad.</p>
+      <a routerLink="/" class="btn-primary">Ir al inicio</a>
+    }
+
+    @if (estado === 'error') {
+      <div class="verify-icon error">
+        <i class="fas fa-circle-xmark"></i>
+      </div>
+      <h1>Enlace inválido</h1>
+      <p>{{ mensajeError }}</p>
+      <a routerLink="/registro" class="btn-primary">Volver al registro</a>
+    }
+
+  </div>
+</div>

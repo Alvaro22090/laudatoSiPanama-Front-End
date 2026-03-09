@@ -94,12 +94,17 @@
 .modal-contenido {
   background-color: #FFFFFF;
   padding: 2.5rem;
-  border-radius: 1rem; /* Bordes más suaves */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.04),
+    0 12px 28px rgba(0,0,0,0.12),
+    0 32px 56px rgba(0,0,0,0.08),
+    0 0 0 1px rgba(0,0,0,0.05);
   width: 100%;
   max-width: 420px;
   position: relative;
   font-family: var(--font-secondary);
+  border-top: 3px solid #0076b4;
 }
 
 .cerrar {
@@ -164,22 +169,40 @@
 .boton {
   display: block;
   width: 100%;
-  background-color: var(--primary-green);
+  background: linear-gradient(135deg, #00b05f 0%, #00796b 100%);
   color: white;
-  padding: 0.8rem;
+  padding: 0.85rem;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease, opacity 0.22s ease;
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-family: var(--font-secondary);
+  box-shadow: 0 4px 14px rgba(0, 176, 95, 0.28);
+  will-change: transform;
 }
 
-.boton:hover {
-  background-color: var(--secondary-green);
+.boton:hover:not(:disabled) {
+  filter: brightness(0.88);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 176, 95, 0.36);
+}
+
+.boton:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.8);
+  box-shadow: 0 2px 8px rgba(0, 176, 95, 0.2);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
 }
 
 /* Link de registro dentro del modal */

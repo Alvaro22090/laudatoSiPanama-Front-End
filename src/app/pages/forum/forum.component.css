@@ -57,7 +57,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--c-green);
+  background: linear-gradient(135deg, #00b05f 0%, #00796b 100%);
   color: white;
   padding: 0.65rem 1.4rem;
   border-radius: 0.6rem;
@@ -66,13 +66,21 @@
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.2s, transform 0.2s;
-  box-shadow: 0 4px 12px rgba(0, 176, 95, 0.25);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+  box-shadow: 0 4px 14px rgba(0, 176, 95, 0.3);
+  will-change: transform;
 }
 
 .btn-publish:hover {
-  background: var(--secondary-green);
-  transform: translateY(-1px);
+  filter: brightness(0.88);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 176, 95, 0.4);
+}
+
+.btn-publish:active {
+  transform: translateY(0);
+  filter: brightness(0.8);
+  box-shadow: 0 2px 8px rgba(0, 176, 95, 0.2);
 }
 
 /* ============================================================

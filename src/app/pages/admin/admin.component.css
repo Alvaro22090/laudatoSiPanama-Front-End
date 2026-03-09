@@ -1,0 +1,401 @@
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+.admin-wrapper {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.admin-header h1 { font-size: 1.6rem; margin: 0; }
+.admin-header p  { margin: .25rem 0 0; color: #666; font-size: .95rem; }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.btn-add-admin {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem 1rem;
+  background: #1a3c34;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+.btn-add-admin:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.btn-add-admin:active { filter: brightness(0.9); transform: translateY(0); }
+.btn-add-admin--active { background: #6b7280; }
+.btn-add-admin--active:hover { filter: brightness(1.12); }
+
+.btn-refresh {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: .5rem .75rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+  transition: background .2s;
+}
+.btn-refresh:hover { background: #f0f0f0; }
+
+/* ── Formulario crear admin ──────────────────────────────────────────────────── */
+.form-admin-card {
+  background: #f8fafc;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+  animation: fadeIn .25s ease;
+}
+.form-admin-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 .3rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: #1a3c34;
+}
+.form-admin-desc {
+  font-size: .85rem;
+  color: #6b7280;
+  margin: 0 0 1.1rem;
+}
+.form-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  padding: .6rem .9rem;
+  font-size: .875rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.form-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .85rem;
+  margin-bottom: 1.1rem;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.form-field label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #374151;
+}
+.form-field input {
+  padding: .5rem .75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: .9rem;
+  outline: none;
+  transition: border-color .2s;
+  background: #fff;
+}
+.form-field input:focus { border-color: #1a3c34; }
+.form-field input:disabled { background: #f3f4f6; cursor: not-allowed; }
+
+.form-admin-footer { display: flex; justify-content: flex-end; }
+.btn-submit-admin {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .55rem 1.25rem;
+  background: #1a3c34;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-submit-admin:hover:not(:disabled) { background: #14302a; }
+.btn-submit-admin:disabled { opacity: .65; cursor: not-allowed; }
+
+/* ── Toast ──────────────────────────────────────────────────────────────────── */
+.toast {
+  padding: .85rem 1.2rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .9rem;
+  animation: fadeIn .3s ease;
+}
+.toast--ok    { background: #d1fae5; color: #065f46; }
+.toast--error { background: #fee2e2; color: #991b1b; }
+
+/* ── Stats ──────────────────────────────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  text-align: center;
+}
+.stat-number { display: block; font-size: 2rem; font-weight: 700; line-height: 1; }
+.stat-label  { display: block; font-size: .8rem; color: #6b7280; margin-top: .3rem; }
+
+.stat-card--admin    .stat-number { color: #7c3aed; }
+.stat-card--escritor .stat-number { color: #2563eb; }
+.stat-card--pending  .stat-number { color: #d97706; }
+
+/* ── Filtros ────────────────────────────────────────────────────────────────── */
+.filter-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.tab {
+  padding: .5rem 1.1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  transition: all .2s;
+}
+.tab--active { background: #1a3c34; color: #fff; border-color: #1a3c34; }
+.badge {
+  background: #ef4444;
+  color: #fff;
+  border-radius: 999px;
+  padding: .1rem .45rem;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+/* ── Estados ────────────────────────────────────────────────────────────────── */
+.loading-state, .error-state, .empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+.loading-state i, .error-state i, .empty-state i { font-size: 2rem; margin-bottom: .75rem; display: block; }
+.error-state button {
+  margin-top: .75rem;
+  padding: .5rem 1rem;
+  background: #1a3c34;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ── Tabla ──────────────────────────────────────────────────────────────────── */
+.users-table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #e5e7eb; }
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+.users-table thead { background: #f9fafb; }
+.users-table th {
+  text-align: left;
+  padding: .85rem 1rem;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+.users-table td {
+  padding: .85rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+.users-table tr:last-child td { border-bottom: none; }
+.users-table tr:hover td { background: #fafafa; }
+.row--pending td { background: #fffbeb !important; }
+
+/* ── Celda usuario ──────────────────────────────────────────────────────────── */
+.user-cell { display: flex; flex-direction: column; gap: .15rem; }
+.user-nombre { font-weight: 600; }
+.user-id     { font-size: .8rem; color: #6b7280; }
+.user-email  { color: #4b5563; font-size: .88rem; }
+
+.solicitud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .75rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+/* ── Role chips ─────────────────────────────────────────────────────────────── */
+.role-chip {
+  display: inline-block;
+  padding: .25rem .7rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+}
+.role-chip--admin    { background: #ede9fe; color: #5b21b6; }
+.role-chip--escritor { background: #dbeafe; color: #1d4ed8; }
+.role-chip--usuario  { background: #f3f4f6; color: #374151; }
+
+/* ── Botones de acción ──────────────────────────────────────────────────────── */
+.action-buttons { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+.btn-approve, .btn-reject {
+  padding: .35rem .75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: .82rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  transition: opacity .2s;
+}
+.btn-approve { background: #d1fae5; color: #065f46; }
+.btn-approve:hover { background: #a7f3d0; }
+.btn-reject  { background: #fee2e2; color: #991b1b; }
+.btn-reject:hover  { background: #fecaca; }
+
+.btn-role {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  transition: opacity .2s;
+}
+.btn-role:hover { opacity: .75; }
+.btn-role--admin    { background: #ede9fe; color: #5b21b6; }
+.btn-role--escritor { background: #dbeafe; color: #1d4ed8; }
+.btn-role--usuario  { background: #f3f4f6; color: #374151; }
+
+.btn-delete {
+  background: none;
+  border: 1px solid #fca5a5;
+  color: #ef4444;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-delete:hover:not(:disabled) { background: #fee2e2; border-color: #ef4444; }
+.btn-delete:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Disabled state para botones de acción ───────────────────────────────────── */
+.btn-approve:disabled,
+.btn-reject:disabled  { opacity: .55; cursor: not-allowed; }
+.btn-role:disabled    { opacity: .5;  cursor: not-allowed; }
+
+/* ── Section tabs (Usuarios / Tópicos) ───────────────────────────────────────── */
+.section-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0;
+}
+
+.section-tab {
+  padding: .6rem 1.25rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  transition: color .2s, border-color .2s;
+}
+
+.section-tab:hover { color: #1a3c34; }
+.section-tab--active { color: #1a3c34; border-bottom-color: #1a3c34; }
+
+/* ── Toggle Activo ───────────────────────────────────────────────────────────── */
+.btn-toggle-activo {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .7rem;
+  border: none;
+  border-radius: 6px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.btn-toggle-activo:disabled { opacity: .55; cursor: not-allowed; }
+.btn-toggle-activo--on  { background: #d1fae5; color: #065f46; }
+.btn-toggle-activo--off { background: #fee2e2; color: #991b1b; }
+.btn-toggle-activo--on:hover:not(:disabled)  { background: #a7f3d0; }
+.btn-toggle-activo--off:hover:not(:disabled) { background: #fecaca; }
+
+.admin-lock {
+  font-size: .8rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+/* ── Fila inactiva ───────────────────────────────────────────────────────────── */
+.row--inactivo td { background: #fafafa !important; opacity: .7; }
+
+/* ── Stat card inactivo ──────────────────────────────────────────────────────── */
+.stat-card--inactivo .stat-number { color: #6b7280; }
+
+/* ── Badge gris ──────────────────────────────────────────────────────────────── */
+.badge--gray {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* ── Animación ──────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

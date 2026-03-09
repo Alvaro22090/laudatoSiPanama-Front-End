@@ -1,3 +1,23 @@
+@if (registroExitoso) {
+  <div class="register-layout verify-layout">
+    <div class="verify-card">
+      <div class="verify-icon">
+        <i class="fas fa-envelope-open-text"></i>
+      </div>
+      <h1>¡Revisa tu correo!</h1>
+      <p>
+        Hemos enviado un enlace de verificación a <strong>{{ emailRegistrado }}</strong>.
+        Haz clic en el enlace para activar tu cuenta e iniciar sesión.
+      </p>
+      <p class="verify-hint">
+        ¿No lo encuentras? Revisa tu carpeta de spam o correo no deseado.
+      </p>
+      <a routerLink="/" class="btn-submit" style="display:block; text-align:center; text-decoration:none; margin-top:1.5rem;">
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+} @else {
 <div class="register-layout">
   <!-- COLUMNA IZQUIERDA: Branding (Solo visible en desktop) -->
   <div class="register-brand">
@@ -150,8 +170,12 @@
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-submit" [disabled]="registroUsuario.invalid">
-            Registrarse
+          <button type="submit" class="btn-submit" [disabled]="registroUsuario.invalid || isSubmitting">
+            @if (isSubmitting) {
+              <i class="fas fa-spinner fa-spin"></i> Registrando…
+            } @else {
+              Registrarse
+            }
           </button>
           <p class="login-hint">
             ¿Ya tienes cuenta? <a routerLink="/">Inicia sesión</a>
@@ -162,3 +186,4 @@
     </div>
   </div>
 </div>
+}

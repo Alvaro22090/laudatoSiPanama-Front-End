@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LoginComponent } from "../../../pages/auth/login/login.component";
+import { LoginComponent } from '../../../pages/auth/login/login.component';
+import { AuthService } from '../../../core/services/auth.service';
+import { ROLES } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -14,8 +16,10 @@ export class NavbarComponent {
   isScrolled = false;
   isMenuOpen = false;
 
+  protected readonly authService = inject(AuthService);
+  protected readonly ROLES       = ROLES;
+
   constructor() {
-    // Lógica visual del Navbar (Scroll)
     window.addEventListener('scroll', () => {
       this.isScrolled = window.scrollY > 20;
     });

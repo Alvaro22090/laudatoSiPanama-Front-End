@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (!authService.isLoggedIn()) {
-    router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+    router.navigate(['/']);
     return false;
   }
 
@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (requiredRoles && requiredRoles.length > 0) {
     const currentUser = authService.getCurrentUser();
     if (!currentUser || !requiredRoles.includes(currentUser.role)) {
-      router.navigate(['/forbidden']);
+      router.navigate(['/']);
       return false;
     }
   }

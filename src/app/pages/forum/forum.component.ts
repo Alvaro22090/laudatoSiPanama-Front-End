@@ -32,6 +32,12 @@ export class ForumComponent implements OnInit {
   isLoggedIn    = signal(false);
   isLoading     = signal(true);
   hasError      = signal(false);
+  userRole      = signal<string | null>(null);
+
+  canPublish = computed(() => {
+    const r = this.userRole();
+    return r === 'ROLE_ADMIN' || r === 'ROLE_ESCRITOR';
+  });
 
   // --- Estado de datos ---
   topics        = signal<Topicos[]>([]);
@@ -67,7 +73,10 @@ export class ForumComponent implements OnInit {
     // 1. Sesión
     this.authService.currentUser$.pipe(
       takeUntilDestroyed(this.destroyRef)
-    ).subscribe(user => this.isLoggedIn.set(!!user));
+    ).subscribe(user => {
+      this.isLoggedIn.set(!!user);
+      this.userRole.set(user?.role ?? null);
+    });
 
     // 2. Pipeline de carga unificado (soporta búsqueda y paginación)
     this.loadRequest$.pipe(

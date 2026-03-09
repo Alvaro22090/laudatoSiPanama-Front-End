@@ -8,7 +8,7 @@
       <h1 class="forum-title">Tablón de <em>Anuncios</em></h1>
       <p class="forum-subtitle">Eventos, noticias y actividades de la comunidad Laudato Si' Panamá.</p>
     </div>
-    @if (isLoggedIn()) {
+    @if (canPublish()) {
       <a routerLink="/registro-topico" class="btn-publish">
         <i class="fas fa-plus"></i> Publicar
       </a>

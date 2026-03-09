@@ -1,0 +1,339 @@
+<div class="admin-wrapper">
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="admin-header-text">
+      <h1><i class="fas fa-shield-alt"></i> Panel de Administración</h1>
+      <p>Gestiona roles, solicitudes, usuarios y tópicos.</p>
+    </div>
+    <div class="header-actions">
+      @if (seccion() === 'usuarios') {
+        <button class="btn-add-admin" (click)="toggleFormAdmin()" [class.btn-add-admin--active]="mostrarFormAdmin()">
+          <i class="fas" [class.fa-user-plus]="!mostrarFormAdmin()" [class.fa-times]="mostrarFormAdmin()"></i>
+          {{ mostrarFormAdmin() ? 'Cancelar' : 'Agregar Admin' }}
+        </button>
+        <button class="btn-refresh" (click)="cargarUsuarios()" title="Actualizar lista">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      } @else {
+        <button class="btn-refresh" (click)="cargarTopicos()" title="Actualizar lista">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      }
+    </div>
+  </header>
+
+  <!-- FEEDBACK TOAST -->
+  @if (feedback()) {
+    <div class="toast" [class.toast--ok]="feedback()!.tipo === 'ok'" [class.toast--error]="feedback()!.tipo === 'error'">
+      <i class="fas" [class.fa-check-circle]="feedback()!.tipo === 'ok'" [class.fa-exclamation-circle]="feedback()!.tipo === 'error'"></i>
+      {{ feedback()!.mensaje }}
+    </div>
+  }
+
+  <!-- SECCIÓN TABS -->
+  <div class="section-tabs">
+    <button class="section-tab" [class.section-tab--active]="seccion() === 'usuarios'" (click)="cambiarSeccion('usuarios')">
+      <i class="fas fa-users"></i> Usuarios
+    </button>
+    <button class="section-tab" [class.section-tab--active]="seccion() === 'topicos'" (click)="cambiarSeccion('topicos')">
+      <i class="fas fa-newspaper"></i> Tópicos
+    </button>
+  </div>
+
+  <!-- ════════════ SECCIÓN USUARIOS ════════════ -->
+  @if (seccion() === 'usuarios') {
+
+    <!-- FORMULARIO CREAR ADMIN -->
+    @if (mostrarFormAdmin()) {
+      <div class="form-admin-card">
+        <h2 class="form-admin-title"><i class="fas fa-user-shield"></i> Crear nuevo administrador</h2>
+        <p class="form-admin-desc">La cuenta se creará con rol ADMIN y acceso inmediato, sin necesitar verificación de correo.</p>
+
+        @if (formError()) {
+          <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ formError() }}</div>
+        }
+
+        <div class="form-admin-grid">
+          <div class="form-field">
+            <label for="fa-id">ID de usuario</label>
+            <input id="fa-id" type="text" [(ngModel)]="formAdmin.usuarioId" placeholder="ej. jdoe123" [disabled]="cargandoNuevoAdmin()" />
+          </div>
+          <div class="form-field">
+            <label for="fa-nombre">Nombre completo</label>
+            <input id="fa-nombre" type="text" [(ngModel)]="formAdmin.usuarioNombre" placeholder="Juan Doe" [disabled]="cargandoNuevoAdmin()" />
+          </div>
+          <div class="form-field">
+            <label for="fa-email">Correo electrónico</label>
+            <input id="fa-email" type="email" [(ngModel)]="formAdmin.usuarioEmail" placeholder="juan@ejemplo.com" [disabled]="cargandoNuevoAdmin()" />
+          </div>
+          <div class="form-field">
+            <label for="fa-pass">Contraseña (mín. 6 caracteres)</label>
+            <input id="fa-pass" type="password" [(ngModel)]="formAdmin.usuarioContrasena" placeholder="••••••••" [disabled]="cargandoNuevoAdmin()" />
+          </div>
+        </div>
+
+        <div class="form-admin-footer">
+          <button class="btn-submit-admin" (click)="submitCrearAdmin()" [disabled]="cargandoNuevoAdmin()">
+            @if (cargandoNuevoAdmin()) { <i class="fas fa-spinner fa-spin"></i> Creando… }
+            @else { <i class="fas fa-user-plus"></i> Crear administrador }
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- STATS USUARIOS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-number">{{ usuarios().length }}</span>
+        <span class="stat-label">Total usuarios</span>
+      </div>
+      <div class="stat-card stat-card--admin">
+        <span class="stat-number">{{ totalAdmins() }}</span>
+        <span class="stat-label">Administradores</span>
+      </div>
+      <div class="stat-card stat-card--escritor">
+        <span class="stat-number">{{ totalEscritores() }}</span>
+        <span class="stat-label">Escritores</span>
+      </div>
+      <div class="stat-card stat-card--pending">
+        <span class="stat-number">{{ pendientes() }}</span>
+        <span class="stat-label">Solicitudes pendientes</span>
+      </div>
+      <div class="stat-card stat-card--inactivo">
+        <span class="stat-number">{{ totalInactivos() }}</span>
+        <span class="stat-label">Inactivos</span>
+      </div>
+    </div>
+
+    <!-- FILTROS USUARIOS -->
+    <div class="filter-tabs">
+      <button class="tab" [class.tab--active]="filtro() === 'todos'" (click)="setFiltro('todos')">
+        Todos
+      </button>
+      <button class="tab" [class.tab--active]="filtro() === 'solicitudes'" (click)="setFiltro('solicitudes')">
+        <i class="fas fa-clock"></i> Solicitudes
+        @if (pendientes() > 0) { <span class="badge">{{ pendientes() }}</span> }
+      </button>
+      <button class="tab" [class.tab--active]="filtro() === 'inactivos'" (click)="setFiltro('inactivos')">
+        <i class="fas fa-user-slash"></i> Inactivos
+        @if (totalInactivos() > 0) { <span class="badge badge--gray">{{ totalInactivos() }}</span> }
+      </button>
+    </div>
+
+    <!-- TABLA USUARIOS -->
+    @if (isLoading()) {
+      <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando usuarios…</div>
+    } @else if (hasError()) {
+      <div class="error-state">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>No se pudo cargar la lista de usuarios.</p>
+        <button (click)="cargarUsuarios()">Reintentar</button>
+      </div>
+    } @else if (usuariosFiltrados().length === 0) {
+      <div class="empty-state">
+        <i class="fas fa-users"></i>
+        <p>{{ filtro() === 'solicitudes' ? 'No hay solicitudes pendientes.' : filtro() === 'inactivos' ? 'No hay usuarios inactivos.' : 'No hay usuarios registrados.' }}</p>
+      </div>
+    } @else {
+      <div class="users-table-wrapper">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Correo</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones de rol</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (usuario of usuariosFiltrados(); track usuario.usuarioId) {
+              <tr [class.row--pending]="usuario.solicitudEscritor" [class.row--inactivo]="!usuario.activo">
+                <td>
+                  <div class="user-cell">
+                    <span class="user-nombre">{{ usuario.usuarioNombre }}</span>
+                    <span class="user-id">{{ usuario.usuarioId }}</span>
+                    @if (usuario.solicitudEscritor) {
+                      <span class="solicitud-badge"><i class="fas fa-clock"></i> Solicita Escritor</span>
+                    }
+                  </div>
+                </td>
+                <td class="user-email">{{ usuario.usuarioEmail }}</td>
+                <td>
+                  <span class="role-chip" [class]="'role-chip--' + usuario.usuarioRol.toLowerCase()">
+                    {{ usuario.usuarioRol }}
+                  </span>
+                </td>
+                <td>
+                  @if (usuario.usuarioRol !== 'ADMIN') {
+                    <button class="btn-toggle-activo"
+                      [class.btn-toggle-activo--on]="usuario.activo"
+                      [class.btn-toggle-activo--off]="!usuario.activo"
+                      [disabled]="isOp(usuario.usuarioId, 'toggle-activo')"
+                      (click)="toggleActivoUsuario(usuario.usuarioId)"
+                      [title]="usuario.activo ? 'Desactivar cuenta' : 'Activar cuenta'">
+                      @if (isOp(usuario.usuarioId, 'toggle-activo')) {
+                        <i class="fas fa-spinner fa-spin"></i>
+                      } @else {
+                        <i class="fas" [class.fa-toggle-on]="usuario.activo" [class.fa-toggle-off]="!usuario.activo"></i>
+                      }
+                      {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+                    </button>
+                  } @else {
+                    <span class="admin-lock"><i class="fas fa-lock"></i> Admin</span>
+                  }
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    @if (usuario.solicitudEscritor) {
+                      <button class="btn-approve"
+                        [disabled]="isOp(usuario.usuarioId, 'rol-ESCRITOR') || isOp(usuario.usuarioId, 'rechazar')"
+                        (click)="cambiarRol(usuario.usuarioId, 'ESCRITOR')" title="Aprobar solicitud">
+                        @if (isOp(usuario.usuarioId, 'rol-ESCRITOR')) { <i class="fas fa-spinner fa-spin"></i> }
+                        @else { <i class="fas fa-check"></i> }
+                        Aprobar
+                      </button>
+                      <button class="btn-reject"
+                        [disabled]="isOp(usuario.usuarioId, 'rechazar') || isOp(usuario.usuarioId, 'rol-ESCRITOR')"
+                        (click)="rechazarSolicitud(usuario.usuarioId)" title="Rechazar solicitud">
+                        @if (isOp(usuario.usuarioId, 'rechazar')) { <i class="fas fa-spinner fa-spin"></i> }
+                        @else { <i class="fas fa-times"></i> }
+                        Rechazar
+                      </button>
+                    } @else {
+                      @if (usuario.usuarioRol !== 'ADMIN') {
+                        <button class="btn-role btn-role--admin"
+                          [disabled]="isOp(usuario.usuarioId, 'rol-ADMIN')"
+                          (click)="cambiarRol(usuario.usuarioId, 'ADMIN')" title="Promover a Admin">
+                          @if (isOp(usuario.usuarioId, 'rol-ADMIN')) { <i class="fas fa-spinner fa-spin"></i> }
+                          @else { <i class="fas fa-shield-alt"></i> }
+                        </button>
+                      }
+                      @if (usuario.usuarioRol !== 'ESCRITOR') {
+                        <button class="btn-role btn-role--escritor"
+                          [disabled]="isOp(usuario.usuarioId, 'rol-ESCRITOR')"
+                          (click)="cambiarRol(usuario.usuarioId, 'ESCRITOR')" title="Promover a Escritor">
+                          @if (isOp(usuario.usuarioId, 'rol-ESCRITOR')) { <i class="fas fa-spinner fa-spin"></i> }
+                          @else { <i class="fas fa-pen-nib"></i> }
+                        </button>
+                      }
+                      @if (usuario.usuarioRol !== 'USUARIO') {
+                        <button class="btn-role btn-role--usuario"
+                          [disabled]="isOp(usuario.usuarioId, 'rol-USUARIO')"
+                          (click)="cambiarRol(usuario.usuarioId, 'USUARIO')" title="Degradar a Usuario">
+                          @if (isOp(usuario.usuarioId, 'rol-USUARIO')) { <i class="fas fa-spinner fa-spin"></i> }
+                          @else { <i class="fas fa-user"></i> }
+                        </button>
+                      }
+                    }
+                  </div>
+                </td>
+                <td>
+                  <button class="btn-delete"
+                    [disabled]="isOp(usuario.usuarioId, 'eliminar')"
+                    (click)="eliminarUsuario(usuario.usuarioId)" title="Eliminar usuario">
+                    @if (isOp(usuario.usuarioId, 'eliminar')) { <i class="fas fa-spinner fa-spin"></i> }
+                    @else { <i class="fas fa-trash-alt"></i> }
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  <!-- ════════════ SECCIÓN TÓPICOS ════════════ -->
+  @if (seccion() === 'topicos') {
+
+    <!-- STATS TÓPICOS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-number">{{ topicos().length }}</span>
+        <span class="stat-label">Total tópicos</span>
+      </div>
+      <div class="stat-card stat-card--escritor">
+        <span class="stat-number">{{ totalTopicosActivos() }}</span>
+        <span class="stat-label">Activos</span>
+      </div>
+      <div class="stat-card stat-card--inactivo">
+        <span class="stat-number">{{ totalTopicosInactivos() }}</span>
+        <span class="stat-label">Desactivados</span>
+      </div>
+    </div>
+
+    <!-- FILTROS TÓPICOS -->
+    <div class="filter-tabs">
+      <button class="tab" [class.tab--active]="filtroTopicos() === 'todos'"    (click)="filtroTopicos.set('todos')">Todos</button>
+      <button class="tab" [class.tab--active]="filtroTopicos() === 'activos'"  (click)="filtroTopicos.set('activos')"><i class="fas fa-eye"></i> Activos</button>
+      <button class="tab" [class.tab--active]="filtroTopicos() === 'inactivos'" (click)="filtroTopicos.set('inactivos')"><i class="fas fa-eye-slash"></i> Desactivados</button>
+    </div>
+
+    @if (cargandoTopicos()) {
+      <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando tópicos…</div>
+    } @else if (errorTopicos()) {
+      <div class="error-state">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>No se pudo cargar la lista de tópicos.</p>
+        <button (click)="cargarTopicos()">Reintentar</button>
+      </div>
+    } @else if (topicosFiltrados().length === 0) {
+      <div class="empty-state">
+        <i class="fas fa-newspaper"></i>
+        <p>No hay tópicos que mostrar.</p>
+      </div>
+    } @else {
+      <div class="users-table-wrapper">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Tópico</th>
+              <th>Autor</th>
+              <th>Categoría</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (topico of topicosFiltrados(); track topico.topicoId) {
+              <tr [class.row--inactivo]="!topico.activo">
+                <td>
+                  <div class="user-cell">
+                    <span class="user-nombre">{{ topico.topicoTitulo }}</span>
+                    <span class="user-id">#{{ topico.topicoId }}</span>
+                  </div>
+                </td>
+                <td class="user-email">{{ topico.topicoAutor }}</td>
+                <td>
+                  @if (topico.topicoCategoria) {
+                    <span class="role-chip role-chip--usuario">{{ topico.topicoCategoria }}</span>
+                  }
+                </td>
+                <td class="user-email">{{ topico.topicoFecha | date:'mediumDate' }}</td>
+                <td>
+                  <button class="btn-toggle-activo"
+                    [class.btn-toggle-activo--on]="topico.activo"
+                    [class.btn-toggle-activo--off]="!topico.activo"
+                    [disabled]="isOpTopico(topico.topicoId)"
+                    (click)="toggleActivoTopico(topico.topicoId)"
+                    [title]="topico.activo ? 'Desactivar tópico' : 'Activar tópico'">
+                    @if (isOpTopico(topico.topicoId)) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                    } @else {
+                      <i class="fas" [class.fa-toggle-on]="topico.activo" [class.fa-toggle-off]="!topico.activo"></i>
+                    }
+                    {{ topico.activo ? 'Activo' : 'Inactivo' }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</div>

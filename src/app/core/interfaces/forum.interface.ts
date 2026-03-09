@@ -18,6 +18,7 @@ export interface Topicos {
   topicoResumen: string;
   topicoImagen: string;
   topicoContenido: string;
+  activo: boolean;
 }
 
 /** Contrato de respuesta paginada del backend */

@@ -17,6 +17,9 @@ export class RegisterComponent {
   registroUsuario: FormGroup;
   imagenPreview: string | null = null;
   users: string[] | null = null;
+  registroExitoso: boolean = false;
+  emailRegistrado: string = '';
+  isSubmitting: boolean = false;
 
   componentService = inject(UserService);
   registro = inject(FormBuilder);
@@ -99,7 +102,7 @@ export class RegisterComponent {
   }
   
   submitUsuario() {
-    if (this.registroUsuario.invalid) {
+    if (this.registroUsuario.invalid || this.isSubmitting) {
       this.registroUsuario.markAllAsTouched();
       return;
     }
@@ -113,15 +116,18 @@ export class RegisterComponent {
       usuarioPerfil: this.selectedFile ?? null
     };
 
+    this.emailRegistrado = usuario.usuarioEmail;
+    this.isSubmitting = true;
     this.componentService.submitApplication(usuario)
       .then(() => {
         this.registroUsuario.reset();
         this.selectedFile = null;
         this.imagenPreview = null;
-        this.router.navigate(['']);
+        this.registroExitoso = true;
       })
       .catch(() => {
         alert('Error al registrar el usuario. Verifica los datos e intenta de nuevo.');
+        this.isSubmitting = false;
       });
   }
 

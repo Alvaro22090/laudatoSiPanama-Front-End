@@ -296,7 +296,7 @@ p {
 
 /* --- SECCIÓN CALL TO ACTION (Fondo Azul Original) --- */
 .cta-section {
-  background: var(--original-blue); /* Tu Azul Original */
+  background: var(--original-blue);
   padding: 6rem 2rem;
   color: white;
   text-align: center;

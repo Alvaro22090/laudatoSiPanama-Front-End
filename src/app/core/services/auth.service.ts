@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginData, User } from '../interfaces/user.interface';
+import { LoginData, Role, User } from '../interfaces/user.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
     const result = await firstValueFrom(
       this.http.post<{ role: string; user: string; jwTtoken: string }>(this.loginUrl, usuario)
     );
-    const user: User = { role: result.role, user: result.user, jwTtoken: result.jwTtoken };
+    const user: User = { role: result.role as Role, user: result.user, jwTtoken: result.jwTtoken };
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
@@ -51,6 +51,10 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     return this.currentUserSubject.value?.role === role;
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    return roles.includes(this.currentUserSubject.value?.role ?? '');
   }
 
   getToken(): string | null {

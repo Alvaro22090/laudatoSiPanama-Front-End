@@ -1,82 +1,301 @@
 <div class="profile-layout">
   <div class="profile-container">
     <div class="profile-card">
-      
-      <!-- 1. Header Cover (Gradiente) -->
+
+      <!-- Cover -->
       <div class="profile-cover"></div>
-      
+
       <div class="profile-content">
-        <!-- 2. Avatar y Acciones -->
+        <!-- Avatar + Identidad -->
         <div class="profile-header-row">
           <div class="avatar-wrapper">
             <div class="avatar-circle">
-              <!-- Si hay imagen, la mostramos -->
               <img *ngIf="usuarioInformacion.usuarioPerfil" [src]="usuarioInformacion.usuarioPerfil" alt="Avatar" class="avatar-img">
-              <!-- Si no, iniciales -->
-              <div *ngIf="!usuarioInformacion.usuarioPerfil" class="avatar-initials">
-                {{ getInitials() }}
-              </div>
+              <div *ngIf="!usuarioInformacion.usuarioPerfil" class="avatar-initials">{{ getInitials() }}</div>
             </div>
-          </div>
-          
-          <div class="profile-actions">
-            <a routerLink="/editar-usuario" class="btn-action">
-              <i class="fas fa-pen"></i> Editar
-            </a>
-            <a routerLink="/eliminar" class="btn-action btn-danger">
-              <i class="fas fa-trash-alt"></i> Eliminar
-            </a>
           </div>
         </div>
 
-        <!-- 3. Información Principal -->
         <div class="user-identity">
           <h1 class="user-fullname">{{ usuarioInformacion.usuarioNombre }}</h1>
-          <p class="user-username">ID: {{ usuarioInformacion.usuarioId }}</p>
+          <p class="user-username">{{ '@' + usuarioInformacion.usuarioId }}</p>
+          @if (authService.hasRole(ROLES.ADMIN)) {
+            <span class="role-badge role-badge--admin"><i class="fas fa-shield-alt"></i> Administrador</span>
+          } @else if (authService.hasRole(ROLES.ESCRITOR)) {
+            <span class="role-badge role-badge--escritor"><i class="fas fa-pen-nib"></i> Escritor</span>
+          } @else {
+            <span class="role-badge role-badge--usuario"><i class="fas fa-user"></i> Usuario</span>
+          }
         </div>
 
-        <!-- 4. Grilla de Detalles -->
-        <div class="details-grid">
-          
-          <!-- Tarjeta Info Personal -->
-          <div class="details-card">
-            <h3 class="details-title">Información Personal</h3>
-            <ul class="details-list">
-              <li>
-                <i class="fas fa-envelope icon"></i>
-                <div class="data">
-                  <span class="label">Correo</span>
-                  <span class="value">{{ usuarioInformacion.usuarioEmail }}</span>
-                </div>
-              </li>
-              <li>
-                <i class="fas fa-birthday-cake icon"></i>
-                <div class="data">
-                  <span class="label">Nacimiento</span>
-                  <span class="value">{{ usuarioInformacion.usuarioNacimiento | date:'longDate' }}</span>
-                </div>
-              </li>
-              <li>
-                <i class="fas fa-venus-mars icon"></i>
-                <div class="data">
-                  <span class="label">Género</span>
-                  <span class="value">{{ usuarioInformacion.usuarioGenero || 'No especificado' }}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
+        <!-- ── Tabs ──────────────────────────────────────────────────────── -->
+        <nav class="tab-nav">
+          <button class="tab-btn" [class.tab-btn--active]="tabActiva() === 'perfil'" (click)="cambiarTab('perfil')">
+            <i class="fas fa-user"></i> Mi Perfil
+          </button>
+          <button class="tab-btn" [class.tab-btn--active]="tabActiva() === 'seguridad'" (click)="cambiarTab('seguridad')">
+            <i class="fas fa-lock"></i> Seguridad
+          </button>
+          <button class="tab-btn" [class.tab-btn--active]="tabActiva() === 'actividades'" (click)="cambiarTab('actividades')">
+            <i class="fas fa-calendar-check"></i> Mis Actividades
+          </button>
+          @if (authService.hasRole(ROLES.ESCRITOR) || authService.hasRole(ROLES.ADMIN)) {
+            <button class="tab-btn" [class.tab-btn--active]="tabActiva() === 'topicos'" (click)="cambiarTab('topicos')">
+              <i class="fas fa-newspaper"></i> Mis Tópicos
+            </button>
+          }
+        </nav>
 
-          <!-- Tarjeta Actividad (Placeholder como el ejemplo) -->
-          <div class="details-card activity-card">
-            <h3 class="details-title">Mis Actividades</h3>
-            <div class="empty-state">
-              <i class="fas fa-leaf empty-icon"></i>
-              <p>Aún no te has inscrito a ningún evento.</p>
-              <a routerLink="/foro" class="link-explore">Explorar Tablón</a>
+        <!-- ══════════════ TAB: PERFIL ══════════════ -->
+        @if (tabActiva() === 'perfil') {
+          <div class="tab-panel">
+
+            @if (perfilOk()) {
+              <div class="alert alert--ok"><i class="fas fa-check-circle"></i> {{ perfilOk() }}</div>
+            }
+
+            @if (!modoEdicion()) {
+              <!-- Vista de datos -->
+              <div class="info-section">
+                <div class="info-header">
+                  <h3 class="section-title">Información Personal</h3>
+                  <button class="btn-edit" (click)="activarEdicion()"><i class="fas fa-pen"></i> Editar</button>
+                </div>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label"><i class="fas fa-id-badge"></i> ID</span>
+                    <span class="info-value">{{ usuarioInformacion.usuarioId }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label"><i class="fas fa-envelope"></i> Correo</span>
+                    <span class="info-value">{{ usuarioInformacion.usuarioEmail }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label"><i class="fas fa-birthday-cake"></i> Nacimiento</span>
+                    <span class="info-value">{{ usuarioInformacion.usuarioNacimiento | date:'longDate' : '' : 'es' }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label"><i class="fas fa-venus-mars"></i> Género</span>
+                    <span class="info-value">{{ usuarioInformacion.usuarioGenero || 'No especificado' }}</span>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <!-- Formulario de edición -->
+              <div class="info-section">
+                <div class="info-header">
+                  <h3 class="section-title">Editar Perfil</h3>
+                </div>
+                @if (perfilError()) {
+                  <div class="alert alert--error"><i class="fas fa-exclamation-circle"></i> {{ perfilError() }}</div>
+                }
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label>Nombre completo</label>
+                    <input type="text" [(ngModel)]="formPerfil.usuarioNombre" placeholder="Tu nombre">
+                  </div>
+                  <div class="form-field">
+                    <label>Correo electrónico</label>
+                    <input type="email" [(ngModel)]="formPerfil.usuarioEmail" placeholder="tu@correo.com">
+                  </div>
+                  <div class="form-field">
+                    <label>Género</label>
+                    <select [(ngModel)]="formPerfil.usuarioGenero">
+                      <option value="">No especificado</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Prefiero no decir">Prefiero no decir</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label>Fecha de nacimiento</label>
+                    <input type="date" [(ngModel)]="formPerfil.usuarioNacimiento">
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+                  <button class="btn-primary" (click)="guardarPerfil()" [disabled]="guardandoPerfil()">
+                    @if (guardandoPerfil()) { <i class="fas fa-spinner fa-spin"></i> Guardando... }
+                    @else { <i class="fas fa-save"></i> Guardar cambios }
+                  </button>
+                </div>
+              </div>
+            }
+
+            <!-- Solicitar escritor (solo USUARIO) -->
+            @if (authService.hasRole(ROLES.USUARIO)) {
+              <div class="escritor-request-card">
+                <div class="escritor-request-info">
+                  <i class="fas fa-pen-nib"></i>
+                  <div>
+                    <h4>¿Quieres publicar en el foro?</h4>
+                    <p>Solicita el rol de <strong>Escritor</strong> y un administrador revisará tu petición.</p>
+                  </div>
+                </div>
+                @if (solicitudEnviada) {
+                  <div class="request-success"><i class="fas fa-check-circle"></i> Solicitud enviada. Recibirás una respuesta pronto.</div>
+                } @else {
+                  <button class="btn-request-writer" (click)="solicitarEscritor()" [disabled]="solicitudLoading">
+                    @if (solicitudLoading) { <i class="fas fa-spinner fa-spin"></i> Enviando... }
+                    @else { <i class="fas fa-paper-plane"></i> Solicitar ser Escritor }
+                  </button>
+                  @if (solicitudError) { <p class="request-error">{{ solicitudError }}</p> }
+                }
+              </div>
+            }
+
+          </div>
+        }
+
+        <!-- ══════════════ TAB: SEGURIDAD ══════════════ -->
+        @if (tabActiva() === 'seguridad') {
+          <div class="tab-panel">
+
+            <!-- Cambiar contraseña -->
+            <div class="info-section">
+              <h3 class="section-title">Cambiar Contraseña</h3>
+              @if (contrasenaOk()) {
+                <div class="alert alert--ok"><i class="fas fa-check-circle"></i> {{ contrasenaOk() }}</div>
+              }
+              @if (contrasenaError()) {
+                <div class="alert alert--error"><i class="fas fa-exclamation-circle"></i> {{ contrasenaError() }}</div>
+              }
+              <div class="form-grid form-grid--narrow">
+                <div class="form-field">
+                  <label>Contraseña actual</label>
+                  <input type="password" [(ngModel)]="formContrasena.contrasenaActual" placeholder="••••••••">
+                </div>
+                <div class="form-field">
+                  <label>Nueva contraseña</label>
+                  <input type="password" [(ngModel)]="formContrasena.nuevaContrasena" placeholder="Mín. 6 caracteres">
+                </div>
+                <div class="form-field">
+                  <label>Confirmar nueva contraseña</label>
+                  <input type="password" [(ngModel)]="confirmarNueva" placeholder="Repite la nueva contraseña">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-primary" (click)="cambiarContrasena()" [disabled]="guardandoContrasena()">
+                  @if (guardandoContrasena()) { <i class="fas fa-spinner fa-spin"></i> Guardando... }
+                  @else { <i class="fas fa-key"></i> Cambiar contraseña }
+                </button>
+              </div>
             </div>
+
+            <!-- Zona de peligro -->
+            <div class="danger-zone">
+              <h3 class="danger-title"><i class="fas fa-exclamation-triangle"></i> Zona de Peligro</h3>
+              <p class="danger-desc">Una vez elimines tu cuenta, perderás el acceso permanentemente. Esta acción no se puede deshacer.</p>
+
+              @if (!mostrarConfirmDesactivar()) {
+                <button class="btn-danger-action" (click)="mostrarConfirmDesactivar.set(true)">
+                  <i class="fas fa-trash-alt"></i> Eliminar mi cuenta
+                </button>
+              } @else {
+                <div class="confirm-desactivar">
+                  <p>Ingresa tu contraseña para confirmar la eliminación:</p>
+                  @if (desactivarError()) {
+                    <div class="alert alert--error"><i class="fas fa-exclamation-circle"></i> {{ desactivarError() }}</div>
+                  }
+                  <input type="password" [(ngModel)]="formDesactivar.contrasena" placeholder="Tu contraseña actual" class="confirm-input">
+                  <div class="confirm-actions">
+                    <button class="btn-secondary" (click)="mostrarConfirmDesactivar.set(false)">Cancelar</button>
+                    <button class="btn-danger-action" (click)="desactivarCuenta()" [disabled]="desactivandoCuenta() || !formDesactivar.contrasena">
+                      @if (desactivandoCuenta()) { <i class="fas fa-spinner fa-spin"></i> Eliminando... }
+                      @else { Confirmar eliminación }
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+
           </div>
-          
-        </div>
+        }
+
+        <!-- ══════════════ TAB: ACTIVIDADES ══════════════ -->
+        @if (tabActiva() === 'actividades') {
+          <div class="tab-panel">
+            <h3 class="section-title">Mis Actividades</h3>
+
+            @if (cargandoActividades()) {
+              <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+            } @else if (inscripciones().length === 0) {
+              <div class="empty-state">
+                <i class="fas fa-calendar-times empty-icon"></i>
+                <p>Aún no te has inscrito a ningún evento.</p>
+                <a routerLink="/foro" class="link-explore">Explorar el foro</a>
+              </div>
+            } @else {
+              <div class="activity-list">
+                @for (ins of inscripciones(); track ins.inscripcionId) {
+                  <div class="activity-card" [class.activity-card--inactivo]="!ins.topicoActivo">
+                    @if (ins.topicoImagen) {
+                      <img [src]="ins.topicoImagen" [alt]="ins.topicoTitulo" class="activity-img">
+                    }
+                    <div class="activity-info">
+                      <div class="activity-meta">
+                        @if (ins.topicoCategoria) {
+                          <span class="activity-cat">{{ ins.topicoCategoria }}</span>
+                        }
+                        @if (!ins.topicoActivo) {
+                          <span class="activity-badge-inactivo"><i class="fas fa-eye-slash"></i> Inactivo</span>
+                        }
+                      </div>
+                      <h4 class="activity-title">{{ ins.topicoTitulo }}</h4>
+                      <p class="activity-summary">{{ ins.topicoResumen }}</p>
+                      @if (ins.topicoFechaEvento) {
+                        <p class="activity-date"><i class="fas fa-calendar-alt"></i> {{ ins.topicoFechaEvento | date:'mediumDate' : '' : 'es' }}</p>
+                      }
+                    </div>
+                    <button class="btn-desinscribir" (click)="desinscribirse(ins.topicoId)" title="Cancelar inscripción">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- ══════════════ TAB: MIS TÓPICOS ══════════════ -->
+        @if (tabActiva() === 'topicos') {
+          <div class="tab-panel">
+            <h3 class="section-title">Mis Tópicos Creados</h3>
+
+            @if (cargandoTopicos()) {
+              <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+            } @else if (misTopicos().length === 0) {
+              <div class="empty-state">
+                <i class="fas fa-newspaper empty-icon"></i>
+                <p>Aún no has creado ningún tópico.</p>
+                <a routerLink="/foro" class="link-explore">Ir al foro</a>
+              </div>
+            } @else {
+              <div class="topics-list">
+                @for (t of misTopicos(); track t.topicoId) {
+                  <div class="topic-row" [class.topic-row--inactivo]="!t.activo">
+                    @if (t.topicoImagen) {
+                      <img [src]="t.topicoImagen" [alt]="t.topicoTitulo" class="topic-thumb">
+                    }
+                    <div class="topic-info">
+                      <div class="topic-meta">
+                        @if (t.topicoCategoria) { <span class="activity-cat">{{ t.topicoCategoria }}</span> }
+                        @if (!t.activo) { <span class="activity-badge-inactivo"><i class="fas fa-eye-slash"></i> Desactivado</span> }
+                      </div>
+                      <h4 class="topic-title">{{ t.topicoTitulo }}</h4>
+                      <p class="topic-summary">{{ t.topicoResumen }}</p>
+                      <p class="topic-date"><i class="fas fa-clock"></i> {{ t.topicoFecha | date:'mediumDate' : '' : 'es' }}</p>
+                    </div>
+                    <a [routerLink]="['/foro', t.topicoId]" class="btn-ver-topico">
+                      <i class="fas fa-external-link-alt"></i>
+                    </a>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
       </div>
     </div>
   </div>

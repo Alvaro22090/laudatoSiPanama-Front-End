@@ -43,7 +43,11 @@
 .contact-card-wrapper {
   background: white;
   border-radius: 2rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.04),
+    0 12px 28px rgba(0,0,0,0.08),
+    0 32px 56px rgba(0,0,0,0.06),
+    0 0 0 1px rgba(0,0,0,0.04);
   width: 100%;
   max-width: 1200px;
   display: grid;
@@ -53,15 +57,33 @@
 
 /* --- PANEL IZQUIERDO (INFO) --- */
 .contact-info-panel {
-  /* Fondo Azul Corporativo (Estilo EcoLaudato) */
-  background-color: var(--c-accent);
-  background-image: linear-gradient(135deg, var(--c-accent), #005a8d);
+  background-color: #0076b4;
+  background-image:
+    radial-gradient(ellipse at 15% 15%, rgba(255,255,255,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(0,176,95,0.18) 0%, transparent 50%),
+    linear-gradient(145deg, #0076b4 0%, #005a8d 55%, #003d66 100%);
   color: white;
   padding: 3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decoración geométrica sutil */
+.contact-info-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
 }
 
 .info-title {
@@ -93,11 +115,13 @@
 
 .icon-circle {
   width: 40px; height: 40px;
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem;
   flex-shrink: 0;
+  backdrop-filter: blur(4px);
 }
 
 .info-text h3 {
@@ -132,8 +156,9 @@
 
 .social-btn:hover {
   background-color: white;
-  color: var(--c-accent);
+  color: #0076b4;
   transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,118,180,0.25);
 }
 
 /* --- PANEL DERECHO (FORM) --- */
@@ -199,7 +224,7 @@
 }
 
 .submit-btn {
-  background-color: var(--c-text-main); /* Botón negro/oscuro elegante */
+  background: linear-gradient(135deg, #00b05f 0%, #00796b 100%);
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -211,19 +236,71 @@
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  transition: all 0.3s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
   margin-top: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 176, 95, 0.28);
+  will-change: transform;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background-color: #000;
+  filter: brightness(0.88);
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 22px rgba(0, 176, 95, 0.38);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.8);
+  box-shadow: 0 3px 8px rgba(0, 176, 95, 0.2);
 }
 
 .submit-btn:disabled {
-  background-color: #9ca3af;
+  background: #d1d5db;
+  box-shadow: none;
   cursor: not-allowed;
+  filter: none;
+}
+
+/* --- ESTADOS DE FEEDBACK (éxito / error) --- */
+.form-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  min-height: 300px;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+.feedback-icon {
+  font-size: 4rem;
+  color: var(--c-primary);
+  margin-bottom: 0.5rem;
+}
+
+.form-feedback h2 {
+  font-family: var(--font-primary);
+  font-size: 1.8rem;
+  color: var(--c-text-main);
+  margin: 0;
+}
+
+.form-feedback p {
+  color: var(--c-text-sec);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0;
+}
+
+.server-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
 }
 
 /* --- MEDIA QUERIES --- */

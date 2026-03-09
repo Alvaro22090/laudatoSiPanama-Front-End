@@ -243,7 +243,8 @@
   border: 1px solid #bbf7d0;
   border-radius: 1rem;
   padding: 1.25rem 1.5rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .event-icon {
@@ -259,9 +260,76 @@
   flex-shrink: 0;
 }
 
+.event-info { flex: 1; min-width: 160px; }
+
 .event-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; font-weight: 700; }
-.event-date  { font-family: var(--font-primary); font-size: 1.15rem; color: var(--tech-dark); margin: 0.2rem 0; }
-.event-hint  { font-size: 0.82rem; color: var(--primary-green); font-weight: 500; }
+.event-date  { font-family: var(--font-primary); font-size: 1.1rem; color: var(--tech-dark); margin: 0.2rem 0 0; }
+
+.event-actions { flex-shrink: 0; }
+
+/* Botón de inscripción */
+.btn-inscribirse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.3rem;
+  border-radius: 8px;
+  font-family: var(--font-forum);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn-inscribirse:hover:not(:disabled) {
+  background: var(--secondary-green);
+  transform: translateY(-1px);
+}
+
+.btn-inscribirse:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-inscribirse--activo {
+  background: #6b7280;
+}
+
+.btn-inscribirse--activo:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-inscribirse--login {
+  background: #0076b4;
+  font-size: 0.82rem;
+}
+
+.btn-inscribirse--login:hover {
+  background: #005a8a;
+}
+
+/* Mensaje de confirmación */
+.inscripcion-msg {
+  font-family: var(--font-forum);
+  font-size: 0.88rem;
+  color: #6b7280;
+  background: #f9fafb;
+  border-left: 3px solid #9ca3af;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1.5rem;
+}
+
+.inscripcion-msg--ok {
+  color: #065f46;
+  background: #ecfdf5;
+  border-left-color: var(--primary-green);
+}
 
 .divider { border: 0; border-top: 1px solid #f3f4f6; margin: 0 0 2rem; }
 
@@ -330,6 +398,8 @@
   .hero-wrap      { height: 280px; margin-bottom: -60px; }
   .content-card   { padding: 2rem 1.5rem; }
   .hero-title     { font-size: 1.5rem; }
-  .event-card     { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .event-card     { gap: 1rem; }
+  .event-actions  { width: 100%; }
+  .btn-inscribirse { width: 100%; justify-content: center; }
   .date-group     { text-align: left; }
 }

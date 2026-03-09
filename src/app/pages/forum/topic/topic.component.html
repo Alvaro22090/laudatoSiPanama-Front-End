@@ -68,12 +68,39 @@
           @if (t.topicoFechaEvento) {
             <div class="event-card">
               <div class="event-icon"><i class="fas fa-calendar-alt"></i></div>
-              <div>
+              <div class="event-info">
                 <p class="event-label">Fecha del Evento</p>
                 <p class="event-date">{{ formatEventDate(t.topicoFechaEvento) }}</p>
-                <p class="event-hint">¡Agenda este evento!</p>
+              </div>
+
+              <div class="event-actions">
+                @if (isLoggedIn()) {
+                  <button
+                    class="btn-inscribirse"
+                    [class.btn-inscribirse--activo]="yaInscrito()"
+                    [disabled]="inscribiendose()"
+                    (click)="toggleInscripcion()">
+                    @if (inscribiendose()) {
+                      <i class="fas fa-spinner fa-spin"></i> Procesando…
+                    } @else if (yaInscrito()) {
+                      <i class="fas fa-check-circle"></i> Inscrito · Cancelar
+                    } @else {
+                      <i class="fas fa-calendar-plus"></i> Inscribirme
+                    }
+                  </button>
+                } @else {
+                  <a routerLink="/registro" class="btn-inscribirse btn-inscribirse--login">
+                    <i class="fas fa-sign-in-alt"></i> Inicia sesión para inscribirte
+                  </a>
+                }
               </div>
             </div>
+
+            @if (inscripcionMsg()) {
+              <p class="inscripcion-msg" [class.inscripcion-msg--ok]="yaInscrito()">
+                {{ inscripcionMsg() }}
+              </p>
+            }
           }
 
           <hr class="divider">
