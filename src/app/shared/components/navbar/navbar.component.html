@@ -22,11 +22,14 @@
                     </a>
                 }
             </div>
-
-            <div class="nav-auth">
-                <app-login #loginRef></app-login>
-            </div>
         </div>
+
+        <!--
+          app-login vive FUERA de nav-desktop para que su modal (position:fixed)
+          siempre esté en el DOM, incluso cuando nav-desktop tiene display:none en móvil.
+          Sus botones (.navbar-actions) ya tienen display:none en <900px por CSS.
+        -->
+        <app-login #loginRef></app-login>
 
         <!-- BOTÓN HAMBURGUESA (MÓVIL) -->
         <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
@@ -39,30 +42,56 @@
     <!-- MENÚ MÓVIL -->
     @if (isMenuOpen) {
         <div class="mobile-menu">
-            <a routerLink="/" (click)="toggleMenu()">Inicio</a>
-            <a routerLink="/description" (click)="toggleMenu()">Quiénes Somos</a>
-            <a routerLink="/foro" (click)="toggleMenu()">Foro</a>
-            <a routerLink="/contacto" (click)="toggleMenu()">Contacto</a>
 
-            @if (authService.hasRole(ROLES.ADMIN)) {
-                <a routerLink="/admin" (click)="toggleMenu()" class="nav-link-admin">
-                    <i class="fas fa-shield-alt"></i> Panel Admin
+            <!-- Links de navegación -->
+            <nav class="mm-nav">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMenu()">
+                    <span class="mm-icon"><i class="fas fa-home"></i></span>
+                    <span>Inicio</span>
                 </a>
-            }
+                <a routerLink="/description" routerLinkActive="active" (click)="toggleMenu()">
+                    <span class="mm-icon"><i class="fas fa-leaf"></i></span>
+                    <span>Quiénes Somos</span>
+                </a>
+                <a routerLink="/foro" routerLinkActive="active" (click)="toggleMenu()">
+                    <span class="mm-icon"><i class="fas fa-comments"></i></span>
+                    <span>Foro</span>
+                </a>
+                <a routerLink="/contacto" routerLinkActive="active" (click)="toggleMenu()">
+                    <span class="mm-icon"><i class="fas fa-envelope"></i></span>
+                    <span>Contacto</span>
+                </a>
+                @if (authService.hasRole(ROLES.ADMIN)) {
+                    <a routerLink="/admin" routerLinkActive="active" (click)="toggleMenu()" class="mm-admin">
+                        <span class="mm-icon"><i class="fas fa-shield-alt"></i></span>
+                        <span>Panel Admin</span>
+                    </a>
+                }
+            </nav>
 
-            <div class="mobile-divider"></div>
+            <!-- Acciones de autenticación -->
+            <div class="mm-auth">
+                @if (loginRef.loginService.isLoggedIn()) {
+                    <a routerLink="/usuario" (click)="toggleMenu()" class="mm-btn mm-btn-account">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Mi Cuenta</span>
+                    </a>
+                    <button (click)="loginRef.cerrarSesion(); toggleMenu()" class="mm-btn mm-btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                } @else {
+                    <button (click)="loginRef.abrirModal(); toggleMenu()" class="mm-btn mm-btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Ingresar</span>
+                    </button>
+                    <a routerLink="/registro" (click)="toggleMenu()" class="mm-btn mm-btn-register">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Registrarse</span>
+                    </a>
+                }
+            </div>
 
-            @if (loginRef.loginService.isLoggedIn()) {
-                 <a routerLink="/usuario" (click)="toggleMenu()" class="highlight">
-                    <i class="fas fa-user"></i> Mi Cuenta
-                 </a>
-                 <button (click)="loginRef.cerrarSesion(); toggleMenu()" class="mobile-logout">
-                    Cerrar Sesión
-                 </button>
-            } @else {
-                <button (click)="loginRef.abrirModal(); toggleMenu()" class="highlight">Ingresar</button>
-                <a routerLink="/registro" (click)="toggleMenu()" class="highlight">Registrarse</a>
-            }
         </div>
     }
 </nav>
