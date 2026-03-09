@@ -102,12 +102,12 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-/* Landscape con pantalla muy baja (ej. móvil horizontal):
-   en vh el navbar crece, recalibramos las variables. */
-@media (max-height: 500px) {
+/* Landscape móvil: el alto disponible cae a ~350-415px, así que el navbar
+   usa un clamp más bajo para no ocupar un tercio de la pantalla. */
+@media (max-width: 1024px) and (orientation: landscape) {
     :root {
-        --navbar-height: 20vh;
-        --navbar-height-scrolled: 15vh;
+        --navbar-height:         clamp(44px, 11vh, 52px);
+        --navbar-height-scrolled: clamp(36px,  9vh, 44px);
     }
 }
 

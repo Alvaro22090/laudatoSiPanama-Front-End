@@ -366,3 +366,23 @@
         height: calc(100dvh - var(--navbar-height-scrolled));
     }
 }
+
+/* ── LANDSCAPE MÓVIL (<1024px horizontal) ───────────────────────────────── */
+@media (max-width: 1024px) and (orientation: landscape) {
+    /* El menú necesita scroll: el alto disponible es ~300-370px */
+    .mobile-menu {
+        overflow-y: auto;
+        justify-content: flex-start;
+        padding: 0.5rem 0;
+        gap: 0.15rem;
+    }
+
+    .mobile-menu a,
+    .mobile-menu button {
+        font-size: 1.05rem;
+        padding: 0.3rem 1.5rem;
+        min-height: 44px; /* mantiene área táctil */
+    }
+
+    .mobile-divider { margin: 0.25rem 0; }
+}
