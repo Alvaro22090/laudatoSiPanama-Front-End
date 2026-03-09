@@ -91,8 +91,19 @@ h1, h2, h3, h4, h5 {
     background: var(--primary-green); /* Tu verde */
 }
 
-/* En landscape con pantalla muy baja (ej. móvil horizontal),
-   el navbar se hace más grande en vh, así que recalibramos las variables. */
+/* Móvil (<900px): clamp() para que sea fluido pero acotado.
+   - min 56px: nunca queda enano en pantallas pequeñas (iPhone SE)
+   - 9vh: escala proporcionalmente con la altura del dispositivo
+   - max 70px: nunca crece demasiado en pantallas grandes (S25 6.9") */
+@media (max-width: 899px) {
+    :root {
+        --navbar-height:         clamp(56px, 9vh, 70px);
+        --navbar-height-scrolled: clamp(48px, 7vh, 58px);
+    }
+}
+
+/* Landscape con pantalla muy baja (ej. móvil horizontal):
+   en vh el navbar crece, recalibramos las variables. */
 @media (max-height: 500px) {
     :root {
         --navbar-height: 20vh;

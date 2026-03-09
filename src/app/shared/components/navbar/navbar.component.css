@@ -339,3 +339,30 @@
     .nav-container { padding: 0 1rem; }
     .btn-register { padding: 0.6rem 1.3rem; font-size: 0.9rem; }
 }
+
+/* ── MÓVIL (hamburguesa activa — <900px) ─────────────────────────────────── */
+@media (max-width: 899px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+
+    .nav-logo { gap: 0.45rem; }
+
+    /* Ícono fluido: ~60% del navbar-height, acotado entre 32px y 42px */
+    .icono-png {
+        width:  clamp(32px, 5.5vh, 42px);
+        height: clamp(32px, 5.5vh, 42px);
+    }
+
+    .logo-text { font-size: clamp(1rem, 2.5vw + 0.6rem, 1.15rem); }
+
+    /* dvh descuenta las barras del navegador del sistema */
+    .mobile-menu {
+        height: calc(100dvh - var(--navbar-height));
+    }
+
+    .navbar.scrolled ~ .mobile-menu,
+    .navbar.scrolled .mobile-menu {
+        height: calc(100dvh - var(--navbar-height-scrolled));
+    }
+}
