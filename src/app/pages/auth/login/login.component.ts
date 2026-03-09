@@ -65,11 +65,5 @@ export class LoginComponent implements OnInit {
     this.mostrarModal = false;
   }
 
-  cerrarModalExterno(event: MouseEvent): void {
-    const modal = document.getElementById('login-modal');
-    if (event.target === modal) {
-      this.cerrarModal();
-    }
-  }
 }
 

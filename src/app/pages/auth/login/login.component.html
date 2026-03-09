@@ -18,7 +18,7 @@
   </button>
 </ng-template>
 
-<div id="login-modal" class="modal" [ngClass]="{'mostrar': mostrarModal}" (click)="cerrarModalExterno($event)">
+<div id="login-modal" class="modal" [ngClass]="{'mostrar': mostrarModal}">
     <div class="modal-contenido" (click)="$event.stopPropagation()">
       <span (click)="cerrarModal()" class="cerrar">&times;</span>
   

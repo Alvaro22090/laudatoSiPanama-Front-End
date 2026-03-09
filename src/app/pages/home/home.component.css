@@ -352,6 +352,7 @@ p {
 }
 
 /* --- RESPONSIVIDAD (Tu lógica original conservada) --- */
+/* ── TABLET (769px – 1000px) ──────────────────────────────────────────── */
 @media (max-width: 1000px) {
   .hero-presentation {
     width: 80%;
@@ -389,4 +390,146 @@ p {
   .cta-section {
     padding: 4rem 1.5rem;
   }
+}
+
+/* ── MÓVIL (<768px): Rediseño — texto flotante + card blanca ──────────── */
+@media (max-width: 768px) {
+  /* Imagen sin distorsión */
+  .hero {
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Overlay de gradiente para legibilidad del texto sobre la foto */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 118, 180, 0.52) 0%,
+      rgba(0, 118, 180, 0.12) 30%,
+      rgba(0, 0, 0, 0.18) 60%,
+      rgba(0, 0, 0, 0.52) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* El contenido queda sobre el overlay */
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  /* El bloque azul desaparece: el texto flota sobre la imagen */
+  .hero-presentation {
+    background: transparent;
+    margin-left: 0;
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    padding: 1.5rem 1.5rem 3rem;
+    border-radius: 0;
+    align-items: flex-start;
+  }
+
+  .hero-presentation p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-presentation em {
+    font-size: 1.75rem;
+    color: white;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Card blanca que sube desde el fondo */
+  .hero-buttons {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    height: auto;
+    width: 100%;
+    border-radius: 1.75rem 1.75rem 0 0;
+    padding: 2rem 1.5rem 1.5rem;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-buttons .container {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Botones apilados, centrados */
+  .hero-register {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero-button {
+    width: 100%;
+    max-width: 300px;
+    height: 3.25rem;
+    font-size: 1rem;
+    justify-content: center;
+    gap: 0.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .hero-button img {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Barra de scroll: compacta y limpia */
+  .hero-scroll {
+    height: auto;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .hero-scroll p   { font-size: 1rem; }
+  .hero-scroll img { width: 22px; height: 22px; }
+
+  /* Secciones de contenido */
+  .section-header { margin-bottom: 2.5rem; }
+
+  .impact-section,
+  .cta-section {
+    padding: 3rem 1rem;
+  }
+
+  .topic-card { padding: 1.75rem 1.25rem; }
+
+  .cta-button {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+
+/* ── MÓVIL PEQUEÑO (<480px) ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-presentation p  { font-size: 0.9rem; }
+  .hero-presentation em { font-size: 1.45rem; }
+  .hero-subtitle        { font-size: 0.95rem; }
+  .hero-button          { font-size: 0.92rem; }
+
+  .topic-icon { width: 56px; height: 56px; font-size: 1.5rem; }
+  .topic-card { padding: 1.5rem 1rem; }
+  .topic-card h3 { font-size: 1.2rem; }
 }
