@@ -22,7 +22,13 @@ export class ForumRealtimeService implements OnDestroy {
   private connect(): void {
     try {
       this.client = new Client({
-        webSocketFactory: () => new SockJS(`${environment.wsUrl}`),
+        // Forzamos solo el transporte WebSocket — los fallbacks de iframe
+        // (iframe-htmlfile, iframe-eventsource) tropiezan con X-Frame-Options: DENY
+        // cuando frontend y backend son orígenes distintos (Vercel ↔ duckdns),
+        // y los xhr_streaming/polling requieren credentials cross-origin.
+        webSocketFactory: () => new SockJS(`${environment.wsUrl}`, null, {
+          transports: ['websocket'],
+        }),
         reconnectDelay: 5000,
         onConnect: () => {
           this.client?.subscribe('/topic/new-topic', (msg: { body: string }) => {
