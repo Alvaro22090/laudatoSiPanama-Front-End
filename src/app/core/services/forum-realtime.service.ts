@@ -1,37 +1,31 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import { environment } from '../../../environments/environment';
 import { Topicos } from '../interfaces/forum.interface';
 
 /**
  * Servicio de tiempo real para el foro vía WebSocket (STOMP sobre SockJS).
- * Usa imports dinámicos para evitar que @stomp/stompjs y sockjs-client
- * bloqueen la carga del chunk de Angular si el servidor no está disponible.
  */
 @Injectable({ providedIn: 'root' })
 export class ForumRealtimeService implements OnDestroy {
   /** Emite cada tópico nuevo recibido por WebSocket */
   readonly newTopic$ = new Subject<Topicos>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private client: any = null;
+  private client: Client | null = null;
 
   constructor() {
-    this.connectAsync();
+    this.connect();
   }
 
-  private async connectAsync(): Promise<void> {
+  private connect(): void {
     try {
-      const { Client }  = await import('@stomp/stompjs');
-      const SockJSMod   = await import('sockjs-client');
-      // Compatibilidad con default export en distintos entornos de módulo
-      const SockJS = (SockJSMod as any).default ?? SockJSMod;
-
       this.client = new Client({
         webSocketFactory: () => new SockJS(`${environment.wsUrl}`),
         reconnectDelay: 5000,
         onConnect: () => {
-          this.client.subscribe('/topic/new-topic', (msg: { body: string }) => {
+          this.client?.subscribe('/topic/new-topic', (msg: { body: string }) => {
             try {
               const topic: Topicos = JSON.parse(msg.body);
               this.newTopic$.next(topic);
@@ -40,13 +34,12 @@ export class ForumRealtimeService implements OnDestroy {
             }
           });
         },
-        onStompError: (frame: unknown) =>
+        onStompError: (frame) =>
           console.error('[ForumRealtime] Error STOMP:', frame),
       });
 
       this.client.activate();
     } catch (err) {
-      // Si el backend no soporta WS o la librería falla, el foro sigue funcionando
       console.warn('[ForumRealtime] WebSocket no disponible:', err);
     }
   }
