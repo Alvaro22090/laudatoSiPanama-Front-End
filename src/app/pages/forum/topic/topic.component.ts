@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
+import DOMPurify from 'dompurify';
 
 import { ForumService } from '../../../core/services/forum.service';
 import { AuthService }  from '../../../core/services/auth.service';
@@ -38,7 +39,13 @@ export class TopicComponent implements OnInit {
 
   safeContent = computed<SafeHtml>(() => {
     const c = this.topic()?.topicoContenido;
-    return c ? this.sanitizer.bypassSecurityTrustHtml(c) : '';
+    if (!c) return '';
+    const sanitized = DOMPurify.sanitize(c, {
+      USE_PROFILES: { html: true },
+      FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form'],
+      FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur'],
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(sanitized);
   });
 
   isEvent = computed(() => !!this.topic()?.topicoFechaEvento);
