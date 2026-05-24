@@ -22,12 +22,11 @@ export class ForumRealtimeService implements OnDestroy {
   private connect(): void {
     try {
       this.client = new Client({
-        // Forzamos solo el transporte WebSocket — los fallbacks de iframe
-        // (iframe-htmlfile, iframe-eventsource) tropiezan con X-Frame-Options: DENY
-        // cuando frontend y backend son orígenes distintos (Vercel ↔ duckdns),
-        // y los xhr_streaming/polling requieren credentials cross-origin.
+        // Excluimos iframe-* (los X-Frame-Options: DENY los bloquea cross-origin).
+        // websocket es el preferido; si falla, xhr-streaming/xhr-polling sirven
+        // de fallback sin generar errores ruidosos en consola.
         webSocketFactory: () => new SockJS(`${environment.wsUrl}`, null, {
-          transports: ['websocket'],
+          transports: ['websocket', 'xhr-streaming', 'xhr-polling'],
         }),
         reconnectDelay: 5000,
         onConnect: () => {
