@@ -4,5 +4,6 @@ export interface PerfilUsuario {
   usuarioEmail: string;
   usuarioNacimiento: string | null;
   usuarioGenero: string;
+  usuarioParroquia: string | null;
   usuarioPerfil: string | null;
 }

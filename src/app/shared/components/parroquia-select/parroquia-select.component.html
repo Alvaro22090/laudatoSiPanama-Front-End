@@ -1,0 +1,54 @@
+<div class="parroquia-select" [class.abierto]="abierto()">
+  <button type="button"
+          class="select-trigger"
+          [class.deshabilitado]="deshabilitado()"
+          [disabled]="deshabilitado()"
+          (click)="abrir()"
+          [attr.aria-expanded]="abierto()">
+    <span class="trigger-text" [class.placeholder]="!valorSeleccionado()">
+      {{ valorSeleccionado() || placeholder }}
+    </span>
+    @if (valorSeleccionado()) {
+      <i class="fas fa-times-circle limpiar-btn" (click)="limpiar($event)" title="Limpiar selección"></i>
+    }
+    <i class="fas fa-chevron-down arrow"></i>
+  </button>
+
+  @if (abierto()) {
+    <div class="dropdown-panel" role="listbox">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text"
+               [ngModel]="busqueda()"
+               (ngModelChange)="busqueda.set($event)"
+               placeholder="Buscar parroquia..."
+               autocomplete="off"
+               #buscadorInput>
+      </div>
+
+      <div class="opciones-lista">
+        @if (zonasFiltradas().length === 0) {
+          <p class="sin-resultados">No se encontraron parroquias.</p>
+        }
+        @for (zona of zonasFiltradas(); track zona.zona) {
+          <div class="grupo-zona">
+            <span class="zona-titulo">{{ zona.zona }}</span>
+            @for (vicaria of zona.vicarias; track vicaria.vicaria) {
+              <div class="grupo-vicaria">
+                <span class="vicaria-titulo">{{ vicaria.vicaria }}</span>
+                @for (parroquia of vicaria.parroquias; track parroquia) {
+                  <button type="button"
+                          class="opcion"
+                          [class.seleccionada]="parroquia === valorSeleccionado()"
+                          (click)="seleccionar(parroquia)">
+                    {{ parroquia }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

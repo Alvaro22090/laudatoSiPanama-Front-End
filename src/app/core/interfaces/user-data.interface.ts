@@ -5,5 +5,6 @@ export interface ApplicationData {
   usuarioContraseña: string;
   usuarioNacimiento: Date | null;
   usuarioGenero: string;
+  usuarioParroquia?: string | null;
   usuarioPerfil?: File | null;
 }

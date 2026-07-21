@@ -4,10 +4,11 @@ import { UserService } from '../../../core/services/user.service';
 import { ApplicationData } from '../../../core/interfaces/user-data.interface';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { ParroquiaSelectComponent } from '../../../shared/components/parroquia-select/parroquia-select.component';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ParroquiaSelectComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -34,6 +35,7 @@ export class RegisterComponent {
       usuarioConfirmar: '',
       usuarioNacimiento: null,
       usuarioGenero: null,
+      usuarioParroquia: null,
       usuarioPerfil: null,
       aceptaTerminos: [false, [Validators.requiredTrue]]
     }); 
@@ -113,6 +115,7 @@ export class RegisterComponent {
       usuarioContraseña: this.registroUsuario.value.usuarioContraseña,
       usuarioNacimiento: this.registroUsuario.value.usuarioNacimiento ?? null,
       usuarioGenero: this.registroUsuario.value.usuarioGenero ?? '',
+      usuarioParroquia: this.registroUsuario.value.usuarioParroquia ?? null,
       usuarioPerfil: this.selectedFile ?? null
     };
 

@@ -78,6 +78,10 @@
                     <span class="info-label"><i class="fas fa-venus-mars"></i> Género</span>
                     <span class="info-value">{{ usuarioInformacion.usuarioGenero || 'No especificado' }}</span>
                   </div>
+                  <div class="info-item">
+                    <span class="info-label"><i class="fas fa-church"></i> Parroquia</span>
+                    <span class="info-value">{{ usuarioInformacion.usuarioParroquia || 'No especificada' }}</span>
+                  </div>
                 </div>
               </div>
             } @else {
@@ -110,6 +114,10 @@
                   <div class="form-field">
                     <label>Fecha de nacimiento</label>
                     <input type="date" [(ngModel)]="formPerfil.usuarioNacimiento">
+                  </div>
+                  <div class="form-field">
+                    <label>Parroquia</label>
+                    <app-parroquia-select [(ngModel)]="formPerfil.usuarioParroquia" placeholder="Selecciona tu parroquia"></app-parroquia-select>
                   </div>
                 </div>
                 <div class="form-actions">

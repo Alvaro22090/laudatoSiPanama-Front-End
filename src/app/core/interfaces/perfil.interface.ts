@@ -3,6 +3,7 @@ export interface DatosActualizarPerfil {
   usuarioEmail?:  string;
   usuarioGenero?: string;
   usuarioNacimiento?: string | null;
+  usuarioParroquia?: string | null;
 }
 
 export interface DatosCambiarContrasena {

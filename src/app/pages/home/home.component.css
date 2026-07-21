@@ -16,12 +16,22 @@
   display: flex;
   align-items: flex-end;
   text-align: center;
-  background-image: url(/home/hero-fondo.jpg);
-  background-size: 100% 100%;
-  background-position: bottom;
+  overflow: hidden;
+}
+
+/* El carrusel ocupa todo el hero como fondo, detrás del contenido */
+.hero-carrusel-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
 }
 
 .hero-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -409,12 +419,6 @@ p {
   /* El indicador de scroll no tiene sentido en dispositivos táctiles */
   .hero-scroll { display: none; }
 
-  /* Imagen sin distorsión */
-  .hero {
-    background-size: cover;
-    background-position: center;
-  }
-
   /* Overlay para legibilidad: azul tinto arriba, oscuro al pie */
   .hero::before {
     content: '';
@@ -428,13 +432,7 @@ p {
       rgba(0, 0, 0, 0.52) 100%
     );
     pointer-events: none;
-    z-index: 0;
-  }
-
-  .hero-content {
-    position: relative;
     z-index: 1;
-    width: 100%;
   }
 
   /* Bloque azul → transparente, el texto flota sobre la imagen */
@@ -589,12 +587,10 @@ p {
       transparent 100%
     );
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
   }
 
   .hero {
-    background-size: cover;
-    background-position: center;
     align-items: stretch;
   }
 
@@ -603,8 +599,6 @@ p {
     flex-direction: row;
     align-items: stretch;
     height: 100%;
-    position: relative;
-    z-index: 1;
     width: 100%;
   }
 

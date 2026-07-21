@@ -8,12 +8,13 @@ import { PerfilUsuario } from '../../../core/interfaces/perfil-usuario.interface
 import { ROLES } from '../../../core/interfaces/user.interface';
 import { DatosActualizarPerfil, DatosCambiarContrasena, DatosDesactivarCuenta, InscripcionResumen } from '../../../core/interfaces/perfil.interface';
 import { Topicos } from '../../../core/interfaces/forum.interface';
+import { ParroquiaSelectComponent } from '../../../shared/components/parroquia-select/parroquia-select.component';
 
 type Tab = 'perfil' | 'seguridad' | 'actividades' | 'topicos';
 
 @Component({
   selector: 'app-user',
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ParroquiaSelectComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -25,7 +26,7 @@ export class UserComponent implements OnInit {
   // ── Estado general ──────────────────────────────────────────────────────────
   usuarioInformacion: PerfilUsuario = {
     usuarioNombre: '', usuarioId: '', usuarioEmail: '',
-    usuarioNacimiento: null, usuarioGenero: '', usuarioPerfil: null
+    usuarioNacimiento: null, usuarioGenero: '', usuarioParroquia: null, usuarioPerfil: null
   };
 
   tabActiva = signal<Tab>('perfil');
@@ -36,7 +37,7 @@ export class UserComponent implements OnInit {
   guardandoPerfil  = signal(false);
   perfilError      = signal('');
   perfilOk         = signal('');
-  formPerfil: DatosActualizarPerfil = { usuarioNombre: '', usuarioEmail: '', usuarioGenero: '', usuarioNacimiento: null };
+  formPerfil: DatosActualizarPerfil = { usuarioNombre: '', usuarioEmail: '', usuarioGenero: '', usuarioNacimiento: null, usuarioParroquia: null };
 
   // ── Solicitar escritor ──────────────────────────────────────────────────────
   solicitudEnviada = false;
@@ -116,7 +117,8 @@ export class UserComponent implements OnInit {
       usuarioNombre:    this.usuarioInformacion.usuarioNombre,
       usuarioEmail:     this.usuarioInformacion.usuarioEmail,
       usuarioGenero:    this.usuarioInformacion.usuarioGenero,
-      usuarioNacimiento: this.usuarioInformacion.usuarioNacimiento
+      usuarioNacimiento: this.usuarioInformacion.usuarioNacimiento,
+      usuarioParroquia: this.usuarioInformacion.usuarioParroquia
     };
   }
 

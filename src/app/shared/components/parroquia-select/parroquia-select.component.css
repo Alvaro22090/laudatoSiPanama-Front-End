@@ -1,0 +1,167 @@
+.parroquia-select {
+  position: relative;
+  width: 100%;
+  font-family: var(--font-secondary);
+}
+
+.select-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+  font-size: 0.95rem;
+  color: var(--tech-dark);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.parroquia-select.abierto .select-trigger,
+.select-trigger:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(0, 176, 95, 0.1);
+}
+
+.select-trigger.deshabilitado {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  color: #9ca3af;
+}
+
+.trigger-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger-text.placeholder {
+  color: #9ca3af;
+}
+
+.limpiar-btn {
+  color: #9ca3af;
+  margin-right: 0.6rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.limpiar-btn:hover {
+  color: #ef4444;
+}
+
+.arrow {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.parroquia-select.abierto .arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 22rem;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.search-box i {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.9rem;
+  color: var(--tech-dark);
+}
+
+.search-box input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.opciones-lista {
+  overflow-y: auto;
+  padding: 0.4rem 0;
+}
+
+.sin-resultados {
+  padding: 1rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.grupo-zona {
+  padding: 0.3rem 0;
+}
+
+.zona-titulo {
+  display: block;
+  padding: 0.4rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  background: var(--color-earth);
+}
+
+.vicaria-titulo {
+  display: block;
+  padding: 0.4rem 1rem 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--tech-gray);
+}
+
+.opcion {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 1.6rem;
+  border: none;
+  background: transparent;
+  font-size: 0.88rem;
+  color: var(--tech-dark);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.opcion:hover {
+  background-color: var(--accent-green);
+}
+
+.opcion.seleccionada {
+  background-color: var(--accent-green);
+  color: var(--secondary-green);
+  font-weight: 600;
+}
